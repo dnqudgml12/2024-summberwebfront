@@ -42,3 +42,10 @@
   color: #888;
 }
 */
+
+*{
+  margin: 0;
+    padding: 0;
+    font-family: "Apple SD Gothic Neo", "맑은 고딕", "돋움", sans-serif;
+    -webkit-touch-callout: none;
+}
