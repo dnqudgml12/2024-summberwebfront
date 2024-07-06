@@ -15,6 +15,7 @@ const Schedule = () => {
   const headerCanvasRef = useRef(null); // header 캔버스에 대한 참조
   const bodyCanvasRef = useRef(null); // body 캔버스에 대한 참조
   const [data, setData] = useState(initialdata);
+  // 지금은 db 연결 안되서 초기로 한번 로컬에서 불렀지만 나중에 연결 뒤에는 항상 state값 data가 업데이트 되면 db에서 다시 배열로 불러오는 과정을 넣어야 한다.
   const [hoveredEntry, setHoveredEntry] = useState(null);
   const [editingEntry, setEditingEntry] = useState(null);
   const [addEntry, setaddEntry] = useState(false);
@@ -58,7 +59,6 @@ const Schedule = () => {
       "14:00 ~ 15:00",
       "15:00 ~ 16:00",
       "16:00 ~ 17:00",
-      "17:00 ~ 18:00",
       "17:00 ~ 18:00",
       "18:00 ~ 19:00",
       "19:00 ~ 20:00",
@@ -172,7 +172,11 @@ const Schedule = () => {
     const handleMouseMove = (e) => {
       // 시간표에 호버된 항목에 대한 값을 가지는 것
       // 이것 기반으로 edit
-      if (addEntry || isAdddivHovered) {
+      if (addEntry && isAdddivHovered) {
+        //새로 추가하기 하면 addEntry true, isAdddivHovered도 hover해서 위에 있으니까 true되서 hovered값 판별 못하여서 값이 있는 시간표를 호버해도 hoveredEntry가 안보인다.
+        // 그런데 저장 버튼을 누르면 addEntry가 false가 되므로 여기 부분 false되서 다시 hovered값 판별하고 isAdddivHovered 도 false가 됨
+        // 여기 부분 때문에 맨처음에 저장한 뒤에 hoveredEntry가 null이 되서 수정 삭제가 hover해도 안되었다.
+
         return;
         // AddModal이 열려있거나 Adddiv가 hover될 때는 아무 동작도 하지 않음
         // 새 수업 추가 부분과 시간표 부분이 겹쳐서 hover 되었을 시에
@@ -263,6 +267,9 @@ const Schedule = () => {
   const handleaddCancel = () => {
     setaddEntry(!addEntry);
   };
+
+  console.log(addEntry);
+  console.log(isAdddivHovered);
 
   return (
     <div>

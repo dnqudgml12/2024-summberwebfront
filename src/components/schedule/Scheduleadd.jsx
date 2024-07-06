@@ -112,6 +112,8 @@ const AddModal = ({ onAdd, data, onCancel }) => {
                 <option value="15:00">오후 3시</option>
                 <option value="16:00">오후 4시</option>
                 <option value="17:00">오후 5시</option>
+                <option value="18:00">오후 6시</option>
+                <option value="19:00">오후 7시</option>
               </select>
               ~
               <select
@@ -127,6 +129,8 @@ const AddModal = ({ onAdd, data, onCancel }) => {
                 <option value="16:00">오후 4시</option>
                 <option value="17:00">오후 5시</option>
                 <option value="18:00">오후 6시</option>
+                <option value="19:00">오후 7시</option>
+                <option value="20:00">오후 8시</option>
               </select>
             </TimeSelector>
           </label>
