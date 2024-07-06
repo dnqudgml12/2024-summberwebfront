@@ -49,3 +49,12 @@
     font-family: "Apple SD Gothic Neo", "맑은 고딕", "돋움", sans-serif;
     -webkit-touch-callout: none;
 }
+
+.fixed-header {
+  position: sticky;
+  left: 200;
+  top: 200;
+  background-color: white;
+  z-index: 1000;
+  border-bottom: 1px solid #ddd;
+}

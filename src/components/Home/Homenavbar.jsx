@@ -30,7 +30,7 @@ const Navdiv = styled.nav`
   display: flex;
   flex-direction: row;
   position: fixed;
-  z-index: 100;
+  z-index: 999;
 
   width: 100%;
   height: 80px;
