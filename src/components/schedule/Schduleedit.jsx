@@ -14,8 +14,11 @@ const EditModal = ({ entry, onSave, onCancel, existingEntries }) => {
   const [subject, setSubject] = useState(entry.subject); //과목 부분
   const [professor, setProfessor] = useState(entry.professor); // 교수님 정보
   const [day, setDay] = useState(entry.day); // 요일 정보
-  const [startTime, setStartTime] = useState(entry.time.split(" ~ ")[0]); // 시작 시간 정보
-  const [endTime, setEndTime] = useState(entry.time.split(" ~ ")[1]); // 마치는 시간 정보
+  const [startTime, setStartTime] = useState(entry.startTime)// 시작 시간 정보
+  const [endTime, setEndTime] = useState(entry.endTime); // 마치는 시간 정보
+  /*
+    const [startTime, setStartTime] = useState(entry.time.split(" ~ ")[0]); // 시작 시간 정보
+  const [endTime, setEndTime] = useState(entry.time.split(" ~ ")[1]); // 마치는 시간 정보 */
   const [location, setLocation] = useState(entry.location); // 장소 정보
 
   const handleSubmit = (e) => {
@@ -26,7 +29,9 @@ const EditModal = ({ entry, onSave, onCancel, existingEntries }) => {
       return (
         existingEntry.id !== entry.id &&
         existingEntry.day === day &&
-        existingEntry.time === `${startTime} ~ ${endTime}`
+        ((existingEntry.startTime >= startTime && existingEntry.startTime < endTime) ||
+          (existingEntry.endTime > startTime && existingEntry.endTime <= endTime) ||
+          (existingEntry.startTime <= startTime && existingEntry.endTime >= endTime))
       );
     });
 
@@ -40,7 +45,9 @@ const EditModal = ({ entry, onSave, onCancel, existingEntries }) => {
         subject,
         professor,
         day,
-        time: `${startTime} ~ ${endTime}`,
+        startTime,
+        endTime,
+        //time: `${startTime} ~ ${endTime}`, // 이전에 시간 형태가 09:00~10:00 이였음
         location,
       });
     }

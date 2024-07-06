@@ -25,7 +25,12 @@ const AddModal = ({ onAdd, data, onCancel }) => {
 
     // 시간 중복 체크
     const isConflict = data.some((entry) => {
-      return entry.day === day && entry.time === `${startTime} ~ ${endTime}`;
+      return (
+        entry.day === day &&
+        ((entry.startTime >= startTime && entry.startTime < endTime) ||
+          (entry.endTime > startTime && entry.endTime <= endTime) ||
+          (entry.startTime <= startTime && entry.endTime >= endTime))
+      );
     });
 
     if (isConflict) {
@@ -37,7 +42,8 @@ const AddModal = ({ onAdd, data, onCancel }) => {
         subject,
         professor,
         day,
-        time: `${startTime} ~ ${endTime}`,
+        startTime,
+        endTime,
         location,
       };
 

@@ -150,14 +150,16 @@ const Schedule = () => {
     // Draw timetable data (시간표 데이터 그리기)
     data.forEach((entry) => {
       const dayIndex = days.indexOf(entry.day);
-      const timeIndex = hours.indexOf(entry.time);
-      if (dayIndex !== -1 && timeIndex !== -1) {
+      const startTimeIndex = hours.findIndex(h => h.startsWith(entry.startTime));
+      const endTimeIndex = hours.findIndex(h => h.endsWith(entry.endTime));
+      if (dayIndex !== -1 && startTimeIndex !== -1 && endTimeIndex !== -1) {
         const x = firstColumnWidth + dayIndex * cellWidth;
-        const y = timeIndex * cellHeight + headerHeight + 0.6; // 수정된 y 계산
+        const y = startTimeIndex * cellHeight + headerHeight + 0.6;// 수정된 y 계산
+        const entryHeight = (endTimeIndex - startTimeIndex + 1) * cellHeight; // +1을 추가하여 마지막 시간도 포함
         bodyCtx.fillStyle = getRandomColor(); // 셀 배경 색상 랜덤화
-        bodyCtx.fillRect(x, y, cellWidth, cellHeight);
+        bodyCtx.fillRect(x, y, cellWidth, entryHeight);
         bodyCtx.strokeStyle = "#ddd"; // 셀 보더 색상
-        bodyCtx.strokeRect(x, y, cellWidth, cellHeight); // 셀 보더 그리기
+        bodyCtx.strokeRect(x, y, cellWidth, entryHeight); // 셀 보더 그리기
 
         bodyCtx.fillStyle = "#000"; // 본문 텍스트 색상
         bodyCtx.font = "14px Arial"; // 본문 텍스트 폰트와 크기
@@ -182,23 +184,27 @@ const Schedule = () => {
 
         const hovered = data.find((entry) => {
           const dayIndex = days.indexOf(entry.day);
-          const timeIndex = hours.indexOf(entry.time);
+          const startTimeIndex = hours.findIndex(h => h.startsWith(entry.startTime));
+          const endTimeIndex = hours.findIndex(h => h.endsWith(entry.endTime));
           /*
-        days.indexOf(entry.day)와 hours.indexOf(entry.time)을 사용하여 
+        days.indexOf(entry.day)와  const startTimeIndex = hours.findIndex(h => h.startsWith(entry.startTime));
+          const endTimeIndex = hours.findIndex(h => h.endsWith(entry.endTime));)을 사용하여 
         항목의 요일과 시간을 기준으로 열과 행 인덱스를 찾기
     
          */
-          if (dayIndex !== -1 && timeIndex !== -1) {
+        if (dayIndex !== -1 && startTimeIndex !== -1 && endTimeIndex !== -1) {
             //항목의 요일과 시간이 유효하면 셀의 왼쪽 상단 위치 (cellX와 cellY)를 계산
             const cellX = firstColumnWidth + dayIndex * cellWidth;
             //첫번째 열의 위치+ 현재 요일에 해당하는 셀의 위치
-            const cellY = headerHeight + timeIndex * cellHeight;
+            const cellY = headerHeight + startTimeIndex * cellHeight;
             //헤더 높이+ 현재 시간대에 해당하는 셀의 위치
+
+            const entryHeight = (endTimeIndex - startTimeIndex +1) * cellHeight;
             return (
               x >= cellX &&
               x <= cellX + cellWidth &&
               y >= cellY &&
-              y <= cellY + cellHeight
+              y <= cellY + entryHeight
             );
           }
           return false;
@@ -206,11 +212,11 @@ const Schedule = () => {
 
         if (hovered) {
           const dayIndex = days.indexOf(hovered.day);
-          const timeIndex = hours.indexOf(hovered.time);
+          const startTimeIndex = hours.findIndex(h => h.startsWith(hovered.startTime));
           //호버된 항목이 있으면 셀의 hoverX와 hoverY 좌표를 다시 계산
           const hoverX = firstColumnWidth + dayIndex * cellWidth;
           //첫번째 열의 위치+ 현재 요일에 해당하는 셀의 위치
-          const hoverY = headerHeight + timeIndex * cellHeight;
+          const hoverY = headerHeight + startTimeIndex * cellHeight;
           //헤더 높이+ 현재 시간대에 해당하는 셀의 위치
           setHoveredEntry({ ...hovered, x: hoverX, y: hoverY });
         } else {

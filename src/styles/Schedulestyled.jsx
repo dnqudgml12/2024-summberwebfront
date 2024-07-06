@@ -58,7 +58,9 @@ export const DaySelector = styled.div`
   margin: 10px 0;
 `;
 
-export const DayButton = styled.button`
+export const DayButton = styled.button.attrs(props => ({
+    active: props.active ? 'true' : undefined
+  }))`
   background: ${(props) => (props.active ? "#007bff" : "#f8f9fa")};
   color: ${(props) => (props.active ? "white" : "black")};
   border: 1px solid #ddd;
