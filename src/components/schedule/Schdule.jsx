@@ -60,7 +60,7 @@ const Schedule = () => {
       "15:00 ~ 16:00",
       "16:00 ~ 17:00",
       "17:00 ~ 18:00",
-      "18:00 ~ 19:00",
+      "18:00 ~ 19:00", 
       "19:00 ~ 20:00",
       "20:00 ~ 21:00",
       "21:00 ~ 22:00",
@@ -146,7 +146,37 @@ const Schedule = () => {
     for (let i = 0; i < hours.length; i++) {
       ctx.fillText(hoursword[i], 70, i * cellHeight + headerHeight + 60);
     } // 헤더 텍스트 위치 조정
-*/
+*/    
+}, []);
+
+useEffect(() => {
+    const bodyCanvas = bodyCanvasRef.current;
+    const bodyCtx = bodyCanvas.getContext("2d");
+
+    const { cellWidth, cellHeight } = dimensions;
+    const firstColumnWidth = 100;
+    const headerHeight = 50;
+    const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+    const hours = [
+      "09:00 ~ 10:00",
+      "10:00 ~ 11:00",
+      "11:00 ~ 12:00",
+      "12:00 ~ 13:00",
+      "13:00 ~ 14:00",
+      "14:00 ~ 15:00",
+      "15:00 ~ 16:00",
+      "16:00 ~ 17:00",
+      "17:00 ~ 18:00",
+      "18:00 ~ 19:00",
+      "19:00 ~ 20:00",
+      "20:00 ~ 21:00",
+      "21:00 ~ 22:00",
+    ];
+const clearData = () => {
+    bodyCtx.clearRect(0, headerHeight, bodyCanvas.width, bodyCanvas.height);
+  };
+
+const drawData = () => {
     // Draw timetable data (시간표 데이터 그리기)
     data.forEach((entry) => {
       const dayIndex = days.indexOf(entry.day);
@@ -168,8 +198,37 @@ const Schedule = () => {
         bodyCtx.fillText(entry.location, x + 10, y + 60); // 본문 텍스트 위치 조정
       }
     });
+};
+
+    clearData();
+    drawData();
+  }, [data, dimensions]);
 
     const handleMouseMove = (e) => {
+        const bodyCanvas = bodyCanvasRef.current;
+        const rect = bodyCanvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+    
+        const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+        const hours = [
+          "09:00 ~ 10:00",
+          "10:00 ~ 11:00",
+          "11:00 ~ 12:00",
+          "12:00 ~ 13:00",
+          "13:00 ~ 14:00",
+          "14:00 ~ 15:00",
+          "15:00 ~ 16:00",
+          "16:00 ~ 17:00",
+          "17:00 ~ 18:00",
+          "18:00 ~ 19:00",
+          "19:00 ~ 20:00",
+          "20:00 ~ 21:00",
+          "21:00 ~ 22:00",
+        ];
+        const { cellWidth, cellHeight } = dimensions;
+        const firstColumnWidth = 100;
+        const headerHeight = 50;
       // 시간표에 호버된 항목에 대한 값을 가지는 것
       // 이것 기반으로 edit
       if (addEntry && isAdddivHovered) {
@@ -226,15 +285,19 @@ const Schedule = () => {
         } else {
           setHoveredEntry(null);
         }
-      }
-    };
+      }};
+ 
 
-    bodyCanvas.addEventListener("mousemove", handleMouseMove);
 
-    return () => {
-      bodyCanvas.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, [data]);
+    useEffect(() => {
+        const bodyCanvas = bodyCanvasRef.current;
+        bodyCanvas.addEventListener("mousemove", handleMouseMove);
+    
+        return () => {
+          bodyCanvas.removeEventListener("mousemove", handleMouseMove);
+        };
+      }, [data, dimensions, addEntry, isAdddivHovered]);
+    
 
   const handleAdd = (newEntry) => {
     setData([...data, newEntry]);
