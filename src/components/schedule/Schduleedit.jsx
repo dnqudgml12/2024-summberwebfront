@@ -14,7 +14,7 @@ const EditModal = ({ entry, onSave, onCancel, existingEntries }) => {
   const [subject, setSubject] = useState(entry.subject); //과목 부분
   const [professor, setProfessor] = useState(entry.professor); // 교수님 정보
   const [day, setDay] = useState(entry.day); // 요일 정보
-  const [startTime, setStartTime] = useState(entry.startTime)// 시작 시간 정보
+  const [startTime, setStartTime] = useState(entry.startTime); // 시작 시간 정보
   const [endTime, setEndTime] = useState(entry.endTime); // 마치는 시간 정보
   /*
     const [startTime, setStartTime] = useState(entry.time.split(" ~ ")[0]); // 시작 시간 정보
@@ -29,14 +29,29 @@ const EditModal = ({ entry, onSave, onCancel, existingEntries }) => {
       return (
         existingEntry.id !== entry.id &&
         existingEntry.day === day &&
-        ((existingEntry.startTime >= startTime && existingEntry.startTime < endTime) ||
-          (existingEntry.endTime > startTime && existingEntry.endTime <= endTime) ||
-          (existingEntry.startTime <= startTime && existingEntry.endTime >= endTime))
+        ((existingEntry.startTime >= startTime &&
+          existingEntry.startTime < endTime) ||
+          (existingEntry.endTime > startTime &&
+            existingEntry.endTime <= endTime) ||
+          (existingEntry.startTime <= startTime &&
+            existingEntry.endTime >= endTime))
+      );
+    });
+
+    // 과목명, 교수명, 위치 중복 체크
+    const isDuplicate = data.some((entry) => {
+      return (
+        entry.subject === subject ||
+        entry.professor === professor ||
+        entry.location === location
       );
     });
 
     if (overlappingEntry) {
       alert("이미 같은 시간에 수업이 있습니다.");
+      return;
+    } else if (isDuplicate) {
+      alert("과목명, 교수명 또는 위치가 이미 존재합니다.");
       return;
     } else {
       // 새롭게 저장될 부분

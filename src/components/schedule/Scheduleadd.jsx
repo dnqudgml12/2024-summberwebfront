@@ -20,6 +20,16 @@ const AddModal = ({ onAdd, data, onCancel }) => {
   const [location, setLocation] = useState("");
   const [error, setError] = useState("");
 
+  const getRandomColor = () => {
+    const base = 255;
+    const mix = 200;
+    const getRandomValue = () => Math.floor(Math.random() * (base - mix) + mix);
+    const r = getRandomValue();
+    const g = getRandomValue();
+    const b = getRandomValue();
+    const color = `rgb(${r}, ${g}, ${b})`;
+    return color;
+  };
   const handleSubmit = (e) => {
     e.preventDefault(); //렌더링을 막음 -> 렌더링 시에 값이 없어지므로
 
@@ -33,8 +43,20 @@ const AddModal = ({ onAdd, data, onCancel }) => {
       );
     });
 
+    // 과목명, 교수명, 위치 중복 체크
+    const isDuplicate = data.some((entry) => {
+      return (
+        entry.subject === subject ||
+        entry.professor === professor ||
+        entry.location === location
+      );
+    });
+
     if (isConflict) {
       alert("이미 시간이 정해진 곳에 추가할 수 없습니다.");
+      return;
+    } else if (isDuplicate) {
+      alert("과목명, 교수명 또는 위치가 이미 존재합니다.");
       return;
     } else {
       const newEntry = {
@@ -45,6 +67,7 @@ const AddModal = ({ onAdd, data, onCancel }) => {
         startTime,
         endTime,
         location,
+        color: getRandomColor(),
       };
 
       onAdd(newEntry);
