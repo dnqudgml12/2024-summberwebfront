@@ -9,33 +9,31 @@ import Secreteboard from "../components/secretboard/Secretboard";
 import Secreteboarddetail from "../components/secretboard/Secretboarddetail";
 import Graduateboard from "../components/graduateboard/Graduate";
 import Graduateboarddetail from "../components/graduateboard/Graduatedetail";
-import Homenavbar from "../components/Home/Homenavbar";
+import { Homenavbar } from "../components/Home/Homenavbar";
 import Schedule from "../components/schedule/Schdule";
 import Search from "../page/Searchresult";
-
+import Layout from "../page/Layout";
 
 function Routing() {
   return (
     <Router>
       <Homenavbar/>
       <Routes>
-        <Route path="/" element={<Home/>} />
-        <Route path="/search/:query" element={<Search />} />
+      <Route path="/" element={<Layout />}>
+          <Route index element={<Home/>}/>
+          <Route path="search/:query" element={<Search />} />
+          <Route path="freeboard" element={<Freeboard />} />
+          <Route path="freeboardadd" element={<FreeboardADD />} />
+          <Route path="freeboard/:id" element={<FreeboardDetail />} />
+          <Route path="freeboardedit/:id" element={<Freeboardedit />} />
+          <Route path="secreteboard" element={<Secreteboard />} />
+          <Route path="secreteboard/:id" element={<Secreteboarddetail />} />
+          <Route path="graduateboard" element={<Graduateboard />} />
+          <Route path="graduateboard/:id" element={<Graduateboarddetail />} />
+          <Route path="schedule" element={<Schedule />} />
+        </Route>
       </Routes>
-      <Routes>
-        <Route path="/freeboard" element={<Freeboard />} />
-        <Route path="/freeboardadd" element={<FreeboardADD />} />
-        <Route path="/freeboard/:id" element={<FreeboardDetail />} />
-        <Route path="/freeboardedit/:id" element={<Freeboardedit />} />
-      </Routes>
-      <Routes>
-        <Route path="/secreteboard" element={<Secreteboard />} />
-        <Route path="/secreteboard/:id" element={<Secreteboarddetail />} />
-      </Routes>
-      <Routes>
-        <Route path="/graduateboard" element={<Graduateboard />} />
-        <Route path="/graduateboard/:id" element={<Graduateboarddetail />} />
-      </Routes>
+
       <Routes>
       <Route path="/schedule" element={<Schedule/>} />
       </Routes>

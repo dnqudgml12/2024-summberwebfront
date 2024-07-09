@@ -10,9 +10,11 @@ const Homenavbar = () => {
   const location = useLocation();
   const [board, setBoard] = useState(false);
 
+
+  // 특정 페이지에서는 setBoard가 true로 해서 dropdownmenu가 실행되게 하기 위해서
   useEffect(() => {
     if (location.pathname === "/"||location.pathname === "/freeboard"
-      ||location.pathname === "/freeboard"
+      ||location.pathname === "/secreteboard"
       ||location.pathname === "/freeboard"
       ||location.pathname === "/freeboard"
       ||location.pathname === "/freeboard"
@@ -65,52 +67,61 @@ const Homenavbar = () => {
           <Logoimg src={Inform} />
         </Chatandinformbox>
       </Wrapper>
+      {/*
       {board && (
-        <DropdownMenu>
-          <MenuColumn>
-            <MenuItem to={"/freeboard"}>자유게시판 <Symbol>•</Symbol></MenuItem>
-            <MenuItem>비밀게시판 <Symbol>•</Symbol></MenuItem>
-            <MenuItem>졸업생게시판 <Symbol>•</Symbol></MenuItem>
-            <MenuItem>새내기게시판 <Symbol>•</Symbol></MenuItem>
-            <MenuItem>시사·이슈 <Symbol>•</Symbol></MenuItem>
-            <MenuItem>장터게시판 <Symbol>•</Symbol></MenuItem>
-            <MenuItem>정보게시판 <Symbol>•</Symbol></MenuItem>
-            <MenuItem>홍보게시판 <Symbol>•</Symbol></MenuItem>
-          </MenuColumn>
-          <Separator />
-          <MenuColumn>
-            <MenuItem>동아리·학회 <Symbol>•</Symbol></MenuItem>
-            <MenuItem>취업·진로</MenuItem>
-          </MenuColumn>
-          <Separator />
-          <MenuColumn>
-            <MenuItem>전산전자공학부 게시판</MenuItem>
-            <MenuItem>생명과학부 게시판 <Symbol>•</Symbol></MenuItem>
-            <MenuItem>상사학부 게시판 <Symbol>✨</Symbol></MenuItem>
-          </MenuColumn>
-          <Separator />
-          <MenuColumn>
-            <MenuItem>연애/사랑이야기 <Symbol>•</Symbol></MenuItem>
-            <MenuItem>콘디 <Symbol>•</Symbol></MenuItem>
-            <MenuItem>큐피트게시판 <Symbol>•</Symbol></MenuItem>
-            <MenuItem>성 게시판 <Symbol>•</Symbol></MenuItem>
-            <MenuItem>알바생 게시판 <Symbol>•</Symbol></MenuItem>
-            <MenuItem>넷플릭스/왓챠 게시판 <Symbol>•</Symbol></MenuItem>
-            <MenuItem>끝말잇기</MenuItem>
-            <MenuItem>썸덕 게시판</MenuItem>
-          </MenuColumn>
-          <Separator />
-          <MenuColumn>
-            <MenuItem>요리조리킹 <Symbol>•</Symbol></MenuItem>
-            <MenuItem style={{ color: "#F91F15", fontWeight: "bold" }}>게시판 찾기</MenuItem>
-          </MenuColumn>
-        </DropdownMenu>
-      )}
+
+      )}*/
+    }
     </Navdiv>
   );
 };
 
-export default Homenavbar;
+export {Homenavbar,Dropdownmenu};
+
+
+const Dropdownmenu=()=>{
+
+  return(        <DropdownMenu>
+    <MenuColumn>
+      <MenuItem to={"/freeboard"}>자유게시판 <Symbol>•</Symbol></MenuItem>
+      <MenuItem>비밀게시판 <Symbol>•</Symbol></MenuItem>
+      <MenuItem>졸업생게시판 <Symbol>•</Symbol></MenuItem>
+      <MenuItem>새내기게시판 <Symbol>•</Symbol></MenuItem>
+      <MenuItem>시사·이슈 <Symbol>•</Symbol></MenuItem>
+      <MenuItem>장터게시판 <Symbol>•</Symbol></MenuItem>
+      <MenuItem>정보게시판 <Symbol>•</Symbol></MenuItem>
+      <MenuItem>홍보게시판 <Symbol>•</Symbol></MenuItem>
+    </MenuColumn>
+    <Separator />
+    <MenuColumn>
+      <MenuItem>동아리·학회 <Symbol>•</Symbol></MenuItem>
+      <MenuItem>취업·진로</MenuItem>
+    </MenuColumn>
+    <Separator />
+    <MenuColumn>
+      <MenuItem>전산전자공학부 게시판</MenuItem>
+      <MenuItem>생명과학부 게시판 <Symbol>•</Symbol></MenuItem>
+      <MenuItem>상사학부 게시판 <Symbol>✨</Symbol></MenuItem>
+    </MenuColumn>
+    <Separator />
+    <MenuColumn>
+      <MenuItem>연애/사랑이야기 <Symbol>•</Symbol></MenuItem>
+      <MenuItem>콘디 <Symbol>•</Symbol></MenuItem>
+      <MenuItem>큐피트게시판 <Symbol>•</Symbol></MenuItem>
+      <MenuItem>성 게시판 <Symbol>•</Symbol></MenuItem>
+      <MenuItem>알바생 게시판 <Symbol>•</Symbol></MenuItem>
+      <MenuItem>넷플릭스/왓챠 게시판 <Symbol>•</Symbol></MenuItem>
+      <MenuItem>끝말잇기</MenuItem>
+      <MenuItem>썸덕 게시판</MenuItem>
+    </MenuColumn>
+    <Separator />
+    <MenuColumn>
+      <MenuItem>요리조리킹 <Symbol>•</Symbol></MenuItem>
+      <MenuItem style={{ color: "#F91F15", fontWeight: "bold" }}>게시판 찾기</MenuItem>
+    </MenuColumn>
+  </DropdownMenu>)
+}
+
 
 const Chatandinformbox = styled.div`
   display: flex;

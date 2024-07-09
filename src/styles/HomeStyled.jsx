@@ -6,7 +6,7 @@ export const Alldiv = styled.div`
 `;
 
 export const Bodydiv = styled.div`
-  margin-top: 350px;
+  margin-top: 300px;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -153,8 +153,8 @@ export const RightSidebar = styled.div`
   display: flex;
   flex-direction: column;
   width: 325px;
-  padding: 20px;
-  margin-top: 80px;
+ padding: 400px 20px 20px 20px;
+
 `;
 
 export const SearchBar = styled.input`

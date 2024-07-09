@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import Homenavbar from "../components/Home/Homenavbar";
+
 import { Data } from "../data/freeBoard";
 import { Datasss } from "../data/secretBoard";
 import { Datass } from "../data/gradutateBoard";
@@ -26,12 +26,11 @@ import {
   RightSidebar,
   SearchBar,
   PopularPosts,
-
   SidebarSection,
   SectionTitle,
   PostItem,
   Sectionbox,
-  Sectioneachboard
+  Sectioneachboard,
 } from "../styles/HomeStyled";
 import mypic from "../assets/img/mypicture.jpeg";
 import AD1 from "../assets/img/AD1.jpg";
@@ -40,7 +39,6 @@ import AD3 from "../assets/img/AD3.png";
 import Banner from "../assets/img/bannerAd.png";
 
 const Home = () => {
-
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
@@ -48,18 +46,18 @@ const Home = () => {
     {
       rating: 4,
       title: "Typography Design 1 : 이재선",
-      text: "강의평 중 틀린 말 1개도 없음... 이렇게까지?"
+      text: "강의평 중 틀린 말 1개도 없음... 이렇게까지?",
     },
     {
       rating: 2.5,
       title: "파이썬 프로그래밍 : 나대영",
-      text: "다른 기초 프로그래밍 과목에서 A 이상 받았다면 이것도 할 만하긴 함...하지만 새내기나 타전공 사람을 위한 수업은 아닌 것 같음. 배우지 못함."
+      text: "다른 기초 프로그래밍 과목에서 A 이상 받았다면 이것도 할 만하긴 함...하지만 새내기나 타전공 사람을 위한 수업은 아닌 것 같음. 배우지 못함.",
     },
     {
       rating: 3.5,
       title: "중독심리학 : 신성만",
-      text: "내용이 많음, 따라가기 조금 어려움, 하지만 성적은 잘 주심."
-    }
+      text: "내용이 많음, 따라가기 조금 어려움, 하지만 성적은 잘 주심.",
+    },
   ];
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -70,15 +68,15 @@ const Home = () => {
 
   // boards에 게시판 늘어나면 채우기
   const boards = [
-    { title: "자유게시판", data: Data, link:"freeboard" },
-    { title: "비밀게시판", data: Datasss, link:"secrete"},
-    { title: "졸업게시판", data: Datass},
-    { title: "시사·이슈", data: Datass},
-    { title: "장터게시판", data: Datass},
+    { title: "자유게시판", data: Data, link: "freeboard" },
+    { title: "비밀게시판", data: Datasss, link: "secrete" },
+    { title: "졸업게시판", data: Datass },
+    { title: "시사·이슈", data: Datass },
+    { title: "장터게시판", data: Datass },
     { title: "정보게시판", data: Datass },
-    { title: "홍보게시판", data:Datass },
-    { title: "취업·진로", data: Datass},
-    { title: "동아리·학회", data:Datass },
+    { title: "홍보게시판", data: Datass },
+    { title: "취업·진로", data: Datass },
+    { title: "동아리·학회", data: Datass },
   ];
   return (
     <Alldiv>
@@ -106,13 +104,16 @@ const Home = () => {
               <Img src={AD3} />
             </ADbox>
           </Leftboard>
+
           <Centerbox>
             <Centerbanner>
               <BannerImg src={Banner} />
               <Boards>
                 {boards.map((board, index) => (
                   <Eachboard key={index}>
-                    <Eachboardword to={`/${board.link}`}>{board.title}</Eachboardword>
+                    <Eachboardword to={`/${board.link}`}>
+                      {board.title}
+                    </Eachboardword>
                     {board.data.slice(0, 6).map((post) => (
                       <Eachseperateboard
                         key={post.id}
@@ -126,131 +127,18 @@ const Home = () => {
               </Boards>
             </Centerbanner>
           </Centerbox>
-
-          <RightSidebar>
-          <form onSubmit={handleSearchSubmit}>
-              <SearchBar 
-                placeholder="전체 게시판의 글을 검색하세요!" 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </form>
-
-          <PopularPosts>
-            <SectionTitle>실시간 인기 글</SectionTitle>
-            {boards.slice(0, 2).map((post,index) => (
-              <Sectioneachboard key={index}>
-                      <Sectionbox
-                      height={"75px"}
-                        key={post.id}
-                        to={`/${post.title}/${post.id}`}
-                      >
-                        {post.title}
-                      </Sectionbox>
-                      </Sectioneachboard>
-                    ))}
-          </PopularPosts>
-
-          <SidebarSection>
-            <SectionTitle>HOT 게시물</SectionTitle>
-            {boards.slice(0, 2).map((post,index) => (
-              <Sectioneachboard key={index}>
-                      <Sectionbox
-                      
-                        key={post.id}
-                        to={`/${post.title}/${post.id}`}
-                      >
-                        {post.title}
-                      </Sectionbox>
-                      </Sectioneachboard>
-                    ))}
-          </SidebarSection>
-          <SidebarSection>
-            <SectionTitle>BEST 게시판</SectionTitle>
-          </SidebarSection>
-          <SidebarSection>
-          <SectionTitle>최근 강의평</SectionTitle>
-          {reviews.map((review, index) => (
-                <CourseReview key={index}>
-                  <StarRating rating={review.rating} />
-                  <ReviewTitle>{review.title}</ReviewTitle>
-                  <ReviewText>{review.text}</ReviewText>
-                </CourseReview>
-              ))}
-          </SidebarSection>
-        </RightSidebar>
-
-
+          
         </Boardalldiv>
       </Bodydiv>
     </Alldiv>
   );
 };
 
-const CourseReview = styled.div`
-display: flex;
-flex-direction: column;
-  border-top: 1px solid #e0e0e0;
-  padding: 10px;
-    border-top: 1px solid #e3e3e3;
-  //margin-top: 10px;
-  height: 98px;
-`;
+export default Home;
 
 
-const StarRating = ({ rating }) => {
-  // Calculate the number of filled stars
-  const fullStars = Math.floor(rating);
 
-  // Check if a half star is needed
-  const hasHalfStar = rating % 1 !== 0;
 
-  // Calculate the number of empty stars
-  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-
-  return (
-    <StarRatingWrapper>
-      {/* Display filled stars */}
-      {[...Array(fullStars)].map((_, index) => (
-        <Star key={`full-${index}`}>★</Star>
-      ))}
-
-      {/* Display half star if needed */}
-      {hasHalfStar && <HalfStar>☆</HalfStar>}
-
-      {/* Display empty stars */}
-      {[...Array(emptyStars)].map((_, index) => (
-        <Star key={`empty-${index}`}>☆</Star>
-      ))}
-    </StarRatingWrapper>
-  );
-};
-
-const StarRatingWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const Star = styled.span`
-  font-size: 20px;
-  color: gold;
-`;
-
-const HalfStar = styled.span`
-  font-size: 20px;
-  color: gold;
-`;
-
-const ReviewTitle = styled.div`
-  font-size: 14px;
-  font-weight: bold;
-  margin-bottom: 5px;
-`;
-
-const ReviewText = styled.div`
-  font-size: 12px;
-  color: #555;
-`;
 
 const Myprofile = styled.img`
   margin: 15px auto;
@@ -301,5 +189,3 @@ const Mycomment = styled(Link)`
   text-decoration: none;
   border: 1px solid gray;
 `;
-
-export default Home;
