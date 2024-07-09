@@ -16,14 +16,14 @@ const Schedule = () => {
   const bodyCanvasRef = useRef(null); // body 캔버스에 대한 참조
   const [data, setData] = useState(initialdata);
   // 지금은 db 연결 안되서 초기로 한번 로컬에서 불렀지만 나중에 연결 뒤에는 항상 state값 data가 업데이트 되면 db에서 다시 배열로 불러오는 과정을 넣어야 한다.
-  const [hoveredEntry, setHoveredEntry] = useState(null);
-  const [editingEntry, setEditingEntry] = useState(null);
-  const [addEntry, setaddEntry] = useState(false);
+  const [hoveredEntry, setHoveredEntry] = useState(null); //hover된 시간표 값 저장
+  const [editingEntry, setEditingEntry] = useState(null); // edit할 시간표 값 저장
+  const [addEntry, setaddEntry] = useState(false); // 저장되었는지 아닌지 판별
   const [isAdddivHovered, setIsAdddivHovered] = useState(false);
   const [dimensions, setDimensions] = useState({ cellWidth: 0, cellHeight: 0 });
   // cellwidth를 useEffect안에서 지정하였으므로 dimension상태 안에 cell width를 저장
 
-  // 랜덤 컬러 일으키는 함수
+
 
 
 
@@ -32,6 +32,7 @@ const Schedule = () => {
     const bodyCanvas = bodyCanvasRef.current;
     const headerCtx = headerCanvas.getContext("2d");
     const bodyCtx = bodyCanvas.getContext("2d");
+    // 바디 캔버스 DOM 요소를 가리키며 2D 렌더링 컨텍스트를 Ctx에 지정
 
     // Set canvas dimensions (전체 캔버스 크기 설정)
     headerCanvas.width = 1300; // header 캔버스 너비 설정

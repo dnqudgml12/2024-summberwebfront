@@ -39,19 +39,22 @@ const EditModal = ({ entry, onSave, onCancel, existingEntries }) => {
     });
 
     // 과목명, 교수명, 위치 중복 체크
-    const isDuplicate = data.some((entry) => {
+    /*
+    const isDuplicate = existingEntries.some((entry) => {
       return (
         entry.subject === subject ||
         entry.professor === professor ||
         entry.location === location
       );
     });
-
+    else if (isDuplicate) {
+        alert("과목명, 교수명 또는 위치가 이미 존재합니다.");
+        return;
+      } 
+        // 할 필요 없다
+*/
     if (overlappingEntry) {
       alert("이미 같은 시간에 수업이 있습니다.");
-      return;
-    } else if (isDuplicate) {
-      alert("과목명, 교수명 또는 위치가 이미 존재합니다.");
       return;
     } else {
       // 새롭게 저장될 부분

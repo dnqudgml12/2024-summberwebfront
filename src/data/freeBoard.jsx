@@ -4,7 +4,26 @@ export const Data = [
       title: "자유게시판 게시물 1",
       content: "이곳은 자유게시판입니다.",
       author: "작성자1",
-      comments: [],
+      comments: [
+        {
+          id: 1,
+          content: "첫 번째 댓글입니다.",
+          author: "익명1",
+          replies: [
+            {
+              id: 1,
+              content: "첫 번째 댓글에 대한 답글입니다.",
+              author: "익명2"
+            }
+          ]
+        },
+        {
+          id: 2,
+          content: "두 번째 댓글입니다.",
+          author: "익명3",
+          replies: []
+        }
+      ],
       likes: 0
     },
     {

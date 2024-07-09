@@ -129,14 +129,13 @@ const FreeboardDetail = () => {
         <div>
           <h1>{post.title}</h1>
           <p>{post.content}</p>
-          <p>작성자: {post.author}</p>
           <p>좋아요: {post.likes}</p>
           <button onClick={handleLikePost}>좋아요</button>
 
           {click ? (
             <Freeboardedit id={post.id} onCancel={handleAddClick} />
           ) : (
-            <div onClick={handleAddClick}>수정</div>
+            <button onClick={handleAddClick}>수정</button >
           )}
           
           <button onClick={handleDeletePost}>삭제</button>
@@ -152,11 +151,11 @@ const FreeboardDetail = () => {
                   <button onClick={() => setReplyTo(comment.id)}>답글</button>
                   <ul>
                     {comment.replies.map((reply) => (
-                      <li key={reply.id}>
-                        <p>
+                      <div key={reply.id}>
+                        <p style={{textIndent:"30px"}}>
                           {reply.content} - {reply.author}
                         </p>
-                      </li>
+                      </div>
                     ))}
                   </ul>
                   {replyTo === comment.id && (

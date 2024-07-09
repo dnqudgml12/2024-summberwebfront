@@ -27,7 +27,7 @@ const Freeboard=()=>{
           {click ? (
             <FreeboardAdd onAddPost={handleAddPost} onCancel={handleAddClick} />
           ) : (
-            <div onClick={handleAddClick}>글작성</div>
+            <button style={{width:"20px"}} onClick={handleAddClick}>글작성</button>
           )}
     
         <Link style={{borderBottom:"1px solid gray",width:"80.15%"}}/>

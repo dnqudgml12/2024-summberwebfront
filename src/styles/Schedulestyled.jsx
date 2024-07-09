@@ -22,7 +22,7 @@ position: fixed;
 `
 export const HoverMenu = styled.div`
 width: 50px;
-background-color: #F91F15;
+//background-color: #F91F15;
 margin-top: 100px;
   position: absolute;
   top: 10px;
@@ -38,7 +38,7 @@ export const ModalBackground = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  //background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
