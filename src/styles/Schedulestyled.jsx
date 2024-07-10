@@ -4,7 +4,7 @@ export const Adddiv = styled.div`
   margin: 0 1px;
 
   position: fixed;
-  left: 526px;
+  left: 50%;
   width: auto;
   bottom: 20px;
   height: 40px;
@@ -197,5 +197,5 @@ export const Madworddiv = styled.div`
   background-position: 15px center;
   background-size: 15px 15px;
   line-height: 50px;
-  
+  border-top: ${(props)=>props.bortop||"1px solid #e3e3e3"};
 `;
