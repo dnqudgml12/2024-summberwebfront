@@ -5,7 +5,25 @@
 import React, { useEffect, useRef, useState } from "react";
 import { TimetableData as initialdata } from "../../data/schedule";
 import AddModal from "./Scheduleadd";
-import { Adddiv, HoverMenu } from "../../styles/Schedulestyled";
+import {
+  Adddiv,
+  HoverMenu,
+  Leftdiv,
+  Selecdiv,
+  Firstdiv,
+  Tablename,
+  Secondiv,
+  Selectsel,
+  Alldiv,
+  Changeword,
+  Imagediv,
+  Mediv,
+  Worddiv,
+  Thirddiv,
+  Clickandmakediv,
+  Maddiv,
+  Madworddiv,
+} from "../../styles/Schedulestyled";
 import EditModal from "./Schduleedit";
 import styled from "styled-components";
 import { TfiWrite } from "react-icons/tfi";
@@ -22,10 +40,6 @@ const Schedule = () => {
   const [isAdddivHovered, setIsAdddivHovered] = useState(false);
   const [dimensions, setDimensions] = useState({ cellWidth: 0, cellHeight: 0 });
   // cellwidth를 useEffect안에서 지정하였으므로 dimension상태 안에 cell width를 저장
-
-
-
-
 
   useEffect(() => {
     const headerCanvas = headerCanvasRef.current;
@@ -273,27 +287,58 @@ const Schedule = () => {
   console.log(isAdddivHovered);
 
   return (
-    <div>
+    <Alldiv>
+      <Leftdiv>
+        <Selecdiv>
+          <Selectsel><option>2024년 여름학기</option></Selectsel>
+        </Selecdiv>
+        <Firstdiv>
+          <Tablename>시간표1</Tablename>
+          <Changeword>07/06 18:15 변경</Changeword>
+          <Secondiv>
+            {" "}
+            <Imagediv><Worddiv>이미지</Worddiv></Imagediv>
+            <Mediv><Worddiv>설정</Worddiv></Mediv>
+          </Secondiv>
+
+
+        </Firstdiv>
+        <Thirddiv>
+            <Maddiv><Madworddiv bortop={"none"}>시간표 1</Madworddiv></Maddiv>
+            <Clickandmakediv><Madworddiv>+ 새 시간표 만들기</Madworddiv></Clickandmakediv>
+
+          </Thirddiv>
+      </Leftdiv>
+
       <div
         style={{
-          paddingLeft: "100px",
-          paddingTop: "90px",
-          position: "sticky",
-          top: "0",
-          zIndex: "100",
+          display: "flex",
+          flexDirection: "column",
+          marginLeft: "-20px",
+          maxWidth:"1000px",
         }}
       >
-        <canvas ref={headerCanvasRef} />
-      </div>
-      <div style={{ height: "1000px" }}>
-        <canvas
-          ref={bodyCanvasRef}
+        <div
           style={{
-            marginTop: "-54.5px",
-            marginLeft: "100px",
-            border: "1px solid #ddd",
+            paddingLeft: "100px",
+            paddingTop: "90px",
+            position: "sticky",
+            top: "0",
+            zIndex: "100",
           }}
-        />
+        >
+          <canvas ref={headerCanvasRef} />
+        </div>
+        <div style={{ height: "1000px" }}>
+          <canvas
+            ref={bodyCanvasRef}
+            style={{
+              marginTop: "-54.5px",
+              marginLeft: "100px",
+              border: "1px solid #ddd",
+            }}
+          />
+        </div>
       </div>
       {hoveredEntry &&
         !editingEntry &&
@@ -301,7 +346,7 @@ const Schedule = () => {
           // editing 할때 edit된 부분이 아직 정해지지 않았으므로
           <HoverMenu
             style={{
-              left: hoveredEntry.x + 290,
+              left: hoveredEntry.x + 635,
               top: hoveredEntry.y,
             }}
           >
@@ -341,7 +386,7 @@ const Schedule = () => {
       ) : (
         <AddModal onAdd={handleAdd} data={data} onCancel={handleaddCancel} />
       )}
-    </div>
+    </Alldiv>
   );
 };
 

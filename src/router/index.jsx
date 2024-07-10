@@ -30,7 +30,7 @@ function Routing() {
           <Route path="secreteboard/:id" element={<Secreteboarddetail />} />
           <Route path="graduateboard" element={<Graduateboard />} />
           <Route path="graduateboard/:id" element={<Graduateboarddetail />} />
-          <Route path="schedule" element={<Schedule />} />
+       
         </Route>
       </Routes>
 
