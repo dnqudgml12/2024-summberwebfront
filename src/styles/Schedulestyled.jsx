@@ -57,10 +57,7 @@ export const DaySelector = styled.div`
   margin: 10px 0;
 `;
 
-export const DayButton = styled.button.attrs((props) => ({
-  active: props.active ? "true" : undefined,
-}))
-`
+export const DayButton = styled.button`
   background: ${(props) => (props.active ? "#007bff" : "#f8f9fa")};
   color: ${(props) => (props.active ? "white" : "black")};
   border: 1px solid #ddd;
@@ -199,3 +196,13 @@ export const Madworddiv = styled.div`
   line-height: 50px;
   border-top: ${(props)=>props.bortop||"1px solid #e3e3e3"};
 `;
+export const Form= styled.form`
+  
+  display: flex;
+  flex-direction: column;
+`
+
+export const Div= styled.div`
+  
+
+`

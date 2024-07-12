@@ -10,11 +10,12 @@ import {
   DayButton,
   TimeSelector,
   ButtonGroup,
+  Form,
 } from "../../styles/Schedulestyled";
 const AddModal = ({ onAdd, data, onCancel }) => {
   const [subject, setSubject] = useState("");
   const [professor, setProfessor] = useState("");
-  const [day, setDay] = useState("Mon");
+  const [day, setDay] = useState(" ");
   const [startTime, setStartTime] = useState("09:00");
   const [endTime, setEndTime] = useState("10:00");
   const [location, setLocation] = useState("");
@@ -80,11 +81,27 @@ const AddModal = ({ onAdd, data, onCancel }) => {
       setError("");
     }
   };
+  const timeOptions = [
+    "09:00",
+    "10:00",
+    "11:00",
+    "12:00",
+    "13:00",
+    "14:00",
+    "15:00",
+    "16:00",
+    "17:00",
+    "18:00",
+    "19:00",
+    "20:00",
+  ];
+
+  const filteredEndTimes = timeOptions.filter((time) => time > startTime);
 
   return (
     <ModalBackground>
       <ModalContent>
-        <form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <label>
             과목명 (필수):
             <input
@@ -126,34 +143,22 @@ const AddModal = ({ onAdd, data, onCancel }) => {
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
               >
-                <option value="09:00">오전 9시</option>
-                <option value="10:00">오전 10시</option>
-                <option value="11:00">오전 11시</option>
-                <option value="12:00">오전 12시</option>
-                <option value="13:00">오후 1시</option>
-                <option value="14:00">오후 2시</option>
-                <option value="15:00">오후 3시</option>
-                <option value="16:00">오후 4시</option>
-                <option value="17:00">오후 5시</option>
-                <option value="18:00">오후 6시</option>
-                <option value="19:00">오후 7시</option>
+                {timeOptions.map((time) => (
+                  <option key={time} value={time}>
+                    {time}
+                  </option>
+                ))}
               </select>
               ~
               <select
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
               >
-                <option value="10:00">오전 10시</option>
-                <option value="11:00">오전 11시</option>
-                <option value="12:00">오전 12시</option>
-                <option value="13:00">오후 1시</option>
-                <option value="14:00">오후 2시</option>
-                <option value="15:00">오후 3시</option>
-                <option value="16:00">오후 4시</option>
-                <option value="17:00">오후 5시</option>
-                <option value="18:00">오후 6시</option>
-                <option value="19:00">오후 7시</option>
-                <option value="20:00">오후 8시</option>
+                {filteredEndTimes.map((time) => (
+                  <option key={time} value={time}>
+                    {time}
+                  </option>
+                ))}
               </select>
             </TimeSelector>
           </label>
@@ -172,7 +177,7 @@ const AddModal = ({ onAdd, data, onCancel }) => {
               취소
             </button>
           </ButtonGroup>
-        </form>
+        </Form>
       </ModalContent>
     </ModalBackground>
   );

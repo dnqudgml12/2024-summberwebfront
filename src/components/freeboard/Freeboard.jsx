@@ -4,15 +4,34 @@ import { Link, useNavigate } from "react-router-dom";
 import { Data as initialData } from "../../data/freeBoard";
 import { Alldiv, Bodydiv, Eachseperateboard,BoardBody } from "../../styles/HomeStyled";
 import FreeboardAdd from "./Freeboardadd";
-
+import axios from "axios";
 const Freeboard=()=>{
 
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState([]);
   const [click, setClick] = useState(false);
 
-  const handleAddPost = (newPost) => {
-    setData([...data, { id: data.length + 1, ...newPost }]);
+  const handleAddPost = async (newPost) => {
+    try {
+      const response = await axios.post("http://localhost:8080/api/board/save", newPost); // Adjust the endpoint as needed
+      setData([...data, response.data]); // Add the new post returned from the server
+    } catch (error) {
+      console.error("Error adding post:", error);
+    }
   };
+
+  useEffect(() => {
+    // Fetch data from the API
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/board/read"); // Replace with your API endpoint
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleAddClick = () => {
     setClick(!click);
