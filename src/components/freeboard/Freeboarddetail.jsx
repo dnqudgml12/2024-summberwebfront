@@ -65,7 +65,7 @@ const FreeboardDetail = () => {
   const handleDeletePost = async() => {
 
     try {
-      await axios.delete(`http://localhost:8080/api/board/${id}`);
+      await axios.delete(`http://localhost:8080/api/board/delete/${id}`);
       navigate("/freeboard");
     } catch (error) {
       console.error("Error deleting post", error);
