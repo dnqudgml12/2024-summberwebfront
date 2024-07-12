@@ -30,7 +30,7 @@ const Freeboardedit=({id,onCancel})=>{
     useEffect(() => {
       const fetchPost = async () => {
         try {
-          const response = await axios.get(`http://localhost:8080/api/board/read/${id}`); // Replace with your API endpoint
+          const response = await axios.get(`http://localhost:8080/api/freeboard/read/${id}`); // Replace with your API endpoint
           setpost(response.data);
         } catch (error) {
           console.error("Error fetching post", error);
@@ -56,8 +56,8 @@ const Freeboardedit=({id,onCancel})=>{
 
     const handleUpdatePost = async () => {
       try {
-        await axios.put(`http://localhost:8080/api/board/update/${id}`, post); // Replace with your API endpoint
-        const response = await axios.get(`http://localhost:8080/api/board/read/${id}`); // Replace with your API endpoint
+        await axios.put(`http://localhost:8080/api/freeboard/update/${id}`, post); // Replace with your API endpoint
+        const response = await axios.get(`http://localhost:8080/api/freeboard/read/${id}`); // Replace with your API endpoint
         setpost(response.data);
         navigate("/freeboard");
         

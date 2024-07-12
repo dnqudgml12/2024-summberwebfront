@@ -12,7 +12,7 @@ const Freeboard=()=>{
 
   const handleAddPost = async (newPost) => {
     try {
-      const response = await axios.post("http://localhost:8080/api/board/save", newPost); // Adjust the endpoint as needed
+      const response = await axios.post("http://localhost:8080/api/freeboard/save", newPost); // Adjust the endpoint as needed
       setData([...data, response.data]); // Add the new post returned from the server
     } catch (error) {
       console.error("Error adding post:", error);
@@ -23,7 +23,7 @@ const Freeboard=()=>{
     // Fetch data from the API
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/board/read"); // Replace with your API endpoint
+        const response = await axios.get("http://localhost:8080/api/freeboard/read"); // Replace with your API endpoint
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data", error);

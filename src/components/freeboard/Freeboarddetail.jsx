@@ -40,10 +40,10 @@ const FreeboardDetail = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/board/read/${id}`); // Replace with your API endpoint
+        const response = await axios.get(`http://localhost:8080/api/freeboard/read/${id}`); // Replace with your API endpoint
         setPost(response.data);
         setCommentCount(
-          response.data.comments.reduce(
+          response.data.freeComment.reduce(
             (count, comment) => count + 1 + comment.replies.length,
             0
              //reduce 배열의 각 요소에 대해 주어진 함수를 실행하여 하나의 결과값을 생성
@@ -65,7 +65,7 @@ const FreeboardDetail = () => {
   const handleDeletePost = async() => {
 
     try {
-      await axios.delete(`http://localhost:8080/api/board/delete/${id}`);
+      await axios.delete(`http://localhost:8080/api/freeboard/delete/${id}`);
       navigate("/freeboard");
     } catch (error) {
       console.error("Error deleting post", error);
@@ -88,8 +88,8 @@ const FreeboardDetail = () => {
     };
 
     try {
-      await axios.post(`http://localhost:8080/api/board/${id}/comments`, newCommentObj);
-      const response = await axios.get(`http://localhost:8080/api/board/read/${id}`); 
+      await axios.post(`http://localhost:8080/api/freeboard/${id}/comments`, newCommentObj);
+      const response = await axios.get(`http://localhost:8080/api/freeboard/read/${id}`); 
       setPost(response.data);
       setCommentCount(commentCount + 1);
       setNewComment("");
@@ -139,10 +139,10 @@ const FreeboardDetail = () => {
     };
     navigate(`/freeboard/${id}`);
     try {
-     await axios.post(`http://localhost:8080/api/board/${id}/comments/${commentId}/replies`, newReplyObj);
+     await axios.post(`http://localhost:8080/api/freeboard/${id}/comments/${commentId}/replies`, newReplyObj);
 
      //post 하는 동안, get을 가져옴
-      const response = await axios.get(`http://localhost:8080/api/board/read/${id}`); 
+      const response = await axios.get(`http://localhost:8080/api/freeboard/read/${id}`); 
       setPost(response.data);
       setCommentCount(commentCount + 1);
       setNewReply("");
@@ -192,13 +192,13 @@ const FreeboardDetail = () => {
     // 좋아요 누르면 그 상태를 db에 저장(true,false)
     try {
       if (!liked) {
-        await axios.post(`http://localhost:8080/api/board/like/${id}`); //좋아요 눌린상태+1
+        await axios.post(`http://localhost:8080/api/freeboard/like/${id}`); //좋아요 눌린상태+1
         setLiked(true);
       } else {
-        await axios.delete(`http://localhost:8080/api/board/unlike/${id}`); // 좋아요 취소한 상태 -1
+        await axios.delete(`http://localhost:8080/api/freeboard/unlike/${id}`); // 좋아요 취소한 상태 -1
         setLiked(false);
       }
-      const response = await axios.get(`http://localhost:8080/api/board/read/${id}`);
+      const response = await axios.get(`http://localhost:8080/api/freeboard/read/${id}`);
       setPost(response.data); // Update the post with the new like count
       setLiked(response.data.likeStatus);
     } catch (error) {
@@ -235,8 +235,8 @@ const FreeboardDetail = () => {
           <h2>댓글</h2>
           <ul>
             {
-            post.comments.length>0 ? (
-              post.comments.map((comment) => (
+            post.freeComment.length>0 ? (
+              post.freeComment.map((comment) => (
                 <li key={comment.id}>
                   <p>
                     {comment.content} - {comment.author}
