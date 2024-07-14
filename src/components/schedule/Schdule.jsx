@@ -5,6 +5,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { TimetableData as initialdata } from "../../data/schedule";
 import AddModal from "./Scheduleadd";
+import axios from "axios";
 import {
   Adddiv,
   HoverMenu,
@@ -32,7 +33,7 @@ import "../../App.css";
 const Schedule = () => {
   const headerCanvasRef = useRef(null); // header 캔버스에 대한 참조
   const bodyCanvasRef = useRef(null); // body 캔버스에 대한 참조
-  const [data, setData] = useState(initialdata);
+  const [data, setData] = useState([]);
   // 지금은 db 연결 안되서 초기로 한번 로컬에서 불렀지만 나중에 연결 뒤에는 항상 state값 data가 업데이트 되면 db에서 다시 배열로 불러오는 과정을 넣어야 한다.
   const [hoveredEntry, setHoveredEntry] = useState(null); //hover된 시간표 값 저장
   const [editingEntry, setEditingEntry] = useState(null); // edit할 시간표 값 저장
@@ -42,6 +43,19 @@ const Schedule = () => {
   // cellwidth를 useEffect안에서 지정하였으므로 dimension상태 안에 cell width를 저장
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/timetable/read"
+        ); // Replace with your API endpoint
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    };
+
+    fetchData();
+
     const headerCanvas = headerCanvasRef.current;
     const bodyCanvas = bodyCanvasRef.current;
     const headerCtx = headerCanvas.getContext("2d");
@@ -87,6 +101,8 @@ const Schedule = () => {
       "오후 9시",
       "오후 10시",
     ]; // 실제 표기 될 배열
+
+    const daysword = ["월", "화", "수", "목", "금"]; // 실제 표기 될 요일을 나타내는 배열
     const days = ["Mon", "Tue", "Wed", "Thu", "Fri"]; // 요일을 나타내는 배열
     const headerHeight = 50; // 헤더 셀의 높이
     const firstColumnWidth = 100; // 첫 번째 열의 너비
@@ -126,9 +142,9 @@ const Schedule = () => {
     headerCtx.fillStyle = "#666"; // 헤더 텍스트 색상
     headerCtx.font = " 14px Apple SD Gothic Neo"; // 헤더 텍스트 폰트와 크기
 
-    for (let i = 0; i < days.length; i++) {
+    for (let i = 0; i < daysword.length; i++) {
       headerCtx.fillText(
-        days[i],
+        daysword[i],
         firstColumnWidth + i * cellWidth + cellWidth / 2 - 20,
         30
       );
@@ -251,28 +267,57 @@ const Schedule = () => {
     };
   }, [data]);
 
-  const handleAdd = (newEntry) => {
-    setData([...data, newEntry]);
-    setaddEntry(!addEntry);
+  const handleAdd = async (newEntry) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/timetable/save",
+        newEntry
+      );
+      setData([...data, response.data]);
+      setaddEntry(!addEntry);
+    } catch (error) {
+      console.error("Error adding post:", error);
+    }
   };
 
   const handleEdit = (id) => {
     const entry = data.find((entry) => entry.id === id);
     setEditingEntry(entry);
+    setaddEntry(false);
     //edit할때 edit할 부분을 찾아서 editingEntry에 넣음
   };
 
-  const handleDelete = (id) => {
-    setData(data.filter((entry) => entry.id !== id));
-    setHoveredEntry(null);
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8080/api/timetable/delete/${id}`);
+      setData(data.filter((entry) => entry.id !== id));
+      setHoveredEntry(null);
+    } catch (error) {
+      console.error("Error deleting post", error);
+    }
   };
 
-  const handleSave = (updatedEntry) => {
+  const handleSave = async (updatedEntry) => {
     //값 변하면 새롭게 업데이트
-    setData(
-      data.map((entry) => (entry.id === updatedEntry.id ? updatedEntry : entry))
-    );
-    setEditingEntry(null);
+
+    try {
+      await axios.put(
+        `http://localhost:8080/api/timetable/update/${updatedEntry.id}`,
+        updatedEntry
+      ); // Replace with your API endpoint
+      const response = await axios.get(
+        `http://localhost:8080/api/freeboard/read`
+      ); // Replace with your API endpoint
+
+      setData(
+        data.map((entry) =>
+          entry.id === updatedEntry.id ? response.data : entry
+        )
+      );
+      setEditingEntry(null);
+    } catch (error) {
+      console.error("Error updating post", error);
+    }
   };
 
   const handleCancel = () => {
@@ -283,31 +328,35 @@ const Schedule = () => {
     setaddEntry(!addEntry);
   };
 
-  console.log(addEntry);
-  console.log(isAdddivHovered);
-
   return (
     <Alldiv>
       <Leftdiv>
         <Selecdiv>
-          <Selectsel><option>2024년 여름학기</option></Selectsel>
+          <Selectsel>
+            <option>2024년 여름학기</option>
+          </Selectsel>
         </Selecdiv>
         <Firstdiv>
           <Tablename>시간표1</Tablename>
           <Changeword>07/06 18:15 변경</Changeword>
           <Secondiv>
             {" "}
-            <Imagediv><Worddiv>이미지</Worddiv></Imagediv>
-            <Mediv><Worddiv>설정</Worddiv></Mediv>
+            <Imagediv>
+              <Worddiv>이미지</Worddiv>
+            </Imagediv>
+            <Mediv>
+              <Worddiv>설정</Worddiv>
+            </Mediv>
           </Secondiv>
-
-
         </Firstdiv>
         <Thirddiv>
-            <Maddiv><Madworddiv bortop={"none"}>시간표 1</Madworddiv></Maddiv>
-            <Clickandmakediv><Madworddiv>+ 새 시간표 만들기</Madworddiv></Clickandmakediv>
-
-          </Thirddiv>
+          <Maddiv>
+            <Madworddiv bortop={"none"}>시간표 1</Madworddiv>
+          </Maddiv>
+          <Clickandmakediv>
+            <Madworddiv>+ 새 시간표 만들기</Madworddiv>
+          </Clickandmakediv>
+        </Thirddiv>
       </Leftdiv>
 
       <div
@@ -315,7 +364,7 @@ const Schedule = () => {
           display: "flex",
           flexDirection: "column",
           marginLeft: "-20px",
-          maxWidth:"1000px",
+          maxWidth: "1000px",
         }}
       >
         <div
@@ -346,18 +395,21 @@ const Schedule = () => {
           // editing 할때 edit된 부분이 아직 정해지지 않았으므로
           <HoverMenu
             style={{
-              left: hoveredEntry.x + 635,
+              left: `calc(${hoveredEntry.x / window.innerWidth * 100}% + 635px)`,
               top: hoveredEntry.y,
             }}
           >
             <TfiWrite
+            style={{cursor:"pointer"}}
               onClick={() => handleEdit(hoveredEntry.id)}
               //hover된 부분을 배열의 id로 찾아서 editEntry 값으로 지정한 뒤에
               // 이를 바탕으로 수정할 시간표를 지정
             >
               수정
             </TfiWrite>
-            <FaDeleteLeft onClick={() => handleDelete(hoveredEntry.id)}>
+            <FaDeleteLeft 
+             style={{cursor:"pointer"}}
+            onClick={() => handleDelete(hoveredEntry.id)}>
               삭제
             </FaDeleteLeft>
           </HoverMenu>
@@ -371,19 +423,19 @@ const Schedule = () => {
         />
       )}
 
-      {!addEntry ? (
-        <Adddiv
-          onClick={() => {
-            setaddEntry(!addEntry);
-          }}
-          onMouseEnter={() => setIsAdddivHovered(true)}
-          // Mouse가 위에 있을때 adddiv가 hover되었음을 나타냄
-          onMouseLeave={() => setIsAdddivHovered(false)}
-          // Mouse가 위에 없을 때 adddiv가 hover되지 않았음을 나타냄
-        >
-          + 새 수업 추가
-        </Adddiv>
-      ) : (
+      {!addEntry &&
+        !editingEntry && ( // 새 수업 추가 버튼을 조건부 렌더링
+          <Adddiv
+            onClick={() => {
+              setaddEntry(!addEntry);
+            }}
+            onMouseEnter={() => setIsAdddivHovered(true)}
+            onMouseLeave={() => setIsAdddivHovered(false)}
+          >
+            + 새 수업 추가
+          </Adddiv>
+        )}
+      {addEntry && (
         <AddModal onAdd={handleAdd} data={data} onCancel={handleaddCancel} />
       )}
     </Alldiv>

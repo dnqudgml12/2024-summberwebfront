@@ -9,7 +9,25 @@ import {
   DayButton,
   TimeSelector,
   ButtonGroup,
+  Form,
+  Title,
+  Subjectdiv,
+  Subjectname,
+  Subjectinput,
+  Professordiv,
+  Professorname,
+  Professorinput,
+  Timeandplacediv,
+  Timeandplacename,
+  TimeandplaceinputDiv,
+  StarttimeSelect,
+  EndtimeSelect,
+  Placeinput,
+  Canclebutton,
+  Canclediv,
+  Savebutton,
 } from "../../styles/Schedulestyled";
+import Cancle from "../../assets/img/Cancle.png";
 const EditModal = ({ entry, onSave, onCancel, existingEntries }) => {
   const [subject, setSubject] = useState(entry.subject); //과목 부분
   const [professor, setProfessor] = useState(entry.professor); // 교수님 정보
@@ -71,94 +89,107 @@ const EditModal = ({ entry, onSave, onCancel, existingEntries }) => {
     }
   };
 
+  const timeOptions = [
+    "09:00",
+    "10:00",
+    "11:00",
+    "12:00",
+    "13:00",
+    "14:00",
+    "15:00",
+    "16:00",
+    "17:00",
+    "18:00",
+    "19:00",
+    "20:00",
+  ];
+
+  const filteredEndTimes = timeOptions.filter((time) => time > startTime);
+  const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+  const displayDays = ["월", "화", "수", "목", "금"];
+
   return (
     <ModalBackground>
       <ModalContent>
-        <h2>수업 정보 변경</h2>
-        <form onSubmit={handleSubmit}>
-          <label>
-            과목명 (필수):
-            <input
+        <Canclediv onClick={onCancel} >
+          <Canclebutton src={Cancle} />
+        </Canclediv>
+        <Form onSubmit={handleSubmit}>
+          <Title>수업 정보 변경</Title>
+          <Subjectdiv>
+            <Subjectname>과목명 (필수)</Subjectname>
+            <Subjectinput
               type="text"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
+              placeholder="예) 경제학입문"
               required
             />
-          </label>
-          <label>
-            교수명:
-            <input
+          </Subjectdiv>
+          <Professordiv>
+            <Professorname>교수명 (필수)</Professorname>
+            <Professorinput
               type="text"
               value={professor}
               onChange={(e) => setProfessor(e.target.value)}
+              placeholder="예) 홍길동"
+              required
             />
-          </label>
-          <label>
-            요일:
-            <DaySelector>
-              {["Mon", "Tue", "Wed", "Thu", "Fri"].map((d) => (
-                <DayButton
-                  key={d}
-                  active={day === d}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setDay(d);
-                  }}
+          </Professordiv>
+
+          <Timeandplacediv>
+            <Timeandplacename>시간/장소</Timeandplacename>
+            <TimeandplaceinputDiv>
+              <DaySelector>
+                {days.map((d, index) => (
+                  <DayButton
+                    key={d}
+                    active={day === d}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setDay(d);
+                    }}
+                  >
+                    {displayDays[index]}
+                  </DayButton>
+                ))}
+              </DaySelector>
+
+              <TimeSelector>
+                <StarttimeSelect
+                  value={startTime}
+                  onChange={(e) => setStartTime(e.target.value)}
                 >
-                  {d}
-                </DayButton>
-              ))}
-            </DaySelector>
-          </label>
-          <label>
-            시간:
-            <TimeSelector>
-              <select
-                value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
-              >
-                <option value="09:00">오전 9시</option>
-                <option value="10:00">오전 10시</option>
-                <option value="11:00">오전 11시</option>
-                <option value="12:00">오전 12시</option>
-                <option value="13:00">오후 1시</option>
-                <option value="14:00">오후 2시</option>
-                <option value="15:00">오후 3시</option>
-                <option value="16:00">오후 4시</option>
-                <option value="17:00">오후 5시</option>
-              </select>
-              ~
-              <select
-                value={endTime}
-                onChange={(e) => setEndTime(e.target.value)}
-              >
-                <option value="10:00">오전 10시</option>
-                <option value="11:00">오전 11시</option>
-                <option value="12:00">오전 12시</option>
-                <option value="13:00">오후 1시</option>
-                <option value="14:00">오후 2시</option>
-                <option value="15:00">오후 3시</option>
-                <option value="16:00">오후 4시</option>
-                <option value="17:00">오후 5시</option>
-                <option value="18:00">오후 6시</option>
-              </select>
-            </TimeSelector>
-          </label>
-          <label>
-            장소:
-            <input
-              type="text"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-            />
-          </label>
+                  {timeOptions.map((time) => (
+                    <option key={time} value={time}>
+                      {time}
+                    </option>
+                  ))}
+                </StarttimeSelect>
+                ~
+                <EndtimeSelect
+                  value={endTime}
+                  onChange={(e) => setEndTime(e.target.value)}
+                >
+                  {filteredEndTimes.map((time) => (
+                    <option key={time} value={time}>
+                      {time}
+                    </option>
+                  ))}
+                </EndtimeSelect>
+                <Placeinput
+                  type="text"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  placeholder="예)종303"
+                />
+              </TimeSelector>
+            </TimeandplaceinputDiv>
+          </Timeandplacediv>
           <ButtonGroup>
-            <button type="submit">저장</button>
-            <button type="button" onClick={onCancel}>
-              취소
-            </button>
+            <Savebutton type="submit">저장</Savebutton>
           </ButtonGroup>
-        </form>
+        </Form>
       </ModalContent>
     </ModalBackground>
   );

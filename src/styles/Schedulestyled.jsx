@@ -33,8 +33,8 @@ export const HoverMenu = styled.div`
 
 export const ModalBackground = styled.div`
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 31%;
+  left: 10%;
   width: 100%;
   height: 100%;
   //background: rgba(0, 0, 0, 0.5);
@@ -44,42 +44,54 @@ export const ModalBackground = styled.div`
 `;
 
 export const ModalContent = styled.div`
+  display: flex;
+  flex-direction: column;
   background: white;
   padding: 20px;
   border-radius: 5px;
-  width: 400px;
+  width: 533px;
+  height: 302px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
 export const DaySelector = styled.div`
+  padding-left: 5px;
   display: flex;
-  justify-content: space-between;
+  //justify-content: space-between;
   margin: 10px 0;
 `;
-
-export const DayButton = styled.button`
-  background: ${(props) => (props.active ? "#007bff" : "#f8f9fa")};
-  color: ${(props) => (props.active ? "white" : "black")};
+export const DayButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => !["active"].includes(prop),
+})`
+  width: 25px;
+  height: 25px;
+  background: ${(props) => (props.active ? "#F91F15" : "#f2f2f2")};
+  color: ${(props) => (props.active ? "#fff" : "#a6a6a6")};
   border: 1px solid #ddd;
-  padding: 5px 10px;
-  cursor: pointer;
+  text-align: center;
+ cursor:pointer;
+  margin-right: 1px;
 
+  /*
   &:hover {
     background: #007bff;
     color: white;
   }
+    */
 `;
 
-
 export const TimeSelector = styled.div`
+  padding-left: 5px;
   display: flex;
   align-items: center;
   gap: 10px;
+  padding-bottom: 5px;
 `;
 
 export const ButtonGroup = styled.div`
   display: flex;
-  justify-content: space-between;
+  //justify-content: space-between;
+  width: 100%;
   margin-top: 20px;
 `;
 
@@ -194,15 +206,157 @@ export const Madworddiv = styled.div`
   background-position: 15px center;
   background-size: 15px 15px;
   line-height: 50px;
-  border-top: ${(props)=>props.bortop||"1px solid #e3e3e3"};
+  border-top: ${(props) => props.bortop || "1px solid #e3e3e3"};
 `;
-export const Form= styled.form`
-  
+export const Form = styled.form`
   display: flex;
   flex-direction: column;
-`
+  width: auto;
+  height: auto;
+`;
+export const Title = styled.div`
+  margin-bottom: 20px;
+  color: #292929;
+  font-size: 18px;
+  font-weight: bold;
+`;
 
-export const Div= styled.div`
-  
+export const Subjectdiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  margin-bottom: 5px;
+`;
+export const Subjectname = styled.div`
+  width: 80px;
+  height: 30px;
+  line-height: 30px;
+  color: #a6a6a6;
+  font-size: 12px;
+  font-weight: bold;
+`;
 
-`
+export const Subjectinput = styled.input`
+  padding: 0 5px;
+  width: 400px;
+  height: 30px;
+  line-height: 30px;
+  border: 1px solid #d6d6d6;
+  color: #292929;
+  font-size: 13px;
+  background-color: #f2f2f2;
+`;
+
+export const Professordiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  margin-bottom: 5px;
+`;
+export const Professorname = styled.div`
+  width: 80px;
+  height: 30px;
+  line-height: 30px;
+  color: #a6a6a6;
+  font-size: 12px;
+  font-weight: bold;
+`;
+
+export const Professorinput = styled.input`
+  padding: 0 5px;
+  width: 400px;
+  height: 30px;
+  line-height: 30px;
+  border: 1px solid #d6d6d6;
+  color: #292929;
+  font-size: 13px;
+  background-color: #f2f2f2;
+`;
+
+export const Timeandplacediv = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  margin-bottom: 5px;
+`;
+export const Timeandplacename = styled.div`
+  width: 80px;
+  height: 30px;
+  line-height: 30px;
+  color: #a6a6a6;
+  font-size: 12px;
+  font-weight: bold;
+`;
+
+export const TimeandplaceinputDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  width: 412px;
+  height: auto;
+
+  border: 1px solid #d6d6d6;
+`;
+export const StarttimeSelect = styled.select`
+  margin-right: 5px;
+  height: 30px;
+  border: 1px solid #d6d6d6;
+  color: #292929;
+  font-size: 13px;
+`;
+
+export const EndtimeSelect = styled.select`
+  margin-right: 5px;
+  height: 30px;
+  border: 1px solid #d6d6d6;
+  color: #292929;
+  font-size: 13px;
+`;
+export const Canclebutton = styled.img`
+  margin-top: 12px;
+  width: 15px;
+  height: 15px;
+`;
+
+export const Canclediv = styled.div`
+cursor: pointer;
+  text-align: center;
+  background: #a6a6a6 no-repeat center center;
+  z-index: 99;
+  margin-left: 490px;
+
+  margin-top: -40px;
+  border-radius: 20px;
+box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  width: 40px;
+  height: 40px;
+
+  &:hover {
+    background-color: #f91f15;
+  }
+`;
+
+export const Placeinput = styled.input`
+  width: 72px;
+  padding: 0 5px;
+  height: 30px;
+  line-height: 30px;
+  border: 1px solid #d6d6d6;
+  color: #292929;
+  font-size: 13px;
+  background-color: #f2f2f2;
+`;
+export const Savebutton = styled.button`
+  padding: 0 10px;
+  margin-left: 480px;
+ text-decoration: none;
+  height: 30px;
+  line-height: 30px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: #f91f15;
+
+`;

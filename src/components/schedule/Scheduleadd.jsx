@@ -11,7 +11,24 @@ import {
   TimeSelector,
   ButtonGroup,
   Form,
+  Title,
+  Subjectdiv,
+  Subjectname,
+  Subjectinput,
+  Professordiv,
+  Professorname,
+  Professorinput,
+  Timeandplacediv,
+  Timeandplacename,
+  TimeandplaceinputDiv,
+  StarttimeSelect,
+  EndtimeSelect,
+  Placeinput,
+  Canclebutton,
+  Canclediv,
+  Savebutton,
 } from "../../styles/Schedulestyled";
+import Cancle  from "../../assets/img/Cancle.png"
 const AddModal = ({ onAdd, data, onCancel }) => {
   const [subject, setSubject] = useState("");
   const [professor, setProfessor] = useState("");
@@ -97,85 +114,96 @@ const AddModal = ({ onAdd, data, onCancel }) => {
   ];
 
   const filteredEndTimes = timeOptions.filter((time) => time > startTime);
-
+  const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+  const displayDays = ["월", "화", "수", "목", "금"];
   return (
+   
     <ModalBackground>
+      
       <ModalContent>
+      <Canclediv onClick={onCancel} >
+          <Canclebutton src={Cancle} />
+        </Canclediv>
         <Form onSubmit={handleSubmit}>
-          <label>
-            과목명 (필수):
-            <input
+   
+        
+ 
+          <Title>새 수업 추가</Title>
+          <Subjectdiv>
+            <Subjectname>과목명 (필수)</Subjectname>
+            <Subjectinput
               type="text"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
+              placeholder="예) 경제학입문"
               required
             />
-          </label>
-          <label>
-            교수명:
-            <input
+          </Subjectdiv>
+          <Professordiv>
+            <Professorname>교수명 (필수)</Professorname>
+            <Professorinput
               type="text"
               value={professor}
               onChange={(e) => setProfessor(e.target.value)}
+              placeholder="예) 홍길동"
+              required
             />
-          </label>
-          <label>
-            요일:
-            <DaySelector>
-              {["Mon", "Tue", "Wed", "Thu", "Fri"].map((d) => (
-                <DayButton
-                  key={d}
-                  active={day === d}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setDay(d);
-                  }}
+          </Professordiv>
+
+          <Timeandplacediv>
+            <Timeandplacename>시간/장소</Timeandplacename>
+            <TimeandplaceinputDiv>
+              <DaySelector>
+                {days.map((d, index) => (
+                  <DayButton
+                    key={d}
+                    active={day === d}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setDay(d);
+                    }}
+                  >
+                    {displayDays[index]}
+                  </DayButton>
+                ))}
+              </DaySelector>
+
+              <TimeSelector>
+                <StarttimeSelect
+                  value={startTime}
+                  onChange={(e) => setStartTime(e.target.value)}
                 >
-                  {d}
-                </DayButton>
-              ))}
-            </DaySelector>
-          </label>
-          <label>
-            시간:
-            <TimeSelector>
-              <select
-                value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
-              >
-                {timeOptions.map((time) => (
-                  <option key={time} value={time}>
-                    {time}
-                  </option>
-                ))}
-              </select>
-              ~
-              <select
-                value={endTime}
-                onChange={(e) => setEndTime(e.target.value)}
-              >
-                {filteredEndTimes.map((time) => (
-                  <option key={time} value={time}>
-                    {time}
-                  </option>
-                ))}
-              </select>
-            </TimeSelector>
-          </label>
-          <label>
-            장소:
-            <input
-              type="text"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-            />
-          </label>
+                  {timeOptions.map((time) => (
+                    <option key={time} value={time}>
+                      {time}
+                    </option>
+                  ))}
+                </StarttimeSelect>
+                ~
+                <EndtimeSelect
+                  value={endTime}
+                  onChange={(e) => setEndTime(e.target.value)}
+                >
+                  {filteredEndTimes.map((time) => (
+                    <option key={time} value={time}>
+                      {time}
+                    </option>
+                  ))}
+                </EndtimeSelect>
+                <Placeinput
+                  type="text"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  placeholder="예)종303"
+                />
+              </TimeSelector>
+            </TimeandplaceinputDiv>
+          </Timeandplacediv>
 
           <ButtonGroup>
-            <button type="submit">저장</button>
-            <button type="button" onClick={onCancel}>
-              취소
-            </button>
+            
+            <Savebutton type="submit">저장</Savebutton>
+     
           </ButtonGroup>
         </Form>
       </ModalContent>
