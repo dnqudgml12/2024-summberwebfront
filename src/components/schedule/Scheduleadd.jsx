@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import styled from "styled-components";
 import { TimetableData } from "../../data/schedule";
 import {
@@ -32,7 +32,7 @@ import Cancle  from "../../assets/img/Cancle.png"
 const AddModal = ({ onAdd, data, onCancel }) => {
   const [subject, setSubject] = useState("");
   const [professor, setProfessor] = useState("");
-  const [day, setDay] = useState(" ");
+  const [day, setDay] = useState("");
   const [startTime, setStartTime] = useState("09:00");
   const [endTime, setEndTime] = useState("10:00");
   const [location, setLocation] = useState("");
@@ -51,6 +51,14 @@ const AddModal = ({ onAdd, data, onCancel }) => {
   const handleSubmit = (e) => {
     e.preventDefault(); //렌더링을 막음 -> 렌더링 시에 값이 없어지므로
 
+    console.log("Submitting new entry with the following details:");
+    console.log("Subject:", subject);
+    console.log("Professor:", professor);
+    console.log("Day:", day);
+    console.log("Start Time:", startTime);
+    console.log("End Time:", endTime);
+    console.log("Location:", location);
+
     // 시간 중복 체크
     const isConflict = data.some((entry) => {
       return (
@@ -60,6 +68,7 @@ const AddModal = ({ onAdd, data, onCancel }) => {
           (entry.startTime <= startTime && entry.endTime >= endTime))
       );
     });
+
 
     // 과목명, 교수명, 위치 중복 체크
     const isDuplicate = data.some((entry) => {
@@ -91,13 +100,14 @@ const AddModal = ({ onAdd, data, onCancel }) => {
       onAdd(newEntry);
       setSubject("");
       setProfessor("");
-      setDay("Mon");
+      setDay("");
       setStartTime("09:00");
       setEndTime("10:00");
       setLocation("");
       setError("");
     }
   };
+
   const timeOptions = [
     "09:00",
     "10:00",
@@ -116,6 +126,14 @@ const AddModal = ({ onAdd, data, onCancel }) => {
   const filteredEndTimes = timeOptions.filter((time) => time > startTime);
   const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
   const displayDays = ["월", "화", "수", "목", "금"];
+
+    // useEffect를 사용하여 startTime이 변경될 때 endTime을 자동으로 업데이트
+    useEffect(() => {
+      if (startTime >= endTime) {
+        setEndTime(filteredEndTimes.length > 0 ? filteredEndTimes[0] : "");
+      }
+    }, [startTime]);
+  
   return (
    
     <ModalBackground>
@@ -171,7 +189,19 @@ const AddModal = ({ onAdd, data, onCancel }) => {
               <TimeSelector>
                 <StarttimeSelect
                   value={startTime}
-                  onChange={(e) => setStartTime(e.target.value)}
+                  onChange={(e) =>{
+                    setStartTime(e.target.value);
+                  
+                  /*
+                    setEndTime(
+                      filteredEndTimes.length > 0 ? filteredEndTimes[0] : ""
+                    );
+                    //starttimeSelect'에 대한 'onChange' 핸들러를 업데이트하여 'endTime'을 선택한 'startTime' 이후 사용 가능한 첫 번째 옵션으로 자동 설정
+                  */
+                    }
+
+                    
+                  }
                 >
                   {timeOptions.map((time) => (
                     <option key={time} value={time}>
@@ -184,9 +214,9 @@ const AddModal = ({ onAdd, data, onCancel }) => {
                   value={endTime}
                   onChange={(e) => setEndTime(e.target.value)}
                 >
-                  {filteredEndTimes.map((time) => (
-                    <option key={time} value={time}>
-                      {time}
+                  {filteredEndTimes.map((times) => (
+                    <option key={times} value={times}>
+                      {times}
                     </option>
                   ))}
                 </EndtimeSelect>

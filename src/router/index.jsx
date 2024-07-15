@@ -26,8 +26,8 @@ function Routing() {
           <Route path="freeboardadd" element={<FreeboardADD />} />
           <Route path="freeboard/:id" element={<FreeboardDetail />} />
           <Route path="freeboardedit/:id" element={<Freeboardedit />} />
-          <Route path="secreteboard" element={<Secreteboard />} />
-          <Route path="secreteboard/:id" element={<Secreteboarddetail />} />
+          <Route path="secretboard" element={<Secreteboard />} />
+          <Route path="secretboard/:id" element={<Secreteboarddetail />} />
           <Route path="graduateboard" element={<Graduateboard />} />
           <Route path="graduateboard/:id" element={<Graduateboarddetail />} />
        

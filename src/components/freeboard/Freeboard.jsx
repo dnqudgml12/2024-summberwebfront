@@ -27,8 +27,9 @@ import {
   BoardTitle,
   BoardContent,
 } from "../../styles/BoardStyled";
-import Comment from "../../assets/img/Commentpicture.png"
-
+import Comment from "../../assets/img/Commentpicture.png";
+import leftarrow from "../../assets/img/leftarrow.png";
+import rightarrow from "../../assets/img/rightarrow.png";
 const Freeboard = () => {
   const [data, setData] = useState([]);
   const [click, setClick] = useState(false);
@@ -86,7 +87,10 @@ const Freeboard = () => {
     setCurrentPage(currentPage - 1);
   };
   const countComments = (comments) => {
-    return comments.reduce((acc, comment) => acc + 1 + comment.replies.length, 0);
+    return comments.reduce(
+      (acc, comment) => acc + 1 + comment.replies.length,
+      0
+    );
   };
 
   const countLikes = (likes) => {
@@ -141,53 +145,64 @@ const Freeboard = () => {
             </Writedivoff>
           )}
 
-<BoardAlldiv>
-{currentItems
-            .map((post) => (
+          <BoardAlldiv>
+            {currentItems.map((post) => (
               <Eachseperateboard
                 key={post.id}
                 width={"80%"}
                 to={`/freeboard/${post.id}`}
               >
-               <BoardTitle> {post.title}</BoardTitle>
-               <BoardContent>{post.content}</BoardContent>
-               <CommentInfo>
-               <LikeIcon src={Likeimg}/>
-               <LikeCount>{post.likes}</LikeCount>
-                  <CommentIcon src={Comment}/>
+                <BoardTitle> {post.title}</BoardTitle>
+                <BoardContent>{post.content}</BoardContent>
+                <CommentInfo>
+                  <LikeIcon src={Likeimg} />
+                  <LikeCount>{post.likes}</LikeCount>
+                  <CommentIcon src={Comment} />
                   <CommentCount>{countComments(post.freeComment)}</CommentCount>
-                  <CommentTime>{new Date(post.createdAt).toLocaleTimeString()}</CommentTime>
+                  <CommentTime>
+                    {new Date(post.createdAt).toLocaleTimeString()}
+                  </CommentTime>
                   <CommentAuthor>익명</CommentAuthor>
                 </CommentInfo>
-               
               </Eachseperateboard>
             ))}
+          </BoardAlldiv>
 
-
-</BoardAlldiv>
-        
-   
           <Pagination>
             {currentPage === 1 && indexOfLastItem >= data.length && null}
             {currentPage != 1 && indexOfLastItem >= data.length && (
               <>
-              <button onClick={handlePrevPage}>이전</button>
-              <button onClick={handleFirstPage} disabled={currentPage === 1}>
-              처음
-            </button>
-            </>
+                <Previousbutton onClick={handlePrevPage}>
+                  <Leftarrow src={leftarrow} />
+                  이전
+                </Previousbutton>
+                <Previousbutton onClick={handleFirstPage}>
+                  <Leftarrow src={leftarrow} />
+                  처음
+                </Previousbutton>
+              </>
             )}
             {currentPage === 1 && indexOfLastItem < data.length && (
-              <button onClick={handleNextPage}>다음</button>
+              <Nextbutton onClick={handleNextPage}>
+                다음
+                <Rightarrow src={rightarrow} />
+              </Nextbutton>
             )}
             {currentPage != 1 && indexOfLastItem < data.length && (
               <>
-              <button onClick={handleFirstPage} disabled={currentPage === 1}>
-              처음
-            </button>
-                <button onClick={handlePrevPage}>이전</button>
+                <Previousbutton onClick={handleFirstPage}>
+                  <Leftarrow src={leftarrow} />
+                  처음
+                </Previousbutton>
+                <Previousbutton onClick={handlePrevPage}>
+                  <Leftarrow src={leftarrow} />
+                  이전
+                </Previousbutton>
 
-                <button onClick={handleNextPage}>다음</button>
+                <Nextbutton onClick={handleNextPage}>
+                  다음
+                  <Rightarrow src={rightarrow} />
+                </Nextbutton>
               </>
             )}
           </Pagination>
@@ -199,10 +214,58 @@ const Freeboard = () => {
 
 export default Freeboard;
 
+const Leftarrow = styled.img`
+  width: 10px;
+  height: 10px;
+  margin-right: 7px;
+`;
+const Rightarrow = styled.img`
+  width: 10px;
+  height: 10px;
+  margin-left: 7px;
+`;
+
+const Nextbutton = styled.div`
+  float: right;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 0 15px 0 10px;
+  height: 35px;
+  line-height: 35px;
+  border: 1px solid #f91f15;
+  border-radius: 3px;
+  color: #f91f15;
+  font-size: 14px;
+  font-weight: bold;
+  background-repeat: no-repeat;
+
+  background-size: 10px 10px;
+  cursor: pointer;
+`;
+
+const Previousbutton = styled.div`
+  float: left;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 0 10px 0 15px;
+  height: 35px;
+  line-height: 35px;
+  border: 1px solid #f91f15;
+  border-radius: 3px;
+  color: #f91f15;
+  font-size: 14px;
+  font-weight: bold;
+  background-repeat: no-repeat;
+
+  background-size: 10px 10px;
+  cursor: pointer;
+`;
+
 const Pagination = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 80%;
+ 
+  display: inline-block;
+  //justify-content: space-between;
+  width: 97.5%;
   margin-top: 20px;
 `;
 
@@ -213,25 +276,23 @@ const CommentInfo = styled.div`
   color: #666;
 `;
 const LikeIcon = styled.img`
-width: 10px;
-height: 10px;
+  width: 10px;
+  height: 10px;
   margin-right: 5px;
   font-size: 12px;
   font-weight: 300;
 `;
 
 const LikeCount = styled.span`
-
   margin-right: 8px;
   font-size: 12px;
   font-weight: 400;
-  color: #F91F15;;
-
+  color: #f91f15;
 `;
 
 const CommentIcon = styled.img`
-width: 10px;
-height: 10px;
+  width: 10px;
+  height: 10px;
   margin-right: 5px;
   font-size: 12px;
   font-weight: 300;
@@ -239,17 +300,16 @@ height: 10px;
 
 const CommentCount = styled.span`
   //margin-right: 8px;
-  color: #05BCBC;
+  color: #05bcbc;
   font-size: 12px;
   font-weight: 400;
 
-
-  &::after{
+  &::after {
     margin-left: 4px;
-    content: '';
+    content: "";
     display: inline-block;
     height: 8px;
-    border-left: 1px solid #D6D6D6;
+    border-left: 1px solid #d6d6d6;
     width: 4px;
   }
 `;
@@ -259,12 +319,12 @@ const CommentTime = styled.span`
   font-size: 12px;
   font-weight: 400;
   color: #a6a6a6;
-  &::after{
+  &::after {
     margin-left: 4px;
-    content: '';
+    content: "";
     display: inline-block;
     height: 8px;
-    border-left: 1px solid #D6D6D6;
+    border-left: 1px solid #d6d6d6;
     width: 4px;
   }
 `;

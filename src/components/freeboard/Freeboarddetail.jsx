@@ -379,7 +379,7 @@ const FreeboardDetail = () => {
                                 <Namecomment>{reply.author}</Namecomment>
 
                                 <Likecomment
-                                  marginleft={"570px"}
+                                  marginleft={"73%;"}
                                   onClick={() => {
                                     alert("좋아요 기능 구현 예정");
                                   }}

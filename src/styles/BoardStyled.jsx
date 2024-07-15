@@ -8,6 +8,7 @@ export const BoardInBody = styled.div`
   color: #292929;
   font-size: 22px;
   font-weight: bold;
+  height: auto;
 `;
 
 export const Titlediv = styled.div`
@@ -355,6 +356,7 @@ export const Likedetaildiv =styled.div`
   display: flex;
   flex-direction: row;
   width: auto;
+  margin-bottom: 15px;
 
 `
 
@@ -372,6 +374,7 @@ margin-right: 4px;
     background-repeat: no-repeat;
     background-position: left 12px center;
     background-size: 11px 11px;
+    
 
 `
 
@@ -441,17 +444,18 @@ margin-left: 10px;
 `
 
 export const Namecomment= styled.div`
+
 max-width: 90px;
 margin-top: 10px;
 margin-left: 10px;
-  width: auto;
+  width: 60px;
   line-height: 20px;
     font-size: 12px;
     font-weight: bold;
     color: #292929;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+   // white-space: nowrap;
+   // overflow: hidden;
+   // text-overflow: ellipsis;
 `
 
 export const Contentcomment= styled.div`
@@ -476,7 +480,7 @@ export const Datecommet =styled.div`
 
 export const Replycomment=styled.div`
 cursor: pointer;
-margin-left: 580px;
+margin-left: 70%;
 margin-top: 10px;
 color: #a6a6a6;
   letter-spacing: 0;

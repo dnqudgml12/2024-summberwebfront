@@ -9,15 +9,13 @@ const Homenavbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [board, setBoard] = useState(false);
-
+  const [activeMenuItem, setActiveMenuItem] = useState('/');
 
   // 특정 페이지에서는 setBoard가 true로 해서 dropdownmenu가 실행되게 하기 위해서
   useEffect(() => {
-    if (location.pathname === "/"||location.pathname === "/freeboard"
-      ||location.pathname === "/secreteboard"
-      ||location.pathname === "/freeboard"
-      ||location.pathname === "/freeboard"
-      ||location.pathname === "/freeboard"
+    if (
+      location.pathname === "/" ||
+      location.pathname.endsWith("board")
     ) {
       setBoard(true);
     } else {
@@ -52,15 +50,54 @@ const Homenavbar = () => {
         </Word>
 
         <Boardbox>
-          <LinkContent padle={"100px"} to={"/"}>
+        <LinkContent
+            to="/"
+            active={activeMenuItem === '/'}
+            onClick={() => setActiveMenuItem('/')}
+          >
             게시판
           </LinkContent>
-          <LinkContent to={"/schedule"}>시간표</LinkContent>
-          <LinkContent to={"/graduateboard"}>강의실</LinkContent>
-          <LinkContent to={"/schedule"}>학점계산기</LinkContent>
-          <LinkContent to={"/graduateboard"}>친구</LinkContent>
-          <LinkContent to={"/schedule"}>책방</LinkContent>
-          <LinkContent to={"/schedule"}>캠퍼스 픽</LinkContent>
+          <LinkContent
+            to="/schedule"
+            active={activeMenuItem === '/schedule'}
+            onClick={() => setActiveMenuItem('/schedule')}
+          >
+            시간표
+          </LinkContent>
+          <LinkContent
+            to="/404"
+            active={activeMenuItem === '/404'}
+            onClick={() => setActiveMenuItem('/404')}
+          >
+            강의실
+          </LinkContent>
+          <LinkContent
+            to="/404"
+            active={activeMenuItem === '/404'}
+            onClick={() => setActiveMenuItem('/404')}
+          >
+            학점계산기
+          </LinkContent>
+          <LinkContent
+            to="/404"
+            active={activeMenuItem === '/404'}
+            onClick={() => setActiveMenuItem('/404')}
+          >
+            친구
+          </LinkContent>
+          <LinkContent
+            to="/404"
+            active={activeMenuItem === '/404'}
+            onClick={() => setActiveMenuItem('/404')}
+          >
+            책방
+          </LinkContent>
+          <LinkContent
+            to="/404"
+            active={activeMenuItem === '/404'}
+            onClick={() => setActiveMenuItem('/404')}
+          >
+            캠퍼스 픽</LinkContent>
         </Boardbox>
         <Chatandinformbox>
           <Logoimg src={Chat} />
@@ -82,16 +119,16 @@ export {Homenavbar,Dropdownmenu};
 const Dropdownmenu=()=>{
 
   return(        <DropdownMenu>
-    <MenuColumn>
-      <MenuItem to={"/freeboard"}>자유게시판 <Symbol>•</Symbol></MenuItem>
-      <MenuItem>비밀게시판 <Symbol>•</Symbol></MenuItem>
-      <MenuItem>졸업생게시판 <Symbol>•</Symbol></MenuItem>
-      <MenuItem>새내기게시판 <Symbol>•</Symbol></MenuItem>
-      <MenuItem>시사·이슈 <Symbol>•</Symbol></MenuItem>
-      <MenuItem>장터게시판 <Symbol>•</Symbol></MenuItem>
-      <MenuItem>정보게시판 <Symbol>•</Symbol></MenuItem>
-      <MenuItem>홍보게시판 <Symbol>•</Symbol></MenuItem>
-    </MenuColumn>
+<MenuColumn>
+<MenuItem to="/freeboard" onClick={() => setActiveMenuItem('/freeboard')}>자유게시판 <Symbol>•</Symbol></MenuItem>
+        <MenuItem to="/secretboard" onClick={() => setActiveMenuItem('/secretboard')}>비밀게시판 <Symbol>•</Symbol></MenuItem>
+        <MenuItem to="/graduateboard" onClick={() => setActiveMenuItem('/graduateboard')}>졸업생게시판 <Symbol>•</Symbol></MenuItem>
+        <MenuItem to="/newboard" onClick={() => setActiveMenuItem('/newboard')}>새내기게시판 <Symbol>•</Symbol></MenuItem>
+        <MenuItem>시사·이슈 <Symbol>•</Symbol></MenuItem>
+        <MenuItem>장터게시판 <Symbol>•</Symbol></MenuItem>
+        <MenuItem>정보게시판 <Symbol>•</Symbol></MenuItem>
+        <MenuItem>홍보게시판 <Symbol>•</Symbol></MenuItem>
+      </MenuColumn>
     <Separator />
     <MenuColumn>
       <MenuItem>동아리·학회 <Symbol>•</Symbol></MenuItem>
@@ -193,9 +230,10 @@ const LinkContent = styled(NavLink)`
   font-size: 16px;
   font-weight: bold;
   height: auto;
-  color: black;
+  color: ${(props) => (props.active ? "red" : "black")};
   padding-bottom: 27px;
   text-decoration: none;
+  border-bottom: ${(props) => (props.active ? "4px solid red" : "none")};
 
   &.active {
     color: red;
@@ -203,7 +241,6 @@ const LinkContent = styled(NavLink)`
     border-bottom: 4px solid red;
   }
 `;
-
 const Logoimg = styled.img`
   width: 24px;
   height: 24px;
