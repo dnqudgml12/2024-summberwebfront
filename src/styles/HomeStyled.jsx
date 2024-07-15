@@ -158,7 +158,9 @@ export const RightSidebar = styled.div`
 `;
 
 export const SearchBar = styled.input`
-  width: 100%;
+float: left;
+  width:${(props)=>props.width||"300px"};
+  margin-right: 400px;
   height: 40px;
   line-height: 20px;
   padding: 10px 40px 10px 10px;
@@ -186,11 +188,12 @@ export const Sectioneachboard = styled.div`
   background-color: #f9f9f9;
 `;
 
-export const Sectionbox = styled.div`
+export const Sectionbox = styled(Link)`
   padding: 10px;
   width: 100%;
   height: ${(props) => props.height||"none"};
   border-top: 1px solid #e3e3e3;
+  text-decoration: none;
 `;
 
 export const SidebarSection = styled.div`
@@ -219,3 +222,48 @@ export const PostItem = styled.div`
     text-decoration: underline;
   }
 `;
+
+
+//Rightbar
+export const Titledivbar= styled.div`
+  width: auto;
+  overflow: hidden;
+    color: #444444;
+    font-size: 13px;
+    height: 18px;
+    font-weight: bold;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    letter-spacing: -0.5px;
+    margin-bottom: 5px;
+
+`
+
+export const Contentdivbar = styled.div`
+  width: auto;
+  height: auto;
+  height: 32px;
+    line-height: 16px;
+    color: #737373;
+    font-size: 12px;
+    white-space: normal;
+    overflow: hidden;
+    margin-bottom: 5px;
+`
+
+export const Bottomdivbar= styled.div`
+  width: auto;
+  display: flex;
+  flex-direction: row;
+`
+
+export const Boardtype=styled.div`
+  
+  margin-right: 10px;
+    height: 14px;
+    line-height: 14px;
+    color: #a6a6a6;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0;
+`

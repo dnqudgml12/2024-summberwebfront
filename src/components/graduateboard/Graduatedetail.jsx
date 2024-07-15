@@ -9,6 +9,7 @@ import {
   BoardBody,
 } from "../../styles/HomeStyled";
 
+import Graduateboardedit from "./Graduateboardedit";
 import axios from "axios";
 /*
      const [posts, setPosts] = useState([]);
@@ -249,7 +250,7 @@ const Graduateboarddetail = () => {
         await axios.post(`http://localhost:8080/api/graduateboard/like/${id}`); //좋아요 눌린상태+1
         setLiked(true);
       } else {
-        await axios.delete(`http://localhost:8080/api/graduateboardunlike/${id}`); // 좋아요 취소한 상태 -1
+        await axios.delete(`http://localhost:8080/api/graduateboard/unlike/${id}`); // 좋아요 취소한 상태 -1
         setLiked(false);
       }
       const response = await axios.get(
@@ -287,18 +288,22 @@ const Graduateboarddetail = () => {
                   </NameandTime>
 
                   <DeleteandModity>
-                    {click ? (
-                      <Freeboardedit id={post.id} onCancel={handleAddClick} />
-                    ) : (
-                      <Modifydiv onClick={handleAddClick}>수정</Modifydiv>
-                    )}
+                  <Modifydiv onClick={handleAddClick}>
+                      {click ? "" : "수정"}
+                    </Modifydiv>
 
                     <Deletediv onClick={handleDeletePost}>삭제</Deletediv>
                   </DeleteandModity>
                 </Imgandnameinfrom>
 
-                <Titledetaildiv>{post.title}</Titledetaildiv>
-                <Contentdetaildiv>{post.content}</Contentdetaildiv>
+                {click ? (
+                  <Graduateboardedit id={post.id} onCancel={handleAddClick} />
+                ) : (
+                  <>
+                    <Titledetaildiv>{post.title}</Titledetaildiv>
+                    <Contentdetaildiv>{post.content}</Contentdetaildiv>
+                  </>
+                )}
 
                 <Likecommentdiv>
                   <LikeIcon src={Likeimg} />

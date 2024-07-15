@@ -49,7 +49,7 @@ import Likeimg from "../../assets/img/Likediv.png";
 import likedetail from "../../assets/img/Likedetail.png";
 import savebutton from "../../assets/img/Savebutton.png";
 import { BiLike } from "react-icons/bi";
-
+import Secretboardedit from "./secretboardedit";
 
 const Secreteboarddetail = () => {
   const { id } = useParams();
@@ -94,7 +94,7 @@ const Secreteboarddetail = () => {
   const handleDeletePost = async () => {
     try {
       await axios.delete(`http://localhost:8080/api/secretboard/delete/${id}`);
-      navigate("/freeboard");
+      navigate("/secretboard");
     } catch (error) {
       console.error("Error deleting post", error);
     }
@@ -265,18 +265,22 @@ const Secreteboarddetail = () => {
                   </NameandTime>
 
                   <DeleteandModity>
-                    {click ? (
-                      <Freeboardedit id={post.id} onCancel={handleAddClick} />
-                    ) : (
-                      <Modifydiv onClick={handleAddClick}>수정</Modifydiv>
-                    )}
+                  <Modifydiv onClick={handleAddClick}>
+                      {click ? "" : "수정"}
+                    </Modifydiv>
 
                     <Deletediv onClick={handleDeletePost}>삭제</Deletediv>
                   </DeleteandModity>
                 </Imgandnameinfrom>
 
-                <Titledetaildiv>{post.title}</Titledetaildiv>
-                <Contentdetaildiv>{post.content}</Contentdetaildiv>
+                {click ? (
+                  <Secretboardedit id={post.id} onCancel={handleAddClick} />
+                ) : (
+                  <>
+                    <Titledetaildiv>{post.title}</Titledetaildiv>
+                    <Contentdetaildiv>{post.content}</Contentdetaildiv>
+                  </>
+                )}
 
                 <Likecommentdiv>
                   <LikeIcon src={Likeimg} />

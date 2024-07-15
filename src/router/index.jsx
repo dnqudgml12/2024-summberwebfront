@@ -11,7 +11,7 @@ import Graduateboard from "../components/graduateboard/Graduate";
 import Graduateboarddetail from "../components/graduateboard/Graduatedetail";
 import { Homenavbar } from "../components/Home/Homenavbar";
 import Schedule from "../components/schedule/Schdule";
-import Search from "../page/Searchresult";
+import Search from "../components/freeboard/Searchresult";
 import Layout from "../page/Layout";
 
 function Routing() {

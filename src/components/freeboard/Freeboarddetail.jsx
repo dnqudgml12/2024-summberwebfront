@@ -82,7 +82,8 @@ const FreeboardDetail = () => {
   const [commentCount, setCommentCount] = useState(0); // 전체 댓글 수를 관리
   const [liked, setLiked] = useState(false);
 
-  const [click, setClick] = useState(false);
+  const [click, setClick] = useState(false);// 관리 수정 상태
+
   const handleAddClick = () => {
     setClick(!click);
   };
@@ -286,18 +287,22 @@ const FreeboardDetail = () => {
                   </NameandTime>
 
                   <DeleteandModity>
-                    {click ? (
-                      <Freeboardedit id={post.id} onCancel={handleAddClick} />
-                    ) : (
-                      <Modifydiv onClick={handleAddClick}>수정</Modifydiv>
-                    )}
+                  <Modifydiv onClick={handleAddClick}>
+                      {click ? "" : "수정"}
+                    </Modifydiv>
 
                     <Deletediv onClick={handleDeletePost}>삭제</Deletediv>
                   </DeleteandModity>
                 </Imgandnameinfrom>
 
-                <Titledetaildiv>{post.title}</Titledetaildiv>
-                <Contentdetaildiv>{post.content}</Contentdetaildiv>
+                {click ? (
+                  <Freeboardedit id={post.id} onCancel={handleAddClick} />
+                ) : (
+                  <>
+                    <Titledetaildiv>{post.title}</Titledetaildiv>
+                    <Contentdetaildiv>{post.content}</Contentdetaildiv>
+                  </>
+                )}
 
                 <Likecommentdiv>
                   <LikeIcon src={Likeimg} />

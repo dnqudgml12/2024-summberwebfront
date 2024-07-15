@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Data as initialData } from "../../data/freeBoard";
-import { Alldiv, Bodydiv, BoardBody, SearchBar } from "../../styles/HomeStyled";
+import { Alldiv, Bodydiv, BoardBody } from "../../styles/HomeStyled";
 import FreeboardAdd from "./Freeboardadd";
 import axios from "axios";
 import Population from "../../assets/img/Population.png";
@@ -27,52 +27,50 @@ import {
   BoardTitle,
   BoardContent,
 } from "../../styles/BoardStyled";
-
 import Comment from "../../assets/img/Commentpicture.png";
 import leftarrow from "../../assets/img/leftarrow.png";
 import rightarrow from "../../assets/img/rightarrow.png";
-const Freeboard = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const navigate = useNavigate();
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/search/${searchQuery}`);
-    }
-  };
+const Search = () => {
+  const { query } = useParams();
   const [data, setData] = useState([]);
   const [click, setClick] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
 
-  const handleAddPost = async (newPost) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/freeboard/save",
-        newPost
-      ); // Adjust the endpoint as needed
-      setData([...data, response.data]); // Add the new post returned from the server
-    } catch (error) {
-      console.error("Error adding post:", error);
-    }
-  };
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    // Fetch data from the API
     const fetchData = async () => {
       try {
-        const response = await axios.get(
+        const freeBoardResponse = await axios.get(
           "http://localhost:8080/api/freeboard/read"
-        ); // Replace with your API endpoint
-        setData(response.data);
+        );
+
+        // Add board type to each post
+        const freeBoardData = freeBoardResponse.data.map((post) => ({
+          ...post,
+          board: "freeboard",
+        }));
+
+        setData(freeBoardData);
+
+        setLoading(false);
       } catch (error) {
-        console.error("Error fetching data", error);
+        console.error("Error fetching data:", error);
+        setLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [query]);
+
+  const boards = [{ title: "자유게시판", data: data }];
+
+  const filteredPosts = boards.flatMap((board) =>
+    // 여러 객체를 통틀어서 결과 값을 일정하게 리턴해야 하므로 flatMap을 사용하여 나타내는 것이 좋다.
+    board.data.filter(
+      (post) => post.title.includes(query) || post.content.includes(query)
+    )
+  );
 
   const handleAddClick = () => {
     setClick(!click);
@@ -103,8 +101,16 @@ const Freeboard = () => {
     );
   };
 
-  const countLikes = (likes) => {
-    return likes.reduce((acc, like) => acc + 1 + likes.replies.length, 0);
+  const handleAddPost = async (newPost) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/freeboard/save",
+        newPost
+      ); // Adjust the endpoint as needed
+      setData([...data, response.data]); // Add the new post returned from the server
+    } catch (error) {
+      console.error("Error adding post:", error);
+    }
   };
 
   return (
@@ -156,26 +162,32 @@ const Freeboard = () => {
           )}
 
           <BoardAlldiv>
-            {currentItems.map((post) => (
-              <Eachseperateboard
-                key={post.id}
-                width={"80%"}
-                to={`/freeboard/${post.id}`}
-              >
-                <BoardTitle> {post.title}</BoardTitle>
-                <BoardContent>{post.content}</BoardContent>
-                <CommentInfo>
-                  <LikeIcon src={Likeimg} />
-                  <LikeCount>{post.likes}</LikeCount>
-                  <CommentIcon src={Comment} />
-                  <CommentCount>{countComments(post.freeComment)}</CommentCount>
-                  <CommentTime>
-                    {new Date(post.createdAt).toLocaleTimeString()}
-                  </CommentTime>
-                  <CommentAuthor>익명</CommentAuthor>
-                </CommentInfo>
-              </Eachseperateboard>
-            ))}
+            {filteredPosts.length === 0 ? (
+              <p>No results found</p>
+            ) : (
+              filteredPosts.map((post) => (
+                <Eachseperateboard
+                  key={post.id}
+                  width={"80%"}
+                  to={`/${post.board}/${post.id}`}
+                >
+                  <BoardTitle> {post.title}</BoardTitle>
+                  <BoardContent>{post.content}</BoardContent>
+                  <CommentInfo>
+                    <LikeIcon src={Likeimg} />
+                    <LikeCount>{post.likes}</LikeCount>
+                    <CommentIcon src={Comment} />
+                    <CommentCount>
+                      {countComments(post.freeComment)}
+                    </CommentCount>
+                    <CommentTime>
+                      {new Date(post.createdAt).toLocaleTimeString()}
+                    </CommentTime>
+                    <CommentAuthor>익명</CommentAuthor>
+                  </CommentInfo>
+                </Eachseperateboard>
+              ))
+            )}
           </BoardAlldiv>
 
           <Pagination>
@@ -193,20 +205,10 @@ const Freeboard = () => {
               </>
             )}
             {currentPage === 1 && indexOfLastItem < data.length && (
-              <div style={{ display: "flex" }}>
-                <form onSubmit={handleSearchSubmit}>
-                  <SearchBar
-                    placeholder="전체 게시판의 글을 검색하세요!"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </form>
-
-                <Nextbutton onClick={handleNextPage}>
-                  다음
-                  <Rightarrow src={rightarrow} />
-                </Nextbutton>
-              </div>
+              <Nextbutton onClick={handleNextPage}>
+                다음
+                <Rightarrow src={rightarrow} />
+              </Nextbutton>
             )}
             {currentPage != 1 && indexOfLastItem < data.length && (
               <>
@@ -231,8 +233,6 @@ const Freeboard = () => {
     </Alldiv>
   );
 };
-
-export default Freeboard;
 
 const Leftarrow = styled.img`
   width: 10px;
@@ -354,3 +354,5 @@ const CommentAuthor = styled.span`
   font-weight: 400;
   color: #a6a6a6;
 `;
+
+export default Search;

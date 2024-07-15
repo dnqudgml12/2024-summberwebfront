@@ -9,14 +9,11 @@ const Homenavbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [board, setBoard] = useState(false);
-  const [activeMenuItem, setActiveMenuItem] = useState('/');
+  const [activeMenuItem, setActiveMenuItem] = useState("/");
 
   // 특정 페이지에서는 setBoard가 true로 해서 dropdownmenu가 실행되게 하기 위해서
   useEffect(() => {
-    if (
-      location.pathname === "/" ||
-      location.pathname.endsWith("board")
-    ) {
+    if (location.pathname === "/" || location.pathname.endsWith("board")) {
       setBoard(true);
     } else {
       setBoard(false);
@@ -29,8 +26,12 @@ const Homenavbar = () => {
         <Imgdiv>
           <Img
             src={everyimg}
+            active={activeMenuItem === "/"}
+         
             onClick={() => {
               navigate("/");
+              setActiveMenuItem("/");
+              
             }}
           />
         </Imgdiv>
@@ -50,115 +51,268 @@ const Homenavbar = () => {
         </Word>
 
         <Boardbox>
-        <LinkContent
+          <LinkContent
             to="/"
-            active={activeMenuItem === '/'}
-            onClick={() => setActiveMenuItem('/')}
+            active={activeMenuItem === "/"}
+            onClick={() => setActiveMenuItem("/")}
           >
             게시판
           </LinkContent>
           <LinkContent
             to="/schedule"
-            active={activeMenuItem === '/schedule'}
-            onClick={() => setActiveMenuItem('/schedule')}
+            active={activeMenuItem === "/schedule"}
+            onClick={() => setActiveMenuItem("/schedule")}
           >
             시간표
           </LinkContent>
           <LinkContent
-            to="/404"
-            active={activeMenuItem === '/404'}
-            onClick={() => setActiveMenuItem('/404')}
+            onClick={() => {
+              alert("아직 준비 중입니다.");
+            }}
+            // to="/404"
+            //active={activeMenuItem === '/404'}
+            //onClick={() => setActiveMenuItem('/404')}
           >
             강의실
           </LinkContent>
           <LinkContent
-            to="/404"
-            active={activeMenuItem === '/404'}
-            onClick={() => setActiveMenuItem('/404')}
+            onClick={() => {
+              alert("아직 준비 중입니다.");
+            }}
+            //to="/404"
+            // active={activeMenuItem === '/404'}
+            // onClick={() => setActiveMenuItem('/404')}
           >
             학점계산기
           </LinkContent>
           <LinkContent
-            to="/404"
-            active={activeMenuItem === '/404'}
-            onClick={() => setActiveMenuItem('/404')}
+            onClick={() => {
+              alert("아직 준비 중입니다.");
+            }}
+            //to="/404"
+            // active={activeMenuItem === '/404'}
+            // onClick={() => setActiveMenuItem('/404')}
           >
             친구
           </LinkContent>
           <LinkContent
-            to="/404"
-            active={activeMenuItem === '/404'}
-            onClick={() => setActiveMenuItem('/404')}
+            onClick={() => {
+              alert("아직 준비 중입니다.");
+            }}
+            // to="/404"
+            // active={activeMenuItem === '/404'}
+            // onClick={() => setActiveMenuItem('/404')}
           >
             책방
           </LinkContent>
           <LinkContent
-            to="/404"
-            active={activeMenuItem === '/404'}
-            onClick={() => setActiveMenuItem('/404')}
+            onClick={() => {
+              alert("아직 준비 중입니다.");
+            }}
+            //to="/404"
+            // active={activeMenuItem === '/404'}
+            //onClick={() => setActiveMenuItem('/404')}
           >
-            캠퍼스 픽</LinkContent>
+            캠퍼스 픽
+          </LinkContent>
         </Boardbox>
         <Chatandinformbox>
-          <Logoimg src={Chat} />
-          <Logoimg src={Inform} />
+          <Logoimg
+            src={Chat}
+            onClick={() => {
+              alert("아직 준비 중입니다.");
+            }}
+          />
+          <Logoimg
+            src={Inform}
+            onClick={() => {
+              alert("아직 준비 중입니다.");
+            }}
+          />
         </Chatandinformbox>
       </Wrapper>
       {/*
       {board && (
 
-      )}*/
-    }
+      )}*/}
     </Navdiv>
   );
 };
 
-export {Homenavbar,Dropdownmenu};
+export { Homenavbar, Dropdownmenu };
 
-
-const Dropdownmenu=()=>{
-
-  return(        <DropdownMenu>
-<MenuColumn>
-<MenuItem to="/freeboard" onClick={() => setActiveMenuItem('/freeboard')}>자유게시판 <Symbol>•</Symbol></MenuItem>
-        <MenuItem to="/secretboard" onClick={() => setActiveMenuItem('/secretboard')}>비밀게시판 <Symbol>•</Symbol></MenuItem>
-        <MenuItem to="/graduateboard" onClick={() => setActiveMenuItem('/graduateboard')}>졸업생게시판 <Symbol>•</Symbol></MenuItem>
-        <MenuItem to="/newboard" onClick={() => setActiveMenuItem('/newboard')}>새내기게시판 <Symbol>•</Symbol></MenuItem>
-        <MenuItem>시사·이슈 <Symbol>•</Symbol></MenuItem>
-        <MenuItem>장터게시판 <Symbol>•</Symbol></MenuItem>
-        <MenuItem>정보게시판 <Symbol>•</Symbol></MenuItem>
-        <MenuItem>홍보게시판 <Symbol>•</Symbol></MenuItem>
+const Dropdownmenu = () => {
+  return (
+    <DropdownMenu>
+      <MenuColumn>
+        <MenuItem
+          to="/freeboard"
+          onClick={() => setActiveMenuItem("/freeboard")}
+        >
+          자유게시판 <Symbol>•</Symbol>
+        </MenuItem>
+        <MenuItem
+          to="/secretboard"
+          onClick={() => setActiveMenuItem("/secretboard")}
+        >
+          비밀게시판 <Symbol>•</Symbol>
+        </MenuItem>
+        <MenuItem
+          to="/graduateboard"
+          onClick={() => setActiveMenuItem("/graduateboard")}
+        >
+          졸업생게시판 <Symbol>•</Symbol>
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            alert("아직 준비 중입니다.");
+          }}
+        >
+          새내기게시판 <Symbol>•</Symbol>
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            alert("아직 준비 중입니다.");
+          }}
+        >
+          시사·이슈 <Symbol>•</Symbol>
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            alert("아직 준비 중입니다.");
+          }}
+        >
+          장터게시판 <Symbol>•</Symbol>
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            alert("아직 준비 중입니다.");
+          }}
+        >
+          정보게시판 <Symbol>•</Symbol>
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            alert("아직 준비 중입니다.");
+          }}
+        >
+          홍보게시판 <Symbol>•</Symbol>
+        </MenuItem>
       </MenuColumn>
-    <Separator />
-    <MenuColumn>
-      <MenuItem>동아리·학회 <Symbol>•</Symbol></MenuItem>
-      <MenuItem>취업·진로</MenuItem>
-    </MenuColumn>
-    <Separator />
-    <MenuColumn>
-      <MenuItem>전산전자공학부 게시판</MenuItem>
-      <MenuItem>생명과학부 게시판 <Symbol>•</Symbol></MenuItem>
-      <MenuItem>상사학부 게시판 <Symbol>✨</Symbol></MenuItem>
-    </MenuColumn>
-    <Separator />
-    <MenuColumn>
-      <MenuItem>연애/사랑이야기 <Symbol>•</Symbol></MenuItem>
-      <MenuItem>콘디 <Symbol>•</Symbol></MenuItem>
-      <MenuItem>큐피트게시판 <Symbol>•</Symbol></MenuItem>
-      <MenuItem>성 게시판 <Symbol>•</Symbol></MenuItem>
-      <MenuItem>알바생 게시판 <Symbol>•</Symbol></MenuItem>
-      <MenuItem>넷플릭스/왓챠 게시판 <Symbol>•</Symbol></MenuItem>
-      <MenuItem>끝말잇기</MenuItem>
-      <MenuItem>썸덕 게시판</MenuItem>
-    </MenuColumn>
-    <Separator />
-    <MenuColumn>
-      <MenuItem>요리조리킹 <Symbol>•</Symbol></MenuItem>
-      <MenuItem style={{ color: "#F91F15", fontWeight: "bold" }}>게시판 찾기</MenuItem>
-    </MenuColumn>
-  </DropdownMenu>)
-}
-
+      <Separator />
+      <MenuColumn>
+        <MenuItem
+          onClick={() => {
+            alert("아직 준비 중입니다.");
+          }}
+        >
+          동아리·학회 <Symbol>•</Symbol>
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            alert("아직 준비 중입니다.");
+          }}
+        >
+          취업·진로
+        </MenuItem>
+      </MenuColumn>
+      <Separator />
+      <MenuColumn>
+        <MenuItem
+          onClick={() => {
+            alert("아직 준비 중입니다.");
+          }}
+        >
+          전산전자공학부 게시판
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            alert("아직 준비 중입니다.");
+          }}
+        >
+          생명과학부 게시판 <Symbol>•</Symbol>
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            alert("아직 준비 중입니다.");
+          }}
+        >
+          상사학부 게시판 <Symbol>✨</Symbol>
+        </MenuItem>
+      </MenuColumn>
+      <Separator />
+      <MenuColumn>
+        <MenuItem
+          onClick={() => {
+            alert("아직 준비 중입니다.");
+          }}
+        >
+          연애/사랑이야기 <Symbol>•</Symbol>
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            alert("아직 준비 중입니다.");
+          }}
+        >
+          콘디 <Symbol>•</Symbol>
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            alert("아직 준비 중입니다.");
+          }}
+        >
+          큐피트게시판 <Symbol>•</Symbol>
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            alert("아직 준비 중입니다.");
+          }}
+        >
+          성 게시판 <Symbol>•</Symbol>
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            alert("아직 준비 중입니다.");
+          }}
+        >
+          알바생 게시판 <Symbol>•</Symbol>
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            alert("아직 준비 중입니다.");
+          }}
+        >
+          넷플릭스/왓챠 게시판 <Symbol>•</Symbol>
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            alert("아직 준비 중입니다.");
+          }}
+        >
+          끝말잇기
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            alert("아직 준비 중입니다.");
+          }}
+        >
+          썸덕 게시판
+        </MenuItem>
+      </MenuColumn>
+      <Separator />
+      <MenuColumn>
+        <MenuItem
+          onClick={() => {
+            alert("아직 준비 중입니다.");
+          }}
+        >
+          요리조리킹 <Symbol>•</Symbol>
+        </MenuItem>
+        <MenuItem>게시판 찾기</MenuItem>
+      </MenuColumn>
+    </DropdownMenu>
+  );
+};
 
 const Chatandinformbox = styled.div`
   display: flex;
@@ -222,6 +376,7 @@ const Img = styled.img`
   margin: 20px 16px 20px 0;
   width: 40px;
   height: 40px;
+  cursor: pointer;
 `;
 
 const LinkContent = styled(NavLink)`
@@ -234,12 +389,6 @@ const LinkContent = styled(NavLink)`
   padding-bottom: 27px;
   text-decoration: none;
   border-bottom: ${(props) => (props.active ? "4px solid red" : "none")};
-
-  &.active {
-    color: red;
-    width: auto;
-    border-bottom: 4px solid red;
-  }
 `;
 const Logoimg = styled.img`
   width: 24px;
@@ -269,7 +418,7 @@ const MenuColumn = styled.div`
 `;
 
 const MenuItem = styled(Link)`
-text-decoration: none;
+  text-decoration: none;
   font-size: 16px;
   color: #292929;
   margin-bottom: 10px;

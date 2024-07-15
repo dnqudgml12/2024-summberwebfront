@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-
+import axios from "axios";
 import { Data } from "../data/freeBoard";
 import { Datasss } from "../data/secretBoard";
-import { Datass } from "../data/gradutateBoard";
-
 import {
   Alldiv,
   Bodydiv,
@@ -41,6 +39,9 @@ import Banner from "../assets/img/bannerAd.png";
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const [data, setData] = useState([]);
+  const [datasss, setDatasss] = useState([]);
+  const [datass, setDatass] = useState([]);
 
   const reviews = [
     {
@@ -66,17 +67,58 @@ const Home = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const freeBoardResponse = await axios.get(
+          "http://localhost:8080/api/freeboard/read"
+        );
+        const secretBoardResponse = await axios.get(
+          "http://localhost:8080/api/secretboard/read"
+        );
+        const graduateBoardResponse = await axios.get(
+          "http://localhost:8080/api/graduateboard/read"
+        );
+
+        //get으로 담는 정보에 따라서 board type 정하기
+        const freeBoardData = freeBoardResponse.data.map((post) => ({
+          ...post,
+          board: "freeboard",
+        }));
+        const secretBoardData = secretBoardResponse.data.map((post) => ({
+          ...post,
+          board: "secretboard",
+        }));
+        const graduateBoardData = graduateBoardResponse.data.map((post) => ({
+          ...post,
+          board: "graduateboard",
+        }));
+
+        setData(freeBoardData);
+        setDatasss(secretBoardData);
+        setDatass(graduateBoardData);
+
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  console.log(data);
   // boards에 게시판 늘어나면 채우기
   const boards = [
-    { title: "자유게시판", data: Data, link: "freeboard" },
-    { title: "비밀게시판", data: Datasss, link: "secrete" },
-    { title: "졸업게시판", data: Datass },
-    { title: "시사·이슈", data: Datass },
-    { title: "장터게시판", data: Datass },
-    { title: "정보게시판", data: Datass },
-    { title: "홍보게시판", data: Datass },
-    { title: "취업·진로", data: Datass },
-    { title: "동아리·학회", data: Datass },
+    { title: "자유게시판", data: data, link:"freeboard"},
+    { title: "비밀게시판", data: datasss,link:"secretboard"},
+    { title: "졸업게시판", data: datass,link:"graduateboard" },
+    { title: "시사·이슈", data: datass,link:"graduateboard"},
+    { title: "장터게시판", data: datass,link:"graduateboard" },
+    { title: "정보게시판", data: datass,link:"graduateboard" },
+    { title: "홍보게시판", data: datass,link:"graduateboard" },
+    { title: "취업·진로", data: datass,link:"graduateboard"},
+    { title: "동아리·학회", data: datass,link:"graduateboard" },
   ];
   return (
     <Alldiv>
@@ -109,7 +151,7 @@ const Home = () => {
             <Centerbanner>
               <BannerImg src={Banner} />
               <Boards>
-                {boards.map((board, index) => (
+              {boards.map((board, index) => (
                   <Eachboard key={index}>
                     <Eachboardword to={`/${board.link}`}>
                       {board.title}
@@ -117,7 +159,8 @@ const Home = () => {
                     {board.data.slice(0, 6).map((post) => (
                       <Eachseperateboard
                         key={post.id}
-                        to={`/${board.link}/${post.id}`}
+                        to={`/${post.board}/${post.id}`}
+                    
                       >
                         {post.title}
                       </Eachseperateboard>
