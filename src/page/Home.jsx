@@ -178,7 +178,7 @@ const Home = () => {
           <Leftboard align={"center"} border={"1px solid gray"} width={"175px"}>
             <Profilebox>
               <Myprofile src={mypic} />
-              <Myname>우병희희희 학부생</Myname>
+              <Myname>우병희 학부생</Myname>
               <Myemail>우병희</Myemail>
               <Myemail>bwyd123</Myemail>
             </Profilebox>
