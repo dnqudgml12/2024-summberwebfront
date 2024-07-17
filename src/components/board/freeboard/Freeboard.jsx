@@ -105,8 +105,7 @@ const Freeboard = () => {
   const countComments = (comments) => {
     return comments.reduce((acc, comment) => acc + 1 + comment.replies.length, 0);
   };
-  console.log(data);
-  console.log(totalPages);
+
 
   return (
     <Alldiv>
