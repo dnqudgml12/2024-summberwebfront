@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Data } from "../../data/freeBoard";
+//import { Data } from "../../data/freeBoard";
 import {
   Alldiv,
   Bodydiv,
   Eachseperateboard,
   BoardBody,
-} from "../../styles/HomeStyled";
-
-import Graduateboardedit from "./Graduateboardedit";
+} from "../../../styles/HomeStyled";
+import Freeboardedit from "./Freeboardedit";
 import axios from "axios";
 /*
      const [posts, setPosts] = useState([]);
@@ -65,16 +64,15 @@ import {
   ReplyDiv,
   Replycontent,
   Replydate,
-} from "../../styles/BoardStyled";
+} from "../../../styles/BoardStyled";
 
-import anony from "../../assets/img/anonypicture.png";
-import Comment from "../../assets/img/Commentpicture.png";
-import Likeimg from "../../assets/img/Likediv.png";
-import likedetail from "../../assets/img/Likedetail.png";
-import savebutton from "../../assets/img/Savebutton.png";
+import anony from "../../../assets/img/anonypicture.png";
+import Comment from "../../../assets/img/Commentpicture.png";
+import Likeimg from "../../../assets/img/Likediv.png";
+import likedetail from "../../../assets/img/Likedetail.png";
+import savebutton from "../../../assets/img/Savebutton.png";
 import { BiLike } from "react-icons/bi";
-
-const Graduateboarddetail = () => {
+const FreeboardDetail = () => {
   const { id } = useParams();
   const [post, setPost] = useState(); // 초기 상태를 null로 설정
   const [newComment, setNewComment] = useState("");
@@ -84,7 +82,8 @@ const Graduateboarddetail = () => {
   const [commentCount, setCommentCount] = useState(0); // 전체 댓글 수를 관리
   const [liked, setLiked] = useState(false);
 
-  const [click, setClick] = useState(false);
+  const [click, setClick] = useState(false);// 관리 수정 상태
+
   const handleAddClick = () => {
     setClick(!click);
   };
@@ -93,7 +92,7 @@ const Graduateboarddetail = () => {
     const fetchPost = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/graduateboard/read/${id}`
+          `http://localhost:8080/api/freeboard/read/${id}`
         ); // Replace with your API endpoint
         setPost(response.data);
         setCommentCount(
@@ -116,8 +115,8 @@ const Graduateboarddetail = () => {
 
   const handleDeletePost = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/graduateboard/delete/${id}`);
-      navigate("/graduateboard");
+      await axios.delete(`http://localhost:8080/api/freeboard/delete/${id}`);
+      navigate("/freeboard");
     } catch (error) {
       console.error("Error deleting post", error);
     }
@@ -138,17 +137,17 @@ const Graduateboarddetail = () => {
 
     try {
       await axios.post(
-        `http://localhost:8080/api/graduateboard/${id}/comments`,
+        `http://localhost:8080/api/freeboard/${id}/comments`,
         newCommentObj
       );
       const response = await axios.get(
-        `http://localhost:8080/api/graduateboard/read/${id}`
+        `http://localhost:8080/api/freeboard/read/${id}`
       );
       setPost(response.data);
       setCommentCount(commentCount + 1);
       setNewComment("");
       setReplyTo(null);
-      navigate(`/graduateboard/${id}`);
+      navigate(`/freeboard/${id}`);
     } catch (error) {
       console.error("Error adding comment", error);
     }
@@ -188,16 +187,16 @@ const Graduateboarddetail = () => {
       content: newReply,
       author: `익명${commentCount + 1}`,
     };
-    navigate(`/graduateboard/${id}`);
+    navigate(`/freeboard/${id}`);
     try {
       await axios.post(
-        `http://localhost:8080/api/graduateboard/${id}/comments/${commentId}/replies`,
+        `http://localhost:8080/api/freeboard/${id}/comments/${commentId}/replies`,
         newReplyObj
       );
 
       //post 하는 동안, get을 가져옴
       const response = await axios.get(
-        `http://localhost:8080/api/graduateboard/read/${id}`
+        `http://localhost:8080/api/freeboard/read/${id}`
       );
       setPost(response.data);
       setCommentCount(commentCount + 1);
@@ -247,14 +246,14 @@ const Graduateboarddetail = () => {
     // 좋아요 누르면 그 상태를 db에 저장(true,false)
     try {
       if (!liked) {
-        await axios.post(`http://localhost:8080/api/graduateboard/like/${id}`); //좋아요 눌린상태+1
+        await axios.post(`http://localhost:8080/api/freeboard/like/${id}`); //좋아요 눌린상태+1
         setLiked(true);
       } else {
-        await axios.delete(`http://localhost:8080/api/graduateboard/unlike/${id}`); // 좋아요 취소한 상태 -1
+        await axios.delete(`http://localhost:8080/api/freeboard/unlike/${id}`); // 좋아요 취소한 상태 -1
         setLiked(false);
       }
       const response = await axios.get(
-        `http://localhost:8080/api/graduateboard/read/${id}`
+        `http://localhost:8080/api/freeboard/read/${id}`
       );
       setPost(response.data); // Update the post with the new like count
       setLiked(response.data.likeStatus);
@@ -274,7 +273,7 @@ const Graduateboarddetail = () => {
     <Alldiv>
       <Bodydiv>
         <BoardInBody>
-          <Titlediv>졸업 게시판</Titlediv>
+          <Titlediv>자유게시판</Titlediv>
           {post ? (
             <>
               <SecondIndetailBody>
@@ -297,7 +296,7 @@ const Graduateboarddetail = () => {
                 </Imgandnameinfrom>
 
                 {click ? (
-                  <Graduateboardedit id={post.id} onCancel={handleAddClick} />
+                  <Freeboardedit id={post.id} onCancel={handleAddClick} />
                 ) : (
                   <>
                     <Titledetaildiv>{post.title}</Titledetaildiv>
@@ -309,7 +308,7 @@ const Graduateboarddetail = () => {
                   <LikeIcon src={Likeimg} />
                   <LikeCount>{post.likes}</LikeCount>
                   <CommentIcon src={Comment} />
-                  <CommentCount>{countComments(post.graduateComment)}</CommentCount>
+                  <CommentCount>{countComments(post.freeComment)}</CommentCount>
                 </Likecommentdiv>
                 <Likedetaildiv>
                   {!liked ? (
@@ -341,8 +340,8 @@ const Graduateboarddetail = () => {
                 </Likedetaildiv>
 
                 <>
-                  {post.graduateComment.length > 0 ? (
-                    post.graduateComment.map((comment) => (
+                  {post.freeComment.length > 0 ? (
+                    post.freeComment.map((comment) => (
                       <Commentbox key={comment.id}>
                         <Namepicturecomment>
                           <Picturecomment src={anony} />
@@ -465,7 +464,7 @@ const Graduateboarddetail = () => {
   );
 };
 
-export default Graduateboarddetail;
+export default FreeboardDetail;
 
 const LikeIcon = styled.img`
   width: 10px;
@@ -496,6 +495,3 @@ const CommentCount = styled.span`
   font-size: 12px;
   font-weight: 400;
 `;
-
-
-

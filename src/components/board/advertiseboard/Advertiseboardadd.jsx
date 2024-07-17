@@ -12,9 +12,9 @@ import {
   Savecancle,
   Savewrite,
 
-} from "../../styles/BoardStyled";
-import Cancle from "../../assets/img/Cancle.png";
-import savebutton from "../../assets/img/Savebutton.png";
+} from "../../../styles/BoardStyled";
+import Cancle from "../../../assets/img/Cancle.png";
+import savebutton from "../../../assets/img/Savebutton.png";
 //author부분은 로그인 구현 기능 후에 유저의 이름으로 자동으로 들어가게 할 예정이고
 //post state값으로 data를 불러오고 더하는 과정도 api 생성후 axios로 대체 할 예정
 /*
@@ -45,7 +45,7 @@ import savebutton from "../../assets/img/Savebutton.png";
     });
   };
  */
-const SecretboardAdd = ({ onAddPost, onCancel }) => {
+const AdvertiseboardAdd = ({ onAddPost, onCancel }) => {
   const [newpost, setnewpost] = useState({
     title: "",
     content: "",
@@ -62,7 +62,7 @@ const SecretboardAdd = ({ onAddPost, onCancel }) => {
     // Data.push({ id: Data.length + 1, ...newpost });
     onAddPost(newpost);
     setnewpost({ title: "", content: "", author: "Dummy User" });
-    navigate("/secretboard");
+    navigate("/advertiseboard");
   };
   /** 
      * // 이 부분 없애고 dummyUser로 값들어가도록 하였다 로그인한 유저로 값들어가도록 할 예정
@@ -126,4 +126,4 @@ const SecretboardAdd = ({ onAddPost, onCancel }) => {
   );
 };
 
-export default SecretboardAdd;
+export default AdvertiseboardAdd;

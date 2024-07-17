@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Datasss } from "../../data/secretBoard";
-import { Alldiv, Bodydiv } from "../../styles/HomeStyled";
+
+import { Alldiv, Bodydiv } from "../../../styles/HomeStyled";
 import axios from "axios";
 import {
   BoardInBody,
@@ -42,16 +42,17 @@ import {
   ReplyDiv,
   Replycontent,
   Replydate,
-} from "../../styles/BoardStyled";
-import anony from "../../assets/img/anonypicture.png";
-import Comment from "../../assets/img/Commentpicture.png";
-import Likeimg from "../../assets/img/Likediv.png";
-import likedetail from "../../assets/img/Likedetail.png";
-import savebutton from "../../assets/img/Savebutton.png";
+} from "../../../styles/BoardStyled";
+import anony from "../../../assets/img/anonypicture.png";
+import Comment from "../../../assets/img/Commentpicture.png";
+import Likeimg from "../../../assets/img/Likediv.png";
+import likedetail from "../../../assets/img/Likedetail.png";
+import savebutton from "../../../assets/img/Savebutton.png";
 import { BiLike } from "react-icons/bi";
-import Secretboardedit from "./secretboardedit";
 
-const Secreteboarddetail = () => {
+import Circleboardedit from "./Circleboardedit";
+
+const Circleboarddetail = () => {
   const { id } = useParams();
   const [post, setPost] = useState(); // 초기 상태를 null로 설정
   const [newComment, setNewComment] = useState("");
@@ -70,11 +71,11 @@ const Secreteboarddetail = () => {
     const fetchPost = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/secretboard/read/${id}`
+          `http://localhost:8080/api/circleboard/read/${id}`
         ); // Replace with your API endpoint
         setPost(response.data);
         setCommentCount(
-          response.data.freeComment.reduce(
+          response.data.circleComment.reduce(
             (count, comment) => count + 1 + comment.replies.length,
             0
             //reduce 배열의 각 요소에 대해 주어진 함수를 실행하여 하나의 결과값을 생성
@@ -93,8 +94,8 @@ const Secreteboarddetail = () => {
 
   const handleDeletePost = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/secretboard/delete/${id}`);
-      navigate("/secretboard");
+      await axios.delete(`http://localhost:8080/api/circleboard/delete/${id}`);
+      navigate("/circleboard");
     } catch (error) {
       console.error("Error deleting post", error);
     }
@@ -115,17 +116,17 @@ const Secreteboarddetail = () => {
 
     try {
       await axios.post(
-        `http://localhost:8080/api/secretboard/${id}/comments`,
+        `http://localhost:8080/api/circleboard/${id}/comments`,
         newCommentObj
       );
       const response = await axios.get(
-        `http://localhost:8080/api/secretboard/read/${id}`
+        `http://localhost:8080/api/circleboard/read/${id}`
       );
       setPost(response.data);
       setCommentCount(commentCount + 1);
       setNewComment("");
       setReplyTo(null);
-      navigate(`/secretboard/${id}`);
+      navigate(`/circleboard/${id}`);
     } catch (error) {
       console.error("Error adding comment", error);
     }
@@ -165,16 +166,16 @@ const Secreteboarddetail = () => {
       content: newReply,
       author: `익명${commentCount + 1}`,
     };
-    navigate(`/secretboard/${id}`);
+    navigate(`/circleboard/${id}`);
     try {
       await axios.post(
-        `http://localhost:8080/api/secretboard/${id}/comments/${commentId}/replies`,
+        `http://localhost:8080/api/circleboard/${id}/comments/${commentId}/replies`,
         newReplyObj
       );
 
       //post 하는 동안, get을 가져옴
       const response = await axios.get(
-        `http://localhost:8080/api/secretboard/read/${id}`
+        `http://localhost:8080/api/circleboard/read/${id}`
       );
       setPost(response.data);
       setCommentCount(commentCount + 1);
@@ -224,14 +225,14 @@ const Secreteboarddetail = () => {
     // 좋아요 누르면 그 상태를 db에 저장(true,false)
     try {
       if (!liked) {
-        await axios.post(`http://localhost:8080/api/secretboard/like/${id}`); //좋아요 눌린상태+1
+        await axios.post(`http://localhost:8080/api/circleboard/like/${id}`); //좋아요 눌린상태+1
         setLiked(true);
       } else {
-        await axios.delete(`http://localhost:8080/api/secretboard/unlike/${id}`); // 좋아요 취소한 상태 -1
+        await axios.delete(`http://localhost:8080/api/circleboard/unlike/${id}`); // 좋아요 취소한 상태 -1
         setLiked(false);
       }
       const response = await axios.get(
-        `http://localhost:8080/api/secretboard/read/${id}`
+        `http://localhost:8080/api/circleboard/read/${id}`
       );
       setPost(response.data); // Update the post with the new like count
       setLiked(response.data.likeStatus);
@@ -274,7 +275,7 @@ const Secreteboarddetail = () => {
                 </Imgandnameinfrom>
 
                 {click ? (
-                  <Secretboardedit id={post.id} onCancel={handleAddClick} />
+                  <Circleboardedit id={post.id} onCancel={handleAddClick} />
                 ) : (
                   <>
                     <Titledetaildiv>{post.title}</Titledetaildiv>
@@ -286,7 +287,7 @@ const Secreteboarddetail = () => {
                   <LikeIcon src={Likeimg} />
                   <LikeCount>{post.likes}</LikeCount>
                   <CommentIcon src={Comment} />
-                  <CommentCount>{countComments(post.secretComment)}</CommentCount>
+                  <CommentCount>{countComments(post.circleComment)}</CommentCount>
                 </Likecommentdiv>
                 <Likedetaildiv>
                   {!liked ? (
@@ -318,8 +319,8 @@ const Secreteboarddetail = () => {
                 </Likedetaildiv>
 
                 <>
-                  {post.secretComment.length > 0 ? (
-                    post.secretComment.map((comment) => (
+                  {post.circleComment.length > 0 ? (
+                    post.circleComment.map((comment) => (
                       <Commentbox key={comment.id}>
                         <Namepicturecomment>
                           <Picturecomment src={anony} />
@@ -437,7 +438,7 @@ const Secreteboarddetail = () => {
   );
 };
 
-export default Secreteboarddetail;
+export default Circleboarddetail;
 
 const LikeIcon = styled.img`
   width: 10px;

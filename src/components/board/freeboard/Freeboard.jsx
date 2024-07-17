@@ -1,17 +1,24 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import { Datasss } from "../../data/secretBoard";
-import { Alldiv, Bodydiv,BoardBody } from "../../styles/HomeStyled";
-import writeimg from "../../assets/img/writeimg.png";
+//import { Data as initialData } from "../../data/freeBoard";
+import { Alldiv, Bodydiv, BoardBody, SearchBar } from "../../../styles/HomeStyled";
+import FreeboardAdd from "./Freeboardadd";
 import axios from "axios";
-import Population from "../../assets/img/Population.png";
-import Question from "../../assets/img/Questionimg.png";
-import Likeimg from "../../assets/img/Likediv.png";
-
+import Population from "../../../assets/img/Population.png";
+import Question from "../../../assets/img/Questionimg.png";
+import Likeimg from "../../../assets/img/Likediv.png";
+import writeimg from "../../../assets/img/writeimg.png";
 import {
   Titlediv,
   BoardInBody,
+  SecondInBody,
+  QuestionImg,
+  QuestionOne,
+  FirstinSecondbody,
+  PopulationImg,
+  PopulationOne,
+  Likediv,
   Writedivoff,
   Writecomment,
   Eachseperateboard,
@@ -19,12 +26,21 @@ import {
   BoardAlldiv,
   BoardTitle,
   BoardContent,
-} from "../../styles/BoardStyled";
-import Comment from "../../assets/img/Commentpicture.png";
-import SecretboardAdd from "./secretboardadd";
-import leftarrow from "../../assets/img/leftarrow.png";
-import rightarrow from "../../assets/img/rightarrow.png";
-const Secreteboard=()=>{
+} from "../../../styles/BoardStyled";
+
+import Comment from "../../../assets/img/Commentpicture.png";
+import leftarrow from "../../../assets/img/leftarrow.png";
+import rightarrow from "../../../assets/img/rightarrow.png";
+const Freeboard = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search/${searchQuery}`);
+    }
+  };
   const [data, setData] = useState([]);
   const [click, setClick] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -33,7 +49,7 @@ const Secreteboard=()=>{
   const handleAddPost = async (newPost) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/secretboard/save",
+        "http://localhost:8080/api/freeboard/save",
         newPost
       ); // Adjust the endpoint as needed
       setData([...data, response.data]); // Add the new post returned from the server
@@ -47,7 +63,7 @@ const Secreteboard=()=>{
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/secretboard/read"
+          "http://localhost:8080/api/freeboard/read"
         ); // Replace with your API endpoint
         setData(response.data);
       } catch (error) {
@@ -91,15 +107,47 @@ const Secreteboard=()=>{
     return likes.reduce((acc, like) => acc + 1 + likes.replies.length, 0);
   };
 
-
-    return(<Alldiv>
+  return (
+    <Alldiv>
       <Bodydiv>
         <BoardInBody>
-          <Titlediv>비밀 게시판</Titlediv>
+          <Titlediv>자유 게시판</Titlediv>
+          <SecondInBody>
+            <FirstinSecondbody>
+              <QuestionImg src={Question} />
+              <QuestionOne>학점교류하고 성적</QuestionOne>
+              <QuestionOne>경주 맛집</QuestionOne>
+            </FirstinSecondbody>
 
+            <FirstinSecondbody>
+              <PopulationImg src={Population} />
+              <PopulationOne>
+                <span
+                  style={{
+                    color: "#666",
+                    fontSize: "14px",
+
+                    letterSpacing: "-0.5px", // 글자 사이 간격
+                  }}
+                >
+                  입대
+                </span>
+                <Likediv src={Likeimg} />
+                <span
+                  style={{
+                    color: "#F91F15",
+                    fontSize: "14px",
+                    marginLeft: "5px",
+                  }}
+                >
+                  12
+                </span>
+              </PopulationOne>
+            </FirstinSecondbody>
+          </SecondInBody>
 
           {click ? (
-            <SecretboardAdd onAddPost={handleAddPost} onCancel={handleAddClick} />
+            <FreeboardAdd onAddPost={handleAddPost} onCancel={handleAddClick} />
           ) : (
             <Writedivoff onClick={handleAddClick}>
               <Writecomment> 새 글을 작성해 주세요!</Writecomment>
@@ -112,7 +160,7 @@ const Secreteboard=()=>{
               <Eachseperateboard
                 key={post.id}
                 width={"80%"}
-                to={`/secretboard/${post.id}`}
+                to={`/freeboard/${post.id}`}
               >
                 <BoardTitle> {post.title}</BoardTitle>
                 <BoardContent>{post.content}</BoardContent>
@@ -120,7 +168,7 @@ const Secreteboard=()=>{
                   <LikeIcon src={Likeimg} />
                   <LikeCount>{post.likes}</LikeCount>
                   <CommentIcon src={Comment} />
-                  <CommentCount>{countComments(post.secretComment)}</CommentCount>
+                  <CommentCount>{countComments(post.freeComment)}</CommentCount>
                   <CommentTime>
                     {new Date(post.createdAt).toLocaleTimeString()}
                   </CommentTime>
@@ -145,10 +193,20 @@ const Secreteboard=()=>{
               </>
             )}
             {currentPage === 1 && indexOfLastItem < data.length && (
-              <Nextbutton onClick={handleNextPage}>
-                다음
-                <Rightarrow src={rightarrow} />
-              </Nextbutton>
+              <div style={{ display: "flex" }}>
+                <form onSubmit={handleSearchSubmit}>
+                  <SearchBar
+                    placeholder="자유 게시판의 글을 검색하세요!"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </form>
+
+                <Nextbutton onClick={handleNextPage}>
+                  다음
+                  <Rightarrow src={rightarrow} />
+                </Nextbutton>
+              </div>
             )}
             {currentPage != 1 && indexOfLastItem < data.length && (
               <>
@@ -170,11 +228,11 @@ const Secreteboard=()=>{
           </Pagination>
         </BoardInBody>
       </Bodydiv>
-    </Alldiv>)
-}
+    </Alldiv>
+  );
+};
 
-
-export default Secreteboard;
+export default Freeboard;
 
 const Leftarrow = styled.img`
   width: 10px;
@@ -224,7 +282,6 @@ const Previousbutton = styled.div`
 `;
 
 const Pagination = styled.div`
- 
   display: inline-block;
   //justify-content: space-between;
   width: 97.5%;

@@ -39,9 +39,14 @@ import Banner from "../assets/img/bannerAd.png";
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-  const [data, setData] = useState([]);
-  const [datasss, setDatasss] = useState([]);
-  const [datass, setDatass] = useState([]);
+  const [datafree, setDatafree] = useState([]);
+  const [datasec, setDatasec] = useState([]);
+  const [datagra, setDatagra] = useState([]);
+  const [dataadv,setDataadv] = useState([]);
+  const [datacir,setDatacir]= useState([]);
+  const [datafres,setDatafres]= useState([]);
+  const [datainf,setDatainf] = useState([]);
+  const [datasoc,setDatasoc] = useState([]);
 
   const reviews = [
     {
@@ -79,6 +84,24 @@ const Home = () => {
         const graduateBoardResponse = await axios.get(
           "http://localhost:8080/api/graduateboard/read"
         );
+        const advertiseBoardResponse = await axios.get(
+          "http://localhost:8080/api/advertiseboard/read"
+        );
+        const circleBoardResponse = await axios.get(
+          "http://localhost:8080/api/circleboard/read"
+        );
+
+        const freshmanBoardResponse = await axios.get(
+          "http://localhost:8080/api/freshmanboard/read"
+        );
+        const informationBoardResponse = await axios.get(
+          "http://localhost:8080/api/informationboard/read"
+        );
+
+        const socialBoardResponse = await axios.get(
+          "http://localhost:8080/api/socialboard/read"
+        );
+
 
         //get으로 담는 정보에 따라서 board type 정하기
         const freeBoardData = freeBoardResponse.data.map((post) => ({
@@ -94,9 +117,39 @@ const Home = () => {
           board: "graduateboard",
         }));
 
-        setData(freeBoardData);
-        setDatasss(secretBoardData);
-        setDatass(graduateBoardData);
+        const advertiseBoardData = advertiseBoardResponse.data.map((post) => ({
+          ...post,
+          board: "advertiseboard",
+        }));
+
+        const circleBoardData = circleBoardResponse.data.map((post) => ({
+          ...post,
+          board: "circleboard",
+        }));
+
+        const freshmanBoardData = freshmanBoardResponse.data.map((post) => ({
+          ...post,
+          board: "freshmanboard",
+        }));
+
+        const informationBoardData = informationBoardResponse.data.map((post) => ({
+          ...post,
+          board: "informationboard",
+        }));
+
+        const socialBoardData = socialBoardResponse.data.map((post) => ({
+          ...post,
+          board: "socialboard",
+        }));
+
+        setDatafree(freeBoardData);
+        setDatasec(secretBoardData);
+        setDatagra(graduateBoardData);
+        setDataadv(advertiseBoardData);
+        setDatacir(circleBoardData);
+        setDatafres(freshmanBoardData);
+        setDatainf(informationBoardData);
+        setDatasoc(socialBoardData);
 
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -107,18 +160,16 @@ const Home = () => {
     fetchData();
   }, []);
 
-  console.log(data);
   // boards에 게시판 늘어나면 채우기
   const boards = [
-    { title: "자유게시판", data: data, link:"freeboard"},
-    { title: "비밀게시판", data: datasss,link:"secretboard"},
-    { title: "졸업게시판", data: datass,link:"graduateboard" },
-    { title: "시사·이슈", data: datass,link:"graduateboard"},
-    { title: "장터게시판", data: datass,link:"graduateboard" },
-    { title: "정보게시판", data: datass,link:"graduateboard" },
-    { title: "홍보게시판", data: datass,link:"graduateboard" },
-    { title: "취업·진로", data: datass,link:"graduateboard"},
-    { title: "동아리·학회", data: datass,link:"graduateboard" },
+    { title: "자유게시판", data: datafree, link:"freeboard"},
+    { title: "비밀게시판", data: datasec,link:"secretboard"},
+    { title: "졸업게시판", data: datagra,link:"graduateboard" },
+    { title: "새내기게시판", data: datafres,link:"freshmanboard" },
+    { title: "시사·이슈", data: datasoc,link:"socialboard"},
+    { title: "정보게시판", data: datainf,link:"informationboard" },
+    { title: "홍보게시판", data: dataadv,link:"advertiseboard" },
+    { title: "동아리·학회", data: datacir,link:"circleboard" },
   ];
   return (
     <Alldiv>
@@ -156,7 +207,7 @@ const Home = () => {
                     <Eachboardword to={`/${board.link}`}>
                       {board.title}
                     </Eachboardword>
-                    {board.data.slice(0, 6).map((post) => (
+                    {board.data.slice().reverse().slice(0, 6).slice(0, 6).map((post) => (
                       <Eachseperateboard
                         key={post.id}
                         to={`/${post.board}/${post.id}`}

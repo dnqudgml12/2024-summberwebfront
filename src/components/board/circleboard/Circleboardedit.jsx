@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from "react";
 import styled from "styled-components";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Data } from "../../data/freeBoard";
+import { Data } from "../../../data/freeBoard";
 import {
   Addtextarea,
   Addtitle,
@@ -12,12 +12,12 @@ import {
   Savecancle,
   Savewrite,
 
-} from "../../styles/BoardStyled";
-import { Alldiv, Bodydiv, Eachseperateboard,BoardBody } from "../../styles/HomeStyled";
+} from "../../../styles/BoardStyled";
+import { Alldiv, Bodydiv, Eachseperateboard,BoardBody } from "../../../styles/HomeStyled";
 import axios from "axios";
-import Cancle from "../../assets/img/Cancle.png";
-import savebutton from "../../assets/img/Savebutton.png";
-const Freeboardedit=({id,onCancel})=>{
+import Cancle from "../../../assets/img/Cancle.png";
+import savebutton from "../../../assets/img/Savebutton.png";
+const Circleboardedit=({id,onCancel})=>{
 
     /*
     
@@ -43,7 +43,7 @@ const Freeboardedit=({id,onCancel})=>{
     useEffect(() => {
       const fetchPost = async () => {
         try {
-          const response = await axios.get(`http://localhost:8080/api/freeboard/read/${id}`); // Replace with your API endpoint
+          const response = await axios.get(`http://localhost:8080/api/circleboard/read/${id}`); // Replace with your API endpoint
           setpost(response.data);
         } catch (error) {
           console.error("Error fetching post", error);
@@ -69,10 +69,10 @@ const Freeboardedit=({id,onCancel})=>{
 
     const handleUpdatePost = async () => {
       try {
-        await axios.put(`http://localhost:8080/api/freeboard/update/${id}`, post); // Replace with your API endpoint
-        const response = await axios.get(`http://localhost:8080/api/freeboard/read/${id}`); // Replace with your API endpoint
+        await axios.put(`http://localhost:8080/api/circleboard/update/${id}`, post); // Replace with your API endpoint
+        const response = await axios.get(`http://localhost:8080/api/circleboard/read/${id}`); // Replace with your API endpoint
         setpost(response.data);
-        navigate("/freeboard");
+        navigate("/circleboard");
         
       } catch (error) {
         console.error("Error updating post", error);
@@ -105,4 +105,4 @@ const Freeboardedit=({id,onCancel})=>{
     );
   };
 
-export default Freeboardedit;
+export default Circleboardedit;

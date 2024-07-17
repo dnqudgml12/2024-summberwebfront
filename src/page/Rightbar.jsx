@@ -132,9 +132,8 @@ const Rightbar = () => {
 
   const sortedByComments = allPosts.sort((a, b) => b.commentCount - a.commentCount);
 
-  return (
-    <RightSidebar>
-           <form onSubmit={handleSearchSubmit}>
+  /**
+   *          <form onSubmit={handleSearchSubmit}>
         <SearchBar
           width={"100%"}
           placeholder="전체 게시판의 글을 검색하세요!"
@@ -142,6 +141,10 @@ const Rightbar = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </form>
+   */
+  return (
+    <RightSidebar>
+  
       <PopularPosts>
         <SectionTitle>실시간 인기 글</SectionTitle>
         {filteredPosts.slice(0, 2).map((post, index) => (

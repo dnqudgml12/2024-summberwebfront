@@ -1,7 +1,6 @@
 import React,{useState,useEffect} from "react";
 import styled from "styled-components";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Data } from "../../data/freeBoard";
 import {
   Addtextarea,
   Addtitle,
@@ -12,12 +11,12 @@ import {
   Savecancle,
   Savewrite,
 
-} from "../../styles/BoardStyled";
-import { Alldiv, Bodydiv, Eachseperateboard,BoardBody } from "../../styles/HomeStyled";
+} from "../../../styles/BoardStyled";
+import { Alldiv, Bodydiv, Eachseperateboard,BoardBody } from "../../../styles/HomeStyled";
 import axios from "axios";
-import Cancle from "../../assets/img/Cancle.png";
-import savebutton from "../../assets/img/Savebutton.png";
-const Graduateboardedit=({id,onCancel})=>{
+import Cancle from "../../../assets/img/Cancle.png";
+import savebutton from "../../../assets/img/Savebutton.png";
+const Informationboardedit=({id,onCancel})=>{
 
     /*
     
@@ -43,7 +42,7 @@ const Graduateboardedit=({id,onCancel})=>{
     useEffect(() => {
       const fetchPost = async () => {
         try {
-          const response = await axios.get(`http://localhost:8080/api/graduateboard/read/${id}`); // Replace with your API endpoint
+          const response = await axios.get(`http://localhost:8080/api/informationboard/read/${id}`); // Replace with your API endpoint
           setpost(response.data);
         } catch (error) {
           console.error("Error fetching post", error);
@@ -69,10 +68,10 @@ const Graduateboardedit=({id,onCancel})=>{
 
     const handleUpdatePost = async () => {
       try {
-        await axios.put(`http://localhost:8080/api/graduateboard/update/${id}`, post); // Replace with your API endpoint
-        const response = await axios.get(`http://localhost:8080/api/graduateboard/read/${id}`); // Replace with your API endpoint
+        await axios.put(`http://localhost:8080/api/informationboard/update/${id}`, post); // Replace with your API endpoint
+        const response = await axios.get(`http://localhost:8080/api/informationboard/read/${id}`); // Replace with your API endpoint
         setpost(response.data);
-        navigate("/graduateboard");
+        navigate("/informationboard");
         
       } catch (error) {
         console.error("Error updating post", error);
@@ -105,4 +104,4 @@ const Graduateboardedit=({id,onCancel})=>{
     );
   };
 
-export default Graduateboardedit;
+export default Informationboardedit;

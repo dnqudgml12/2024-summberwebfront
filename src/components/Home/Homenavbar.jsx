@@ -164,16 +164,14 @@ const Dropdownmenu = () => {
           졸업생게시판 <Symbol>•</Symbol>
         </MenuItem>
         <MenuItem
-          onClick={() => {
-            alert("아직 준비 중입니다.");
-          }}
+             to="/freshmanboard"
+             onClick={() => setActiveMenuItem("/freshmanboard")}
         >
           새내기게시판 <Symbol>•</Symbol>
         </MenuItem>
         <MenuItem
-          onClick={() => {
-            alert("아직 준비 중입니다.");
-          }}
+               to="/socialboard"
+               onClick={() => setActiveMenuItem("/socialboard")}
         >
           시사·이슈 <Symbol>•</Symbol>
         </MenuItem>
@@ -185,16 +183,14 @@ const Dropdownmenu = () => {
           장터게시판 <Symbol>•</Symbol>
         </MenuItem>
         <MenuItem
-          onClick={() => {
-            alert("아직 준비 중입니다.");
-          }}
+             to="/informationboard"
+             onClick={() => setActiveMenuItem("/informationboard")}
         >
           정보게시판 <Symbol>•</Symbol>
         </MenuItem>
         <MenuItem
-          onClick={() => {
-            alert("아직 준비 중입니다.");
-          }}
+             to="/advertiseboard"
+             onClick={() => setActiveMenuItem("/advertiseboard")}
         >
           홍보게시판 <Symbol>•</Symbol>
         </MenuItem>
@@ -202,9 +198,8 @@ const Dropdownmenu = () => {
       <Separator />
       <MenuColumn>
         <MenuItem
-          onClick={() => {
-            alert("아직 준비 중입니다.");
-          }}
+             to="/circleboard"
+             onClick={() => setActiveMenuItem("/circleboard")}
         >
           동아리·학회 <Symbol>•</Symbol>
         </MenuItem>

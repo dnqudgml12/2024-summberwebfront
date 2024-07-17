@@ -1,31 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Data } from "../../data/freeBoard";
-import {
-  Alldiv,
-  Bodydiv,
-  Eachseperateboard,
-  BoardBody,
-} from "../../styles/HomeStyled";
-import Freeboardedit from "./Freeboardedit";
+
+import { Alldiv, Bodydiv } from "../../../styles/HomeStyled";
 import axios from "axios";
-/*
-     const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    axios.get("/api/graduateboard").then((response) => {
-      setPosts(response.data);
-    });
-  }, []);
-
-  const handleDeletePost = (id) => {
-    axios.delete(`/api/graduateboard/${id}`).then(() => {
-      setPosts(posts.filter((post) => post.id !== id));
-    });
-  };
-
-     */
 import {
   BoardInBody,
   Imgandnameinfrom,
@@ -64,15 +42,17 @@ import {
   ReplyDiv,
   Replycontent,
   Replydate,
-} from "../../styles/BoardStyled";
-
-import anony from "../../assets/img/anonypicture.png";
-import Comment from "../../assets/img/Commentpicture.png";
-import Likeimg from "../../assets/img/Likediv.png";
-import likedetail from "../../assets/img/Likedetail.png";
-import savebutton from "../../assets/img/Savebutton.png";
+} from "../../../styles/BoardStyled";
+import anony from "../../../assets/img/anonypicture.png";
+import Comment from "../../../assets/img/Commentpicture.png";
+import Likeimg from "../../../assets/img/Likediv.png";
+import likedetail from "../../../assets/img/Likedetail.png";
+import savebutton from "../../../assets/img/Savebutton.png";
 import { BiLike } from "react-icons/bi";
-const FreeboardDetail = () => {
+
+import Socialboardedit from "./Socialboardedit";
+
+const Socialboarddetail = () => {
   const { id } = useParams();
   const [post, setPost] = useState(); // 초기 상태를 null로 설정
   const [newComment, setNewComment] = useState("");
@@ -82,8 +62,7 @@ const FreeboardDetail = () => {
   const [commentCount, setCommentCount] = useState(0); // 전체 댓글 수를 관리
   const [liked, setLiked] = useState(false);
 
-  const [click, setClick] = useState(false);// 관리 수정 상태
-
+  const [click, setClick] = useState(false);
   const handleAddClick = () => {
     setClick(!click);
   };
@@ -92,11 +71,11 @@ const FreeboardDetail = () => {
     const fetchPost = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/freeboard/read/${id}`
+          `http://localhost:8080/api/socialboard/read/${id}`
         ); // Replace with your API endpoint
         setPost(response.data);
         setCommentCount(
-          response.data.freeComment.reduce(
+          response.data.socialComment.reduce(
             (count, comment) => count + 1 + comment.replies.length,
             0
             //reduce 배열의 각 요소에 대해 주어진 함수를 실행하여 하나의 결과값을 생성
@@ -115,8 +94,8 @@ const FreeboardDetail = () => {
 
   const handleDeletePost = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/freeboard/delete/${id}`);
-      navigate("/freeboard");
+      await axios.delete(`http://localhost:8080/api/socialboard/delete/${id}`);
+      navigate("/socialboard");
     } catch (error) {
       console.error("Error deleting post", error);
     }
@@ -137,17 +116,17 @@ const FreeboardDetail = () => {
 
     try {
       await axios.post(
-        `http://localhost:8080/api/freeboard/${id}/comments`,
+        `http://localhost:8080/api/socialboard/${id}/comments`,
         newCommentObj
       );
       const response = await axios.get(
-        `http://localhost:8080/api/freeboard/read/${id}`
+        `http://localhost:8080/api/socialboard/read/${id}`
       );
       setPost(response.data);
       setCommentCount(commentCount + 1);
       setNewComment("");
       setReplyTo(null);
-      navigate(`/freeboard/${id}`);
+      navigate(`/socialboard/${id}`);
     } catch (error) {
       console.error("Error adding comment", error);
     }
@@ -187,16 +166,16 @@ const FreeboardDetail = () => {
       content: newReply,
       author: `익명${commentCount + 1}`,
     };
-    navigate(`/freeboard/${id}`);
+    navigate(`/socialboard/${id}`);
     try {
       await axios.post(
-        `http://localhost:8080/api/freeboard/${id}/comments/${commentId}/replies`,
+        `http://localhost:8080/api/socialboard/${id}/comments/${commentId}/replies`,
         newReplyObj
       );
 
       //post 하는 동안, get을 가져옴
       const response = await axios.get(
-        `http://localhost:8080/api/freeboard/read/${id}`
+        `http://localhost:8080/api/socialboard/read/${id}`
       );
       setPost(response.data);
       setCommentCount(commentCount + 1);
@@ -246,14 +225,14 @@ const FreeboardDetail = () => {
     // 좋아요 누르면 그 상태를 db에 저장(true,false)
     try {
       if (!liked) {
-        await axios.post(`http://localhost:8080/api/freeboard/like/${id}`); //좋아요 눌린상태+1
+        await axios.post(`http://localhost:8080/api/socialboard/like/${id}`); //좋아요 눌린상태+1
         setLiked(true);
       } else {
-        await axios.delete(`http://localhost:8080/api/freeboard/unlike/${id}`); // 좋아요 취소한 상태 -1
+        await axios.delete(`http://localhost:8080/api/socialboard/unlike/${id}`); // 좋아요 취소한 상태 -1
         setLiked(false);
       }
       const response = await axios.get(
-        `http://localhost:8080/api/freeboard/read/${id}`
+        `http://localhost:8080/api/socialboard/read/${id}`
       );
       setPost(response.data); // Update the post with the new like count
       setLiked(response.data.likeStatus);
@@ -273,7 +252,7 @@ const FreeboardDetail = () => {
     <Alldiv>
       <Bodydiv>
         <BoardInBody>
-          <Titlediv>자유게시판</Titlediv>
+          <Titlediv>비밀게시판</Titlediv>
           {post ? (
             <>
               <SecondIndetailBody>
@@ -296,7 +275,7 @@ const FreeboardDetail = () => {
                 </Imgandnameinfrom>
 
                 {click ? (
-                  <Freeboardedit id={post.id} onCancel={handleAddClick} />
+                  <Socialboardedit id={post.id} onCancel={handleAddClick} />
                 ) : (
                   <>
                     <Titledetaildiv>{post.title}</Titledetaildiv>
@@ -308,7 +287,7 @@ const FreeboardDetail = () => {
                   <LikeIcon src={Likeimg} />
                   <LikeCount>{post.likes}</LikeCount>
                   <CommentIcon src={Comment} />
-                  <CommentCount>{countComments(post.freeComment)}</CommentCount>
+                  <CommentCount>{countComments(post.socialComment)}</CommentCount>
                 </Likecommentdiv>
                 <Likedetaildiv>
                   {!liked ? (
@@ -340,8 +319,8 @@ const FreeboardDetail = () => {
                 </Likedetaildiv>
 
                 <>
-                  {post.freeComment.length > 0 ? (
-                    post.freeComment.map((comment) => (
+                  {post.socialComment.length > 0 ? (
+                    post.socialComment.map((comment) => (
                       <Commentbox key={comment.id}>
                         <Namepicturecomment>
                           <Picturecomment src={anony} />
@@ -384,7 +363,7 @@ const FreeboardDetail = () => {
                                 <Namecomment>{reply.author}</Namecomment>
 
                                 <Likecomment
-                                  marginleft={"73%;"}
+                               marginleft={"73%;"}
                                   onClick={() => {
                                     alert("좋아요 기능 구현 예정");
                                   }}
@@ -407,33 +386,28 @@ const FreeboardDetail = () => {
                                 </Singoomment>
                               </Namepicturecomment>
 
-                              <Replycontent>
-                                {reply.content}
-                              </Replycontent>
+                              <Replycontent>{reply.content}</Replycontent>
                               <Replydate>
-                              {new Date(post.createdAt).toLocaleTimeString()}
+                                {new Date(post.createdAt).toLocaleTimeString()}
                               </Replydate>
                             </ReplyDiv>
-
-                            
                           ))}
 
-
-                        {replyTo === comment.id && (
-                          <Replysavedetail>
-                            <Inputreplydetail
-                              value={newReply}
-                              onChange={(e) => setNewReply(e.target.value)}
-                              placeholder="대댓글을 입력하세요."
-                            />
-                            <Savewritedetail
-                              type="button"
-                              onClick={() => handleAddReply(comment.id)}
-                            >
-                              <Buttonimgsave src={savebutton} />
-                            </Savewritedetail>
-                          </Replysavedetail>
-                        )}
+                          {replyTo === comment.id && (
+                            <Replysavedetail>
+                              <Inputreplydetail
+                                value={newReply}
+                                onChange={(e) => setNewReply(e.target.value)}
+                                placeholder="대댓글을 입력하세요."
+                              />
+                              <Savewritedetail
+                                type="button"
+                                onClick={() => handleAddReply(comment.id)}
+                              >
+                                <Buttonimgsave src={savebutton} />
+                              </Savewritedetail>
+                            </Replysavedetail>
+                          )}
                         </>
                       </Commentbox>
                     ))
@@ -464,7 +438,7 @@ const FreeboardDetail = () => {
   );
 };
 
-export default FreeboardDetail;
+export default Socialboarddetail;
 
 const LikeIcon = styled.img`
   width: 10px;

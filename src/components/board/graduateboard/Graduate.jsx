@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import { Data as initialData } from "../../data/freeBoard";
-import { Alldiv, Bodydiv, BoardBody } from "../../styles/HomeStyled";
+
+import { Alldiv, Bodydiv, BoardBody } from "../../../styles/HomeStyled";
 
 import axios from "axios";
-import Population from "../../assets/img/Population.png";
-import Question from "../../assets/img/Questionimg.png";
-import Likeimg from "../../assets/img/Likediv.png";
-import writeimg from "../../assets/img/writeimg.png";
+import Population from "../../../assets/img/Population.png";
+import Question from "../../../assets/img/Questionimg.png";
+import Likeimg from "../../../assets/img/Likediv.png";
+import writeimg from "../../../assets/img/writeimg.png";
 import {
   Titlediv,
   BoardInBody,
@@ -26,10 +26,10 @@ import {
   BoardAlldiv,
   BoardTitle,
   BoardContent,
-} from "../../styles/BoardStyled";
-import Comment from "../../assets/img/Commentpicture.png";
-import leftarrow from "../../assets/img/leftarrow.png";
-import rightarrow from "../../assets/img/rightarrow.png";
+} from "../../../styles/BoardStyled";
+import Comment from "../../../assets/img/Commentpicture.png";
+import leftarrow from "../../../assets/img/leftarrow.png";
+import rightarrow from "../../../assets/img/rightarrow.png";
 const Graduateboard = () => {
   const [data, setData] = useState([]);
   const [click, setClick] = useState(false);
