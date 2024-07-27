@@ -120,6 +120,8 @@ const Freeboard = () => {
     if (!comments) return 0; // comments가 undefined인 경우 0을 반환
     return comments.reduce((acc, comment) => acc + 1 + (comment.replies ? comment.replies.length : 0), 0);
   };
+
+  console.log(`${import.meta.env.VITE_API_URL}/api/freeboard/read`);
   
 
 
