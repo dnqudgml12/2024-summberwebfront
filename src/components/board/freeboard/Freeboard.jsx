@@ -78,7 +78,7 @@ const Freeboard = () => {
   const fetchData = async (page) => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/read/paginated?page=${page}&size=${itemsPerPage}&size=${itemsPerPage}&sortBy=createdAt&sortDir=desc`
+        `${import.meta.env.VITE_API_URL}/api/freeboard/read/paginated?page=${page}&size=${itemsPerPage}&size=${itemsPerPage}&sortBy=createdAt&sortDir=desc`
         // 현재 페이지에 요청하는 갯수만큼 서버에서 불러서 가져오겠다
       );
       setData(response.data.content || []); // response.data.content가 undefined일 경우 빈 배열로 설정

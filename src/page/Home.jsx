@@ -85,7 +85,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const freeBoardResponse = await axios.get(
-          "http://localhost:8080/api/freeboard/read"
+          `${import.meta.env.VITE_API_URL}/api/freeboard/read`
         );
         const secretBoardResponse = await axios.get(
           "http://localhost:8080/api/secretboard/read"
@@ -108,7 +108,7 @@ const Home = () => {
         );
 
         const socialBoardResponse = await axios.get(
-          "http://localhost:8080/api/socialboard/read"
+          `${import.meta.env.VITE_API_URL}/api/socialboard/read`
         );
 
 
