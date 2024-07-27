@@ -121,7 +121,7 @@ const Freeboard = () => {
     return comments.reduce((acc, comment) => acc + 1 + (comment.replies ? comment.replies.length : 0), 0);
   };
 
-  console.log(`${import.meta.env.VITE_API_URL}/api/freeboard/read`);
+  console.log(`aa,${import.meta.env.VITE_API_URL}/api/freeboard/read`);
   
 
 
