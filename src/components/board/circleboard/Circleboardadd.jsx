@@ -50,7 +50,9 @@ const CircleboardAdd = ({ onAddPost, onCancel }) => {
     title: "",
     content: "",
     author: "Dummy User",
+    imagePath: null, // New state for image file
   });
+  const [imagePreview, setImagePreview] = useState(null);
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -58,12 +60,30 @@ const CircleboardAdd = ({ onAddPost, onCancel }) => {
     setnewpost({ ...newpost, [name]: value });
   };
 
-  const handleAddPost = () => {
-    // Data.push({ id: Data.length + 1, ...newpost });
-    onAddPost(newpost);
-    setnewpost({ title: "", content: "", author: "Dummy User" });
-    navigate("/circleboard");
+  const handleAddPost = async () => {
+    const formData = new FormData();
+    formData.append("title", newpost.title);
+    formData.append("author", newpost.author);
+    formData.append("content", newpost.content);
+    if (newpost.imagePath) {
+      formData.append("imageFile", newpost.imagePath);
+    }
+
+    try {
+      await onAddPost(formData);
+      setnewpost({ title: "", content: "", author: "Dummy User", imagePath: null });
+      setImagePreview(null);
+      navigate("/circleboard");
+    } catch (error) {
+      console.error("Error uploading post:", error);
+    }
   };
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setnewpost({ ...newpost, imagePath: file });
+    setImagePreview(URL.createObjectURL(file));
+  };
+
   /** 
      * // 이 부분 없애고 dummyUser로 값들어가도록 하였다 로그인한 유저로 값들어가도록 할 예정
      * 
@@ -114,6 +134,13 @@ const CircleboardAdd = ({ onAddPost, onCancel }) => {
     - 욕설, 비하, 차별, 음성, 사칭, 폭력적, 선정적 내용을 포함한 게시물 작성 행위
     - 스포일러, 공포, 속임, 놀라게 하는 행위"
       />
+       <input
+        type="file"
+        name="imageFile"
+        onChange={handleFileChange}
+        accept="image/*"
+      />
+       {imagePreview && <img src={imagePreview} alt="Image Preview" style={{ width: "100px", height: "100px" }} />}
       <div style={{ width: "auto", display: "flex", height: "40px" }}>
         <Savewrite type="button" onClick={handleAddPost}>
           <Buttonimgsave src={savebutton}/>

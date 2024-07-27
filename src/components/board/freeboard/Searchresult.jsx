@@ -152,14 +152,6 @@ const Search = () => {
             </FirstinSecondbody>
           </SecondInBody>
 
-          {click ? (
-            <FreeboardAdd onAddPost={handleAddPost} onCancel={handleAddClick} />
-          ) : (
-            <Writedivoff onClick={handleAddClick}>
-              <Writecomment> 새 글을 작성해 주세요!</Writecomment>
-              <Writeimg src={writeimg}></Writeimg>
-            </Writedivoff>
-          )}
 
           <BoardAlldiv>
             {filteredPosts.length === 0 ? (

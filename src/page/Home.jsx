@@ -34,9 +34,17 @@ import mypic from "../assets/img/mypicture.jpeg";
 import AD1 from "../assets/img/AD1.jpg";
 import AD2 from "../assets/img/AD2.png";
 import AD3 from "../assets/img/AD3.png";
+import mywrting from "../assets/img/mywriting.png";
+import mycomment from "../assets/img/mycomment.png";
+import myscrab from "../assets/img/myscrab.png";
 import Banner from "../assets/img/bannerAd.png";
-
+import { useRecoilValue } from "recoil";
+import { userState } from "../context/useStates";
+import anony from "../assets/img/anonypicture.png";
+import GoogleAuthLogin from "../components/loginButton";
+import { useRecoilState, useResetRecoilState } from "recoil";
 const Home = () => {
+  const API = import.meta.env.VITE_API_URL; //vite로 빌드시에 env에서 꺼내는 방식이다.
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const [datafree, setDatafree] = useState([]);
@@ -47,7 +55,8 @@ const Home = () => {
   const [datafres,setDatafres]= useState([]);
   const [datainf,setDatainf] = useState([]);
   const [datasoc,setDatasoc] = useState([]);
-
+  const resetUserState = useResetRecoilState(userState);
+  const userInform= useRecoilValue(userState);
   const reviews = [
     {
       rating: 4,
@@ -171,21 +180,76 @@ const Home = () => {
     { title: "홍보게시판", data: dataadv,link:"advertiseboard" },
     { title: "동아리·학회", data: datacir,link:"circleboard" },
   ];
+
+  const handleLogout = async () => {
+    fetch(`${API}/api/logout`, {
+      method: "POST",
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("로그아웃 실패했다 문제는 서버와의 통신");
+        }
+        resetUserState();
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("서버와의 통신 오류 또는 로그아웃 작업 실패", error);
+      });
+  };
+
   return (
     <Alldiv>
       <Bodydiv>
         <Boardalldiv>
           <Leftboard align={"center"} border={"1px solid gray"} width={"175px"}>
-            <Profilebox>
-              <Myprofile src={mypic} />
-              <Myname>우병희 학부생</Myname>
-              <Myemail>우병희</Myemail>
-              <Myemail>bwyd123</Myemail>
-            </Profilebox>
+          {!userInform ? (<Profilebox>
+           
+           <Myprofile src={anony} />
+           <Myname>정보 없음</Myname>
+           <Myemail>정보 없음</Myemail>
+           <Myemailloginout onClick={()=>{
+            const userConfirmed = window.confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
+            if (userConfirmed) {
+              window.location.href = "http://localhost:8080/oauth2/authorization/google";
+            }
+           }}>로그인 하세요</Myemailloginout>
+
+         </Profilebox>):(<Profilebox>
+           
+           <Myprofile src={anony} />
+           <Myname>{userInform.name}</Myname>
+           <Myemail>{userInform.email}</Myemail>
+           <Myemailloginout onClick={handleLogout}>로그아웃</Myemailloginout>
+         </Profilebox>)}
+            
             <Infrombox>
-              <Informeach>내가 쓴글</Informeach>
-              <Informeach>댓글 단글</Informeach>
-              <Informeach borderbottom={"none"}>내 스크랩</Informeach>
+              {userInform  ?(
+           
+                
+                <Informeach to="/mypage"
+              ><Myimgdiv src={mywrting}/>내가 쓴글</Informeach>
+           ):
+              (
+            
+                
+              <Informeach onClick={()=>{
+                const userConfirmed = window.confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
+                if (userConfirmed) {
+                  window.location.href = "http://localhost:8080/oauth2/authorization/google";
+                }
+              }}>  <Myimgdiv src={mywrting}/>내가 쓴글</Informeach>
+              )}
+              
+              <Informeach onClick={()=>{
+                alert("기능 구현 중입니다");
+
+              }}><Myimgdiv src={mycomment}/>댓글 단글</Informeach>
+              <Informeach onClick={()=>{
+                alert("기능 구현 중입니다");
+
+              }}
+              borderbottom={"none"}><Myimgdiv src={myscrab}/>내 스크랩</Informeach>
             </Infrombox>
             <ADbox>
               <Img src={AD1} />
@@ -233,7 +297,15 @@ export default Home;
 
 
 
+const Myimgdiv=styled.img`
 
+width: 10px;
+  height: 10px;
+  margin-left: -30px;
+  margin-right: 5px;
+  font-size: 12px;
+  font-weight: 300;
+`
 const Myprofile = styled.img`
   margin: 15px auto;
   width: 60px;
@@ -259,27 +331,20 @@ const Myemail = styled.div`
   font-size: 12px;
   text-align: center;
 `;
-const Mywriting = styled(Link)`
-  margin-top: 30px;
-  width: 120px;
-  height: 30px;
-  font-size: 20px;
-  padding-top: 7px;
-  &:hover {
-    background-color: gray;
-  }
-  text-decoration: none;
-  border: 1px solid gray;
-`;
-const Mycomment = styled(Link)`
-  margin-top: 30px;
-  width: 120px;
-  height: 30px;
-  font-size: 20px;
-  padding-top: 7px;
-  &:hover {
-    background-color: gray;
-  }
-  text-decoration: none;
-  border: 1px solid gray;
+const Myemailloginout = styled.div`
+width:auto;
+padding-top: 10px;
+padding-bottom: 10px;
+cursor: pointer;
+margin-top: 30px;
+  line-height: 15px;
+
+box-sizing: border-box;
+  border: 1px solid #d6d6d6;
+    border-radius: 3px;
+    line-height: 25px;
+    color: #737373;
+    font-size: 13px;
+
+ 
 `;

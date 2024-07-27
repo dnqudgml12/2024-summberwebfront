@@ -48,7 +48,8 @@ export const Infrombox = styled.div`
   height: 124px;
 `;
 
-export const Informeach = styled.div`
+export const Informeach = styled(Link)`
+  text-decoration: none;
   width: 100%;
   display: block;
   padding: 10px 0 10px 37px;
@@ -59,6 +60,7 @@ export const Informeach = styled.div`
   color: #444444;
   font-size: 14px;
   background-size: 12px auto;
+
   //background-position: 15px center;
 `;
 

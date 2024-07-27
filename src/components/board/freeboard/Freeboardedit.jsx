@@ -15,6 +15,7 @@ import {
 } from "../../../styles/BoardStyled";
 import { Alldiv, Bodydiv, Eachseperateboard,BoardBody } from "../../../styles/HomeStyled";
 import axios from "axios";
+import useApiClient from "../../../api/apiClient";
 import Cancle from "../../../assets/img/Cancle.png";
 import savebutton from "../../../assets/img/Savebutton.png";
 const Freeboardedit=({id,onCancel})=>{
@@ -29,7 +30,8 @@ const Freeboardedit=({id,onCancel})=>{
 
     //const { id } = useParams();
     const navigate = useNavigate();
-    const [post, setpost] = useState({ title: "", content: "", author: "Dummy User", });
+    const apiClient = useApiClient();
+    const [post, setpost] = useState({ title: "", content: "" });
   
     /*
     useEffect(() => {
@@ -66,18 +68,18 @@ const Freeboardedit=({id,onCancel})=>{
       }
     };
   */
-
     const handleUpdatePost = async () => {
       try {
-        await axios.put(`http://localhost:8080/api/freeboard/update/${id}`, post); // Replace with your API endpoint
-        const response = await axios.get(`http://localhost:8080/api/freeboard/read/${id}`); // Replace with your API endpoint
-        setpost(response.data);
+        console.log(`Updating post with id: ${id}`);  // Logging for debugging
+        console.log(post);  // Logging the post data
+        await apiClient.put(`/api/freeboard/update/${id}`, post);
+       
         navigate("/freeboard");
-        
       } catch (error) {
         console.error("Error updating post", error);
       }
     };
+    
     return (
       <Formaddstyld onSubmit={(e) => e.preventDefault()}>
          <Addtitle

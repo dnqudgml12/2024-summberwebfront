@@ -28,59 +28,63 @@ import CircleboardAdd from "./Circleboardadd";
 const Circleboard=()=>{
   const [data, setData] = useState([]);
   const [click, setClick] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   const itemsPerPage = 20;
 
-  const handleAddPost = async (newPost) => {
+ const handleAddPost = async (newPost) => {
     try {
       const response = await axios.post(
         "http://localhost:8080/api/circleboard/save",
         newPost
-      ); // Adjust the endpoint as needed
-      setData([...data, response.data]); // Add the new post returned from the server
+      );
+      const updatedData = [response.data, ...data]; // 새 게시글을 맨 위에 추가합니다.
+
+      //const updatedData = [...data, response.data];
+      //updatedData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // createdAt을 기준으로 내림차순 정렬합니다.
+      setData(updatedData);
     } catch (error) {
       console.error("Error adding post:", error);
     }
   };
-
   useEffect(() => {
-    // Fetch data from the API
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/circleboard/read"
-        ); // Replace with your API endpoint
-        setData(response.data);
+          `http://localhost:8080/api/circleboard/read/paginated?page=${currentPage}&size=${itemsPerPage}&size=${itemsPerPage}&sortBy=createdAt&sortDir=desc`
+          // 현재 페이지에 요청하는 갯수만큼 서버에서 불러서 가져오겠다
+        );
+        setData(response.data.content);
+        setTotalPages(response.data.totalPages);
+        // 서버에서 totalPages라는 entity를 따로 만들지 않았지만 pagination을 위해 이용한 JPA Page객체가 자동으로 가지고 있는 속성이다.
       } catch (error) {
         console.error("Error fetching data", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [currentPage]);
 
   const handleAddClick = () => {
     setClick(!click);
   };
 
-  const handleFirstPage = () => {
-    setCurrentPage(1);
-  };
-
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data
-    .slice()
-    .reverse()
-    .slice(indexOfFirstItem, indexOfLastItem);
-
   const handleNextPage = () => {
-    setCurrentPage(currentPage + 1);
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
   const handlePrevPage = () => {
-    setCurrentPage(currentPage - 1);
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
   };
+
+  const handleFirstPage = () => {
+    setCurrentPage(0);
+  };
+
   const countComments = (comments) => {
     return comments.reduce(
       (acc, comment) => acc + 1 + comment.replies.length,
@@ -88,15 +92,11 @@ const Circleboard=()=>{
     );
   };
 
-  const countLikes = (likes) => {
-    return likes.reduce((acc, like) => acc + 1 + likes.replies.length, 0);
-  };
-
 
     return(<Alldiv>
       <Bodydiv>
         <BoardInBody>
-          <Titlediv>비밀 게시판</Titlediv>
+          <Titlediv>클럽 게시판</Titlediv>
 
 
           {click ? (
@@ -109,7 +109,7 @@ const Circleboard=()=>{
           )}
 
           <BoardAlldiv>
-            {currentItems.map((post) => (
+            {data.map((post) => (
               <Eachseperateboard
                 key={post.id}
                 width={"80%"}
@@ -132,8 +132,8 @@ const Circleboard=()=>{
           </BoardAlldiv>
 
           <Pagination>
-            {currentPage === 1 && indexOfLastItem >= data.length && null}
-            {currentPage != 1 && indexOfLastItem >= data.length && (
+          {currentPage === 0 && data.length < itemsPerPage && null}
+          {currentPage !== 0 && data.length < itemsPerPage && (
               <>
                 <Previousbutton onClick={handlePrevPage}>
                   <Leftarrow src={leftarrow} />
@@ -145,13 +145,13 @@ const Circleboard=()=>{
                 </Previousbutton>
               </>
             )}
-            {currentPage === 1 && indexOfLastItem < data.length && (
+            {currentPage === 0 && data.length === itemsPerPage &&  (
               <Nextbutton onClick={handleNextPage}>
                 다음
                 <Rightarrow src={rightarrow} />
               </Nextbutton>
             )}
-            {currentPage != 1 && indexOfLastItem < data.length && (
+            {currentPage !== 0 && data.length === itemsPerPage && (
               <>
                 <Previousbutton onClick={handleFirstPage}>
                   <Leftarrow src={leftarrow} />

@@ -247,7 +247,11 @@ const Circleboarddetail = () => {
       0
     );
   };
-
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return null;
+    return `http://localhost:8080${imagePath}`;
+  };
+  
   return (
     <Alldiv>
       <Bodydiv>
@@ -280,6 +284,13 @@ const Circleboarddetail = () => {
                   <>
                     <Titledetaildiv>{post.title}</Titledetaildiv>
                     <Contentdetaildiv>{post.content}</Contentdetaildiv>
+                    {post.imagePath && (
+  <img
+    style={{ width: "300px", height: "100px" }}
+    src={getImageUrl(post.imagePath)}
+    alt="Post"
+  />
+)}
                   </>
                 )}
 

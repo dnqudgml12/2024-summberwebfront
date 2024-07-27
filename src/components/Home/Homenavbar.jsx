@@ -4,7 +4,7 @@ import { Link, useNavigate, NavLink, useLocation } from "react-router-dom";
 import everyimg from "../../assets/img/nav.logo.png";
 import Chat from "../../assets/img/chatlogo.png";
 import Inform from "../../assets/img/informlogo.png";
-
+import GoogleAuthLogin from "../loginButton";
 const Homenavbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -130,6 +130,8 @@ const Homenavbar = () => {
             }}
           />
         </Chatandinformbox>
+        <GoogleAuthLogin/>
+
       </Wrapper>
       {/*
       {board && (

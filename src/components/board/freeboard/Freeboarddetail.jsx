@@ -72,6 +72,9 @@ import Likeimg from "../../../assets/img/Likediv.png";
 import likedetail from "../../../assets/img/Likedetail.png";
 import savebutton from "../../../assets/img/Savebutton.png";
 import { BiLike } from "react-icons/bi";
+import useApiClient from "../../../api/apiClient";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../context/useStates";
 const FreeboardDetail = () => {
   const { id } = useParams();
   const [post, setPost] = useState(); // 초기 상태를 null로 설정
@@ -83,11 +86,12 @@ const FreeboardDetail = () => {
   const [liked, setLiked] = useState(false);
 
   const [click, setClick] = useState(false);// 관리 수정 상태
-
+  const userInform = useRecoilValue(userState) || {}; 
+  // 기본값 설정, null이어도 빈 값 가지도록, 이렇게 안하니까 수정삭제 보여주는 부분에서 로그인 안한다면 null로서 값을 안가져서 에러 나게 되었음
   const handleAddClick = () => {
     setClick(!click);
   };
-
+  const apiClient = useApiClient();
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -115,7 +119,7 @@ const FreeboardDetail = () => {
 
   const handleDeletePost = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/freeboard/delete/${id}`);
+      await apiClient.delete(`/api/freeboard/delete/${id}`);
       navigate("/freeboard");
     } catch (error) {
       console.error("Error deleting post", error);
@@ -263,12 +267,10 @@ const FreeboardDetail = () => {
   };
   console.log(post, "aa");
   const countComments = (comments) => {
-    return comments.reduce(
-      (acc, comment) => acc + 1 + comment.replies.length,
-      0
-    );
+    if (!comments) return 0; // comments가 undefined인 경우 0을 반환
+    return comments.reduce((acc, comment) => acc + 1 + (comment.replies ? comment.replies.length : 0), 0);
   };
-
+  
   return (
     <Alldiv>
       <Bodydiv>
@@ -285,14 +287,14 @@ const FreeboardDetail = () => {
                       {new Date(post.createdAt).toLocaleTimeString()}
                     </Dates>
                   </NameandTime>
-
-                  <DeleteandModity>
-                  <Modifydiv onClick={handleAddClick}>
-                      {click ? "" : "수정"}
-                    </Modifydiv>
-
-                    <Deletediv onClick={handleDeletePost}>삭제</Deletediv>
-                  </DeleteandModity>
+                  {userInform.memberId != null && post.member.id === userInform.memberId ? (
+                    <DeleteandModity>
+                      <Modifydiv onClick={handleAddClick}>
+                        {click ? "" : "수정"}
+                      </Modifydiv>
+                      <Deletediv onClick={handleDeletePost}>삭제</Deletediv>
+                    </DeleteandModity>
+                  ) : null}
                 </Imgandnameinfrom>
 
                 {click ? (

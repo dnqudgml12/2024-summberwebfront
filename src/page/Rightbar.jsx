@@ -49,18 +49,19 @@ const Rightbar = () => {
         );
 
         //get으로 담는 정보에 따라서 board type 정하기
-        const freeBoardData = freeBoardResponse.data.map((post) => ({
+        const freeBoardData = (freeBoardResponse.data || []).map((post) => ({
           ...post,
           board: "freeboard",
         }));
-        const secretBoardData = secretBoardResponse.data.map((post) => ({
+        const secretBoardData = (secretBoardResponse.data || []).map((post) => ({
           ...post,
           board: "secretboard",
         }));
-        const graduateBoardData = graduateBoardResponse.data.map((post) => ({
+        const graduateBoardData = (graduateBoardResponse.data || []).map((post) => ({
           ...post,
           board: "graduateboard",
         }));
+
 
         setData(freeBoardData);
         setDatasss(secretBoardData);
@@ -113,12 +114,10 @@ const Rightbar = () => {
     },
   ];
   const countComments = (comments) => {
-    return comments.reduce(
-      (acc, comment) => acc + 1 + comment.replies.length,
-      0
-    );
+    if (!comments) return 0; // comments가 undefined인 경우 0을 반환
+    return comments.reduce((acc, comment) => acc + 1 + (comment.replies ? comment.replies.length : 0), 0);
   };
-
+  
   // comment의 수에 따라서 hot게시물 지정하기 위한 것
   const allPosts = [...data, ...datasss, ...datass].map((post) => ({
     ...post,

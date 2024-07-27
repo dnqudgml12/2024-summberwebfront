@@ -29,6 +29,9 @@ import {
 import Comment from "../../../assets/img/Commentpicture.png";
 import leftarrow from "../../../assets/img/leftarrow.png";
 import rightarrow from "../../../assets/img/rightarrow.png";
+import useApiClient from "../../../api/apiClient";
+import { useRecoilState } from 'recoil';
+import { currentPageState, totalPagesState } from "../../../context/boardpage";
 
 const Freeboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -43,14 +46,17 @@ const Freeboard = () => {
 
   const [data, setData] = useState([]);
   const [click, setClick] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
+  const [totalPages, setTotalPages] = useRecoilState(totalPagesState);
   const itemsPerPage = 20;
+
+  const apiClient = useApiClient();
+  //const [userInfo] = useRecoilState(userState);
 
   const handleAddPost = async (newPost) => {
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/freeboard/save",
+      const response = await apiClient.post(
+        "/api/freeboard/save",
         newPost
       );
       const updatedData = [response.data, ...data]; // 새 게시글을 맨 위에 추가합니다.
@@ -59,28 +65,36 @@ const Freeboard = () => {
    //updatedData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // createdAt을 기준으로 내림차순 정렬합니다.
     setData(updatedData);
 
+    fetchData(currentPage) // 현재 페이지 다시 로드 -> 글 작성 후에도 페이지네이션 유지
+
     } catch (error) {
-      console.error("Error adding post:", error);
+      const userConfirmed = window.confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
+      if (userConfirmed) {
+        window.location.href = "http://localhost:8080/oauth2/authorization/google";
+      }
+    }
+  };
+
+  const fetchData = async (page) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/freeboard/read/paginated?page=${page}&size=${itemsPerPage}&size=${itemsPerPage}&sortBy=createdAt&sortDir=desc`
+        // 현재 페이지에 요청하는 갯수만큼 서버에서 불러서 가져오겠다
+      );
+      setData(response.data.content || []); // response.data.content가 undefined일 경우 빈 배열로 설정
+      setTotalPages(response.data.totalPages || 0); // response.data.totalPages가 undefined일 경우 0으로 설정
+      // 서버에서 totalPages라는 entity를 따로 만들지 않았지만 pagination을 위해 이용한 JPA Page객체가 자동으로 가지고 있는 속성이다.
+    } catch (error) {
+      console.error("Error fetching data", error);
     }
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:8080/api/freeboard/read/paginated?page=${currentPage}&size=${itemsPerPage}&size=${itemsPerPage}&sortBy=createdAt&sortDir=desc`
-          // 현재 페이지에 요청하는 갯수만큼 서버에서 불러서 가져오겠다
-        );
-        setData(response.data.content);
-        setTotalPages(response.data.totalPages);
-        // 서버에서 totalPages라는 entity를 따로 만들지 않았지만 pagination을 위해 이용한 JPA Page객체가 자동으로 가지고 있는 속성이다.
-      } catch (error) {
-        console.error("Error fetching data", error);
-      }
-    };
 
-    fetchData();
+    fetchData(currentPage);
   }, [currentPage]);
+
+  console.log(data);
 
   const handleAddClick = () => {
     setClick(!click);
@@ -103,8 +117,10 @@ const Freeboard = () => {
   };
 
   const countComments = (comments) => {
-    return comments.reduce((acc, comment) => acc + 1 + comment.replies.length, 0);
+    if (!comments) return 0; // comments가 undefined인 경우 0을 반환
+    return comments.reduce((acc, comment) => acc + 1 + (comment.replies ? comment.replies.length : 0), 0);
   };
+  
 
 
   return (
@@ -143,7 +159,7 @@ const Freeboard = () => {
           )}
 
           <BoardAlldiv>
-            {data.map((post) => (
+            {data && data.map((post) => (
               <Eachseperateboard
                 key={post.id}
                 width={"80%"}

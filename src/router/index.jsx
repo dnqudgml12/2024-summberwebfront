@@ -23,13 +23,19 @@ import Freshmanboard from "../components/board/freshmanboard/Freshmanboard";
 import Freshmanboarddetail from "../components/board/freshmanboard/Freshmanboarddetail";
 import Socialboard from "../components/board/socialboard/Socialboard";
 import Socialboarddetail from "../components/board/socialboard/Socialboarddetail";
-
+import RedirectionAfterLoginPage from "../page/RedirectionAftertLoginPage";
+import Mypage from "../page/Mypage";
 function Routing() {
   return (
     <Router>
       <Homenavbar />
       <Routes>
+
         <Route path="/" element={<Layout />}>
+        <Route
+          path="/oauth2/redirect"
+          element={<RedirectionAfterLoginPage />}
+        />
           <Route index element={<Home />} />
           <Route path="search/:query" element={<Search />} />
           
@@ -57,6 +63,7 @@ function Routing() {
 
           <Route path="freshmanboard" element={<Freshmanboard />} />
           <Route path="freshmanboard/:id" element={<Freshmanboarddetail />} />
+          <Route path="mypage" element={<Mypage/>}/>
         </Route>
       </Routes>
 

@@ -49,7 +49,7 @@ const FreeboardAdd = ({ onAddPost, onCancel }) => {
   const [newpost, setnewpost] = useState({
     title: "",
     content: "",
-    author: "Dummy User",
+    author: "Dummy User",// 프론트에서 이렇게 넣어도 애초에 db에서 author을 member 테이블에 이름으로 넣어놨기 때문에 상관 없음
   });
   const navigate = useNavigate();
 
@@ -62,7 +62,7 @@ const FreeboardAdd = ({ onAddPost, onCancel }) => {
     // Data.push({ id: Data.length + 1, ...newpost });
     onAddPost(newpost);
     setnewpost({ title: "", content: "", author: "Dummy User" });
-    navigate("/freeboard");
+    //navigate("/freeboard");
   };
   /** 
      * // 이 부분 없애고 dummyUser로 값들어가도록 하였다 로그인한 유저로 값들어가도록 할 예정

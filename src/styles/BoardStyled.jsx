@@ -10,7 +10,18 @@ export const BoardInBody = styled.div`
   font-weight: bold;
   height: auto;
 `;
-
+export const Boardname= styled.div`
+  
+  max-width: 100%;
+    color: #056AB5;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+`
 export const Titlediv = styled.div`
   width: 780px;
   margin-bottom: 5px;

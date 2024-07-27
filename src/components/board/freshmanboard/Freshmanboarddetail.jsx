@@ -51,6 +51,8 @@ import savebutton from "../../../assets/img/Savebutton.png";
 import { BiLike } from "react-icons/bi";
 
 import Freshmanboardedit from "./Freshmanboardedit";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../context/useStates";
 
 const Freshmanboarddetail = () => {
   const { id } = useParams();
@@ -61,6 +63,8 @@ const Freshmanboarddetail = () => {
   const navigate = useNavigate();
   const [commentCount, setCommentCount] = useState(0); // 전체 댓글 수를 관리
   const [liked, setLiked] = useState(false);
+
+  const userInform= useRecoilValue(userState);
 
   const [click, setClick] = useState(false);
   const handleAddClick = () => {
@@ -248,6 +252,7 @@ const Freshmanboarddetail = () => {
     );
   };
 
+  
   return (
     <Alldiv>
       <Bodydiv>
@@ -264,7 +269,8 @@ const Freshmanboarddetail = () => {
                       {new Date(post.createdAt).toLocaleTimeString()}
                     </Dates>
                   </NameandTime>
-
+                {post.author===userInform.name ? (
+                  // 세션 스토리지에 저장된 로그인 한 사람의 이름과 글쓴 저자가 같다면
                   <DeleteandModity>
                   <Modifydiv onClick={handleAddClick}>
                       {click ? "" : "수정"}
@@ -272,6 +278,10 @@ const Freshmanboarddetail = () => {
 
                     <Deletediv onClick={handleDeletePost}>삭제</Deletediv>
                   </DeleteandModity>
+                ):(<></>)
+
+                }
+                  
                 </Imgandnameinfrom>
 
                 {click ? (
