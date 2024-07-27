@@ -70,7 +70,7 @@ const Freeboard = () => {
     } catch (error) {
       const userConfirmed = window.confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
       if (userConfirmed) {
-        window.location.href = "http://localhost:8080/oauth2/authorization/google";
+        window.location.href = `${import.meta.env.VITE_API_URL}/oauth2/authorization/google`;
       }
     }
   };
@@ -78,7 +78,7 @@ const Freeboard = () => {
   const fetchData = async (page) => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/freeboard/read/paginated?page=${page}&size=${itemsPerPage}&size=${itemsPerPage}&sortBy=createdAt&sortDir=desc`
+        `${import.meta.env.VITE_API_URL}/read/paginated?page=${page}&size=${itemsPerPage}&size=${itemsPerPage}&sortBy=createdAt&sortDir=desc`
         // 현재 페이지에 요청하는 갯수만큼 서버에서 불러서 가져오겠다
       );
       setData(response.data.content || []); // response.data.content가 undefined일 경우 빈 배열로 설정
