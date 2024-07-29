@@ -34,7 +34,7 @@ const Socialboard=()=>{
   const handleAddPost = async (newPost) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/socialboard/save",
+        `${import.meta.env.VITE_API_URL}/api/socialboard/save`,
         newPost
       ); // Adjust the endpoint as needed
       setData([...data, response.data]); // Add the new post returned from the server
@@ -48,7 +48,7 @@ const Socialboard=()=>{
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/socialboard/read"
+          `${import.meta.env.VITE_API_URL}/api/socialboard/read`
         ); // Replace with your API endpoint
         setData(response.data);
       } catch (error) {
