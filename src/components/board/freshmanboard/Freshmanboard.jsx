@@ -8,6 +8,7 @@ import axios from "axios";
 import Population from "../../../assets/img/Population.png";
 import Question from "../../../assets/img/Questionimg.png";
 import Likeimg from "../../../assets/img/Likediv.png";
+import useApiClient from "../../../api/apiClient";
 
 import {
   Titlediv,
@@ -30,16 +31,21 @@ const Freshmanboard=()=>{
   const [click, setClick] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
-
+  const apiClient = useApiClient();
   const handleAddPost = async (newPost) => {
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/freshmanboard/save",
+      const response = await apiClient.post(
+        `/api/freshmanboard/save`,
         newPost
       ); // Adjust the endpoint as needed
-      setData([...data, response.data]); // Add the new post returned from the server
+      const updatedData = [response.data, ...data]; // 새 게시글을 맨 위에 추가합니다.
+      setData(updatedData); // Add the new post returned from the server
     } catch (error) {
-      console.error("Error adding post:", error);
+      console.log(error);
+      const userConfirmed = window.confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
+      if (userConfirmed) {
+        window.location.href = `${import.meta.env.VITE_API_URL}/oauth2/authorization/google`;
+      }
     }
   };
 
@@ -48,7 +54,7 @@ const Freshmanboard=()=>{
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/freshmanboard/read"
+          `${import.meta.env.VITE_API_URL}/api/freshmanboard/read`
         ); // Replace with your API endpoint
         setData(response.data);
       } catch (error) {

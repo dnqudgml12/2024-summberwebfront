@@ -32,6 +32,7 @@ const Freeboardedit=({id,onCancel})=>{
     const navigate = useNavigate();
     const apiClient = useApiClient();
     const [post, setpost] = useState({ title: "", content: "" });
+    const [file, setFile] = useState(null);
   
     /*
     useEffect(() => {
@@ -42,10 +43,14 @@ const Freeboardedit=({id,onCancel})=>{
     }, [id]);
   */
 
+    const handleFileChange = (e) => {
+      setFile(e.target.files[0]);
+    };
+
     useEffect(() => {
       const fetchPost = async () => {
         try {
-          const response = await axios.get(`http://localhost:8080/api/freeboard/read/${id}`); // Replace with your API endpoint
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/freeboard/read/${id}`); // Replace with your API endpoint
           setpost(response.data);
         } catch (error) {
           console.error("Error fetching post", error);
@@ -68,12 +73,21 @@ const Freeboardedit=({id,onCancel})=>{
       }
     };
   */
+ 
     const handleUpdatePost = async () => {
+      const formData = new FormData();
+      formData.append("dto", new Blob([JSON.stringify(post)], { type: "application/json" }));
+      if (file) {
+        formData.append("file", file);
+      }
+  
       try {
-        console.log(`Updating post with id: ${id}`);  // Logging for debugging
-        console.log(post);  // Logging the post data
-        await apiClient.put(`/api/freeboard/update/${id}`, post);
-       
+        await apiClient.put(`/api/freeboard/update/${id}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+  
         navigate("/freeboard");
       } catch (error) {
         console.error("Error updating post", error);
@@ -93,6 +107,12 @@ const Freeboardedit=({id,onCancel})=>{
       name="content"
       value={post.content}
       onChange={handleInputChange}/>
+
+      {post.image && post.image.imageUrl ? (
+                      <img src={post.image.imageUrl} alt="image" />
+                    ) : null}
+
+<input type="file" name="file" onChange={handleFileChange} />
       <div style={{ width: "auto", display: "flex", height: "40px" }}>
         <Savewrite type="button" onClick={handleUpdatePost}>
           <Buttonimgsave src={savebutton}/>

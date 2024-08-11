@@ -211,7 +211,7 @@ const Home = () => {
            <Myemailloginout onClick={()=>{
             const userConfirmed = window.confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
             if (userConfirmed) {
-              window.location.href = "http://localhost:8080/oauth2/authorization/google";
+              window.location.href = `${import.meta.env.VITE_API_URL}/oauth2/authorization/google`;
             }
            }}>로그인 하세요</Myemailloginout>
 
@@ -236,7 +236,7 @@ const Home = () => {
               <Informeach onClick={()=>{
                 const userConfirmed = window.confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
                 if (userConfirmed) {
-                  window.location.href = "http://localhost:8080/oauth2/authorization/google";
+                  window.location.href = `${import.meta.env.VITE_API_URL}/oauth2/authorization/google`;
                 }
               }}>  <Myimgdiv src={mywrting}/>내가 쓴글</Informeach>
               )}

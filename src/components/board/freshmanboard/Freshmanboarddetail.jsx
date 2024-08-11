@@ -75,7 +75,7 @@ const Freshmanboarddetail = () => {
     const fetchPost = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/freshmanboard/read/${id}`
+          `${import.meta.env.VITE_API_URL}/api/freshmanboard/read/${id}`
         ); // Replace with your API endpoint
         setPost(response.data);
         setCommentCount(
@@ -98,7 +98,7 @@ const Freshmanboarddetail = () => {
 
   const handleDeletePost = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/freshmanboard/delete/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/freshmanboard/delete/${id}`);
       navigate("/freshmanboard");
     } catch (error) {
       console.error("Error deleting post", error);
@@ -120,11 +120,11 @@ const Freshmanboarddetail = () => {
 
     try {
       await axios.post(
-        `http://localhost:8080/api/freshmanboard/${id}/comments`,
+        `${import.meta.env.VITE_API_URL}/api/freshmanboard/${id}/comments`,
         newCommentObj
       );
       const response = await axios.get(
-        `http://localhost:8080/api/freshmanboard/read/${id}`
+        `${import.meta.env.VITE_API_URL}/api/freshmanboard/read/${id}`
       );
       setPost(response.data);
       setCommentCount(commentCount + 1);
@@ -173,13 +173,13 @@ const Freshmanboarddetail = () => {
     navigate(`/freshmanboard/${id}`);
     try {
       await axios.post(
-        `http://localhost:8080/api/freshmanboard/${id}/comments/${commentId}/replies`,
+        `${import.meta.env.VITE_API_URL}/api/freshmanboard/${id}/comments/${commentId}/replies`,
         newReplyObj
       );
 
       //post 하는 동안, get을 가져옴
       const response = await axios.get(
-        `http://localhost:8080/api/freshmanboard/read/${id}`
+        `${import.meta.env.VITE_API_URL}/api/freshmanboard/read/${id}`
       );
       setPost(response.data);
       setCommentCount(commentCount + 1);
@@ -229,14 +229,14 @@ const Freshmanboarddetail = () => {
     // 좋아요 누르면 그 상태를 db에 저장(true,false)
     try {
       if (!liked) {
-        await axios.post(`http://localhost:8080/api/freshmanboard/like/${id}`); //좋아요 눌린상태+1
+        await axios.post(`${import.meta.env.VITE_API_URL}/api/freshmanboard/like/${id}`); //좋아요 눌린상태+1
         setLiked(true);
       } else {
-        await axios.delete(`http://localhost:8080/api/freshmanboard/unlike/${id}`); // 좋아요 취소한 상태 -1
+        await axios.delete(`${import.meta.env.VITE_API_URL}/api/freshmanboard/unlike/${id}`); // 좋아요 취소한 상태 -1
         setLiked(false);
       }
       const response = await axios.get(
-        `http://localhost:8080/api/freshmanboard/read/${id}`
+        `${import.meta.env.VITE_API_URL}/api/freshmanboard/read/${id}`
       );
       setPost(response.data); // Update the post with the new like count
       setLiked(response.data.likeStatus);

@@ -71,7 +71,7 @@ const Advertiseboarddetail = () => {
     const fetchPost = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/advertiseboard/read/${id}`
+          `${import.meta.env.VITE_API_URL}/api/advertiseboard/read/${id}`
         ); // Replace with your API endpoint
         setPost(response.data);
         setCommentCount(
@@ -94,7 +94,7 @@ const Advertiseboarddetail = () => {
 
   const handleDeletePost = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/advertiseboard/delete/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/advertiseboard/delete/${id}`);
       navigate("/advertiseboard");
     } catch (error) {
       console.error("Error deleting post", error);
@@ -116,11 +116,11 @@ const Advertiseboarddetail = () => {
 
     try {
       await axios.post(
-        `http://localhost:8080/api/advertiseboard/${id}/comments`,
+        `${import.meta.env.VITE_API_URL}/api/advertiseboard/${id}/comments`,
         newCommentObj
       );
       const response = await axios.get(
-        `http://localhost:8080/api/advertiseboard/read/${id}`
+        `${import.meta.env.VITE_API_URL}/api/advertiseboard/read/${id}`
       );
       setPost(response.data);
       setCommentCount(commentCount + 1);
@@ -169,13 +169,13 @@ const Advertiseboarddetail = () => {
     navigate(`/advertiseboard/${id}`);
     try {
       await axios.post(
-        `http://localhost:8080/api/advertiseboard/${id}/comments/${commentId}/replies`,
+        `${import.meta.env.VITE_API_URL}/api/advertiseboard/${id}/comments/${commentId}/replies`,
         newReplyObj
       );
 
       //post 하는 동안, get을 가져옴
       const response = await axios.get(
-        `http://localhost:8080/api/advertiseboard/read/${id}`
+        `${import.meta.env.VITE_API_URL}/api/advertiseboard/read/${id}`
       );
       setPost(response.data);
       setCommentCount(commentCount + 1);
@@ -225,14 +225,14 @@ const Advertiseboarddetail = () => {
     // 좋아요 누르면 그 상태를 db에 저장(true,false)
     try {
       if (!liked) {
-        await axios.post(`http://localhost:8080/api/advertiseboard/like/${id}`); //좋아요 눌린상태+1
+        await axios.post(`${import.meta.env.VITE_API_URL}/api/advertiseboard/like/${id}`); //좋아요 눌린상태+1
         setLiked(true);
       } else {
-        await axios.delete(`http://localhost:8080/api/advertiseboard/unlike/${id}`); // 좋아요 취소한 상태 -1
+        await axios.delete(`${import.meta.env.VITE_API_URL}/api/advertiseboard/unlike/${id}`); // 좋아요 취소한 상태 -1
         setLiked(false);
       }
       const response = await axios.get(
-        `http://localhost:8080/api/advertiseboard/read/${id}`
+        `${import.meta.env.VITE_API_URL}/api/advertiseboard/read/${id}`
       );
       setPost(response.data); // Update the post with the new like count
       setLiked(response.data.likeStatus);

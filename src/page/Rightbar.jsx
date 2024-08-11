@@ -39,13 +39,13 @@ const Rightbar = () => {
     const fetchData = async () => {
       try {
         const freeBoardResponse = await axios.get(
-          "http://localhost:8080/api/freeboard/read"
+            `${import.meta.env.VITE_API_URL}/api/freeboard/read`
         );
         const secretBoardResponse = await axios.get(
-          "http://localhost:8080/api/secretboard/read"
+          `${import.meta.env.VITE_API_URL}/api/secretboard/read`
         );
         const graduateBoardResponse = await axios.get(
-          "http://localhost:8080/api/graduateboard/read"
+          `${import.meta.env.VITE_API_URL}/api/graduateboard/read`
         );
 
         //get으로 담는 정보에 따라서 board type 정하기

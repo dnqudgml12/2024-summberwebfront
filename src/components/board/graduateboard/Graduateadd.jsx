@@ -62,7 +62,7 @@ const GraduateAdd = ({ onAddPost, onCancel }) => {
     // Data.push({ id: Data.length + 1, ...newpost });
     onAddPost(newpost);
     setnewpost({ title: "", content: "", author: "Dummy User" });
-    navigate("/graduateboard");
+   // navigate("/graduateboard");
   };
   /** 
      * // 이 부분 없애고 dummyUser로 값들어가도록 하였다 로그인한 유저로 값들어가도록 할 예정

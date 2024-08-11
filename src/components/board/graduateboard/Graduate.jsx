@@ -30,21 +30,27 @@ import {
 import Comment from "../../../assets/img/Commentpicture.png";
 import leftarrow from "../../../assets/img/leftarrow.png";
 import rightarrow from "../../../assets/img/rightarrow.png";
+import useApiClient from "../../../api/apiClient";
+import GraduateAdd from "./Graduateadd";
 const Graduateboard = () => {
   const [data, setData] = useState([]);
   const [click, setClick] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
-
+  const apiClient = useApiClient();
   const handleAddPost = async (newPost) => {
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/graduateboard/save",
+      const response = await apiClient.post(
+        `api/graduateboard/save`,
         newPost
       ); // Adjust the endpoint as needed
-      setData([...data, response.data]); // Add the new post returned from the server
+      const updatedData = [response.data, ...data];
+      setData(updatedData); // Add the new post returned from the server
     } catch (error) {
-      console.error("Error adding post:", error);
+      const userConfirmed = window.confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
+      if (userConfirmed) {
+        window.location.href = `${import.meta.env.VITE_API_URL}/oauth2/authorization/google`;
+      }
     }
   };
 
@@ -53,7 +59,7 @@ const Graduateboard = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/graduateboard/read"
+          `${import.meta.env.VITE_API_URL}/api/graduateboard/read`
         ); // Replace with your API endpoint
         setData(response.data);
       } catch (error) {
@@ -104,7 +110,7 @@ const Graduateboard = () => {
           <Titlediv>졸업 게시판</Titlediv>
 
           {click ? (
-            <FreeboardAdd onAddPost={handleAddPost} onCancel={handleAddClick} />
+            <GraduateAdd onAddPost={handleAddPost} onCancel={handleAddClick} />
           ) : (
             <Writedivoff onClick={handleAddClick}>
               <Writecomment> 새 글을 작성해 주세요!</Writecomment>

@@ -35,7 +35,7 @@ const Circleboard=()=>{
  const handleAddPost = async (newPost) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/circleboard/save",
+        `${import.meta.env.VITE_API_URL}/api/circleboard/save`,
         newPost
       );
       const updatedData = [response.data, ...data]; // 새 게시글을 맨 위에 추가합니다.
@@ -51,7 +51,7 @@ const Circleboard=()=>{
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/circleboard/read/paginated?page=${currentPage}&size=${itemsPerPage}&size=${itemsPerPage}&sortBy=createdAt&sortDir=desc`
+          `${import.meta.env.VITE_API_URL}/api/circleboard/read/paginated?page=${currentPage}&size=${itemsPerPage}&size=${itemsPerPage}&sortBy=createdAt&sortDir=desc`
           // 현재 페이지에 요청하는 갯수만큼 서버에서 불러서 가져오겠다
         );
         setData(response.data.content);

@@ -43,7 +43,7 @@ const Freshmanboardedit=({id,onCancel})=>{
     useEffect(() => {
       const fetchPost = async () => {
         try {
-          const response = await axios.get(`http://localhost:8080/api/freshmanboard/read/${id}`); // Replace with your API endpoint
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/freshmanboard/read/${id}`); // Replace with your API endpoint
           setpost(response.data);
         } catch (error) {
           console.error("Error fetching post", error);
@@ -69,8 +69,8 @@ const Freshmanboardedit=({id,onCancel})=>{
 
     const handleUpdatePost = async () => {
       try {
-        await axios.put(`http://localhost:8080/api/freshmanboard/update/${id}`, post); // Replace with your API endpoint
-        const response = await axios.get(`http://localhost:8080/api/freshmanboard/read/${id}`); // Replace with your API endpoint
+        await axios.put(`${import.meta.env.VITE_API_URL}/api/freshmanboard/update/${id}`, post); // Replace with your API endpoint
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/freshmanboard/read/${id}`); // Replace with your API endpoint
         setpost(response.data);
         navigate("/freshmanboard");
         

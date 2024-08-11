@@ -57,7 +57,11 @@ const Freeboard = () => {
     try {
       const response = await apiClient.post(
         "/api/freeboard/save",
-        newPost
+        newPost,{
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       const updatedData = [response.data, ...data]; // 새 게시글을 맨 위에 추가합니다.
    
@@ -121,7 +125,7 @@ const Freeboard = () => {
     return comments.reduce((acc, comment) => acc + 1 + (comment.replies ? comment.replies.length : 0), 0);
   };
 
-  console.log(`aa,${import.meta.env.VITE_API_URL}/api/freeboard/read`);
+
   
 
 

@@ -42,7 +42,7 @@ const Search = () => {
     const fetchData = async () => {
       try {
         const freeBoardResponse = await axios.get(
-          "http://localhost:8080/api/freeboard/read"
+          `${import.meta.env.VITE_API_URL}/api/freeboard/read`
         );
 
         // Add board type to each post
@@ -104,7 +104,7 @@ const Search = () => {
   const handleAddPost = async (newPost) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/freeboard/save",
+        `${import.meta.env.VITE_API_URL}/api/freeboard/save`,
         newPost
       ); // Adjust the endpoint as needed
       setData([...data, response.data]); // Add the new post returned from the server

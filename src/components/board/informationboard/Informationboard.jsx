@@ -33,7 +33,7 @@ const Informationboard=()=>{
   const handleAddPost = async (newPost) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/informationboard/save",
+        "${import.meta.env.VITE_API_URL}/api/informationboard/save",
         newPost
       ); // Adjust the endpoint as needed
       setData([...data, response.data]); // Add the new post returned from the server
@@ -47,7 +47,7 @@ const Informationboard=()=>{
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/informationboard/read"
+          `${import.meta.env.VITE_API_URL}/api/informationboard/read`
         ); // Replace with your API endpoint
         setData(response.data);
       } catch (error) {

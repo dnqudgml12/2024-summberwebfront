@@ -46,7 +46,7 @@ const Schedule = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/timetable/read"
+          `${import.meta.env.VITE_API_URL}/api/timetable/read`
         ); // Replace with your API endpoint
         setData(response.data);
       } catch (error) {
@@ -270,7 +270,7 @@ const Schedule = () => {
   const handleAdd = async (newEntry) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/timetable/save",
+        `${import.meta.env.VITE_API_URL}/api/timetable/sav`,
         newEntry
       );
       setData([...data, response.data]);
@@ -289,7 +289,7 @@ const Schedule = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/api/timetable/delete/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/timetable/delete/${id}`);
       setData(data.filter((entry) => entry.id !== id));
       setHoveredEntry(null);
     } catch (error) {
@@ -302,11 +302,11 @@ const Schedule = () => {
 
     try {
       await axios.put(
-        `http://localhost:8080/api/timetable/update/${updatedEntry.id}`,
+        `${import.meta.env.VITE_API_URL}/api/timetable/update/${updatedEntry.id}`,
         updatedEntry
       ); // Replace with your API endpoint
       const response = await axios.get(
-        `http://localhost:8080/api/freeboard/read`
+        `${import.meta.env.VITE_API_URL}/api/freeboard/read`
       ); // Replace with your API endpoint
 
       setData(

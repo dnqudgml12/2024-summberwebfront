@@ -34,31 +34,32 @@ const Mypage = () => {
         const fetchData = async () => {
           try {
             const freeBoardResponse = await axios.get(
-              "http://localhost:8080/api/freeboard/read"
+              `${import.meta.env.VITE_API_URL}/api/freeboard/read`
             );
             const secretBoardResponse = await axios.get(
-              "http://localhost:8080/api/secretboard/read"
+              `${import.meta.env.VITE_API_URL}/api/secretboard/read`
             );
             const graduateBoardResponse = await axios.get(
-              "http://localhost:8080/api/graduateboard/read"
+              `${import.meta.env.VITE_API_URL}/api/graduateboard/read`
             );
             const advertiseBoardResponse = await axios.get(
-              "http://localhost:8080/api/advertiseboard/read"
+              `${import.meta.env.VITE_API_URL}/api/advertiseboard/read`
             );
             const circleBoardResponse = await axios.get(
-              "http://localhost:8080/api/circleboard/read"
+              `${import.meta.env.VITE_API_URL}/api/circleboard/read`
             );
     
             const freshmanBoardResponse = await axios.get(
-              "http://localhost:8080/api/freshmanboard/read"
+              `${import.meta.env.VITE_API_URL}/api/freshmanboard/read`
             );
             const informationBoardResponse = await axios.get(
-              "http://localhost:8080/api/informationboard/read"
+              `${import.meta.env.VITE_API_URL}/api/informationboard/read`
             );
     
             const socialBoardResponse = await axios.get(
-              "http://localhost:8080/api/socialboard/read"
+              `${import.meta.env.VITE_API_URL}/api/socialboard/read`
             );
+    
     
     
             //get으로 담는 정보에 따라서 board type 정하기

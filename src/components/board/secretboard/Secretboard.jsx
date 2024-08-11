@@ -24,21 +24,30 @@ import Comment from "../../../assets/img/Commentpicture.png";
 import SecretboardAdd from "./secretboardadd";
 import leftarrow from "../../../assets/img/leftarrow.png";
 import rightarrow from "../../../assets/img/rightarrow.png";
+import useApiClient from "../../../api/apiClient";
+import { useRecoilState } from 'recoil';
+
 const Secreteboard=()=>{
   const [data, setData] = useState([]);
   const [click, setClick] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
+  const apiClient = useApiClient();
 
   const handleAddPost = async (newPost) => {
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/secretboard/save",
+      const response = await apiClient.post(
+        "/api/secretboard/save",
         newPost
       ); // Adjust the endpoint as needed
-      setData([...data, response.data]); // Add the new post returned from the server
+      const updatedData = [...data,response.data]; // 새 게시글을 맨 위에 추가합니다.
+      setData(updatedData); // Add the new post returned from the server
     } catch (error) {
-      console.error("Error adding post:", error);
+      console.log(error);
+      const userConfirmed = window.confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
+      if (userConfirmed) {
+        window.location.href = `${import.meta.env.VITE_API_URL}/oauth2/authorization/google`;
+      }
     }
   };
 
@@ -47,9 +56,9 @@ const Secreteboard=()=>{
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/secretboard/read"
+          `${import.meta.env.VITE_API_URL}/api/secretboard/read`
         ); // Replace with your API endpoint
-        setData(response.data);
+        setData(response.data || []);
       } catch (error) {
         console.error("Error fetching data", error);
       }
@@ -81,10 +90,8 @@ const Secreteboard=()=>{
     setCurrentPage(currentPage - 1);
   };
   const countComments = (comments) => {
-    return comments.reduce(
-      (acc, comment) => acc + 1 + comment.replies.length,
-      0
-    );
+    if (!comments) return 0; // comments가 undefined인 경우 0을 반환
+    return comments.reduce((acc, comment) => acc + 1 + (comment.replies ? comment.replies.length : 0), 0);
   };
 
   const countLikes = (likes) => {

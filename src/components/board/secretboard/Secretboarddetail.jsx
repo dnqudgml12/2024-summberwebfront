@@ -70,7 +70,7 @@ const Secreteboarddetail = () => {
     const fetchPost = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/secretboard/read/${id}`
+          `${import.meta.env.VITE_API_URL}/api/secretboard/read/${id}`
         ); // Replace with your API endpoint
         setPost(response.data);
         setCommentCount(
@@ -93,7 +93,7 @@ const Secreteboarddetail = () => {
 
   const handleDeletePost = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/secretboard/delete/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/secretboard/delete/${id}`);
       navigate("/secretboard");
     } catch (error) {
       console.error("Error deleting post", error);
@@ -115,11 +115,11 @@ const Secreteboarddetail = () => {
 
     try {
       await axios.post(
-        `http://localhost:8080/api/secretboard/${id}/comments`,
+        `${import.meta.env.VITE_API_URL}/api/secretboard/${id}/comments`,
         newCommentObj
       );
       const response = await axios.get(
-        `http://localhost:8080/api/secretboard/read/${id}`
+        `${import.meta.env.VITE_API_URL}/api/secretboard/read/${id}`
       );
       setPost(response.data);
       setCommentCount(commentCount + 1);
@@ -168,13 +168,13 @@ const Secreteboarddetail = () => {
     navigate(`/secretboard/${id}`);
     try {
       await axios.post(
-        `http://localhost:8080/api/secretboard/${id}/comments/${commentId}/replies`,
+        `${import.meta.env.VITE_API_URL}/api/secretboard/${id}/comments/${commentId}/replies`,
         newReplyObj
       );
 
       //post 하는 동안, get을 가져옴
       const response = await axios.get(
-        `http://localhost:8080/api/secretboard/read/${id}`
+        `${import.meta.env.VITE_API_URL}/api/secretboard/read/${id}`
       );
       setPost(response.data);
       setCommentCount(commentCount + 1);
@@ -224,14 +224,14 @@ const Secreteboarddetail = () => {
     // 좋아요 누르면 그 상태를 db에 저장(true,false)
     try {
       if (!liked) {
-        await axios.post(`http://localhost:8080/api/secretboard/like/${id}`); //좋아요 눌린상태+1
+        await axios.post(`${import.meta.env.VITE_API_URL}/api/secretboard/like/${id}`); //좋아요 눌린상태+1
         setLiked(true);
       } else {
-        await axios.delete(`http://localhost:8080/api/secretboard/unlike/${id}`); // 좋아요 취소한 상태 -1
+        await axios.delete(`${import.meta.env.VITE_API_URL}/api/secretboard/unlike/${id}`); // 좋아요 취소한 상태 -1
         setLiked(false);
       }
       const response = await axios.get(
-        `http://localhost:8080/api/secretboard/read/${id}`
+        `${import.meta.env.VITE_API_URL}/api/secretboard/read/${id}`
       );
       setPost(response.data); // Update the post with the new like count
       setLiked(response.data.likeStatus);
