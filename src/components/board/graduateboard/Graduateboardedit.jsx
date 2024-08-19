@@ -68,15 +68,28 @@ const Graduateboardedit=({id,onCancel})=>{
   */
 
     const handleUpdatePost = async () => {
+
+      const formData = new FormData();
+      formData.append("dto", new Blob([JSON.stringify(post)], { type: "application/json" }));
+      if (file) {
+        formData.append("file", file);
+      }
+  
       try {
-        await axios.put(`${import.meta.env.VITE_API_URL}/api/graduateboard/update/${id}`, post); // Replace with your API endpoint
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/graduateboard/read/${id}`); // Replace with your API endpoint
-        setpost(response.data);
+        await apiClient.put(`${import.meta.env.VITE_API_URL}/api/graduateboard/update/${id}`, formData,{
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }); // Replace with your API endpoint
+       // const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/advertiseboard/read/${id}`); // Replace with your API endpoint
+        //setpost(response.data);
         navigate("/graduateboard");
         
       } catch (error) {
         console.error("Error updating post", error);
       }
+
+
     };
     return (
       <Formaddstyld onSubmit={(e) => e.preventDefault()}>

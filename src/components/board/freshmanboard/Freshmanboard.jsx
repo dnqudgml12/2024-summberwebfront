@@ -36,7 +36,12 @@ const Freshmanboard=()=>{
     try {
       const response = await apiClient.post(
         `/api/freshmanboard/save`,
-        newPost
+        newPost,{
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+
       ); // Adjust the endpoint as needed
       const updatedData = [response.data, ...data]; // 새 게시글을 맨 위에 추가합니다.
       setData(updatedData); // Add the new post returned from the server

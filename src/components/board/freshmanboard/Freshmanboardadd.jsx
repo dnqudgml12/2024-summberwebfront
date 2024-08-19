@@ -53,16 +53,30 @@ const FreshmanboardAdd = ({ onAddPost, onCancel }) => {
   });
   const navigate = useNavigate();
 
+  const [file, setFile] = useState(null);
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setnewpost({ ...newpost, [name]: value });
   };
 
-  const handleAddPost = () => {
-    // Data.push({ id: Data.length + 1, ...newpost });
-    onAddPost(newpost);
-    setnewpost({ title: "", content: "", author: "Dummy User" });
-    navigate("/freshmanboard");
+  const handleAddPost = async() => {
+   const formData = new FormData();
+    formData.append("dto", new Blob([JSON.stringify(newpost)], { type: "application/json" }));
+
+    if (file) {
+      formData.append("file", file);
+    }
+
+    try {
+      await onAddPost(formData); // Pass formData to onAddPost
+      setnewpost({ title: "", content: "", author: "Dummy User" });
+      setFile(null);
+    } catch (error) {
+      console.error("Error saving post", error);
+    }
   };
   /** 
      * // 이 부분 없애고 dummyUser로 값들어가도록 하였다 로그인한 유저로 값들어가도록 할 예정
@@ -114,6 +128,7 @@ const FreshmanboardAdd = ({ onAddPost, onCancel }) => {
     - 욕설, 비하, 차별, 음성, 사칭, 폭력적, 선정적 내용을 포함한 게시물 작성 행위
     - 스포일러, 공포, 속임, 놀라게 하는 행위"
       />
+             <input type="file" name="file" onChange={handleFileChange} />
       <div style={{ width: "auto", display: "flex", height: "40px" }}>
         <Savewrite type="button" onClick={handleAddPost}>
           <Buttonimgsave src={savebutton}/>

@@ -42,9 +42,13 @@ const Graduateboard = () => {
     try {
       const response = await apiClient.post(
         `api/graduateboard/save`,
-        newPost
+        newPost,{
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       ); // Adjust the endpoint as needed
-      const updatedData = [response.data, ...data];
+      const updatedData = [...data,response.data];
       setData(updatedData); // Add the new post returned from the server
     } catch (error) {
       const userConfirmed = window.confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");

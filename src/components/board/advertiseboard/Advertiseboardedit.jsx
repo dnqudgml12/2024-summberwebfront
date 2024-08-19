@@ -13,7 +13,7 @@ import {
   Savewrite,
 
 } from "../../../styles/BoardStyled";
-
+import useApiClient from "../../../api/apiClient";
 import axios from "axios";
 import Cancle from "../../../assets/img/Cancle.png";
 import savebutton from "../../../assets/img/Savebutton.png";
@@ -29,7 +29,9 @@ const Advertiseboardedit=({id,onCancel})=>{
 
     //const { id } = useParams();
     const navigate = useNavigate();
-    const [post, setpost] = useState({ title: "", content: "", author: "Dummy User", });
+    const apiClient = useApiClient();
+    const [post, setpost] = useState({ title: "", content: ""});
+    const [file, setFile] = useState(null);
   
     /*
     useEffect(() => {
@@ -39,6 +41,12 @@ const Advertiseboardedit=({id,onCancel})=>{
       }
     }, [id]);
   */
+
+
+    const handleFileChange = (e) => {
+      setFile(e.target.files[0]);
+    };
+
 
     useEffect(() => {
       const fetchPost = async () => {
@@ -68,10 +76,20 @@ const Advertiseboardedit=({id,onCancel})=>{
   */
 
     const handleUpdatePost = async () => {
+      const formData = new FormData();
+      formData.append("dto", new Blob([JSON.stringify(post)], { type: "application/json" }));
+      if (file) {
+        formData.append("file", file);
+      }
+  
       try {
-        await axios.put(`${import.meta.env.VITE_API_URL}/api/advertiseboard/update/${id}`, post); // Replace with your API endpoint
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/advertiseboard/read/${id}`); // Replace with your API endpoint
-        setpost(response.data);
+        await apiClient.put(`/api/advertiseboard/update/${id}`, formData,{
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }); // Replace with your API endpoint
+       // const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/advertiseboard/read/${id}`); // Replace with your API endpoint
+        //setpost(response.data);
         navigate("/advertiseboard");
         
       } catch (error) {

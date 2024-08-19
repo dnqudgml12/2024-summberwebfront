@@ -12,7 +12,7 @@ import FreeboardAdd from "../Freeboardadd";
 import writeimg from "../../../../assets/img/writeimg.png";
 
 import { Writedivoff,Writeimg,Writecomment } from "../../../../styles/BoardStyled";
-const Freeboardadd= ()=>{
+const Freeboardadd= ({fetchData})=>{
 
     const [data, setData] = useState([]);
     const [click, setClick] = useState(false);
@@ -38,6 +38,8 @@ const Freeboardadd= ()=>{
         fetchData(currentPage) // 현재 페이지 다시 로드 -> 글 작성 후에도 페이지네이션 유지
     
         } catch (error) {
+            console.error("Error adding post:", error.response || error.message || error);
+       
     
           const userConfirmed = window.confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
           if (userConfirmed) {

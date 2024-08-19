@@ -84,9 +84,10 @@ const FreeboardDetail = () => {
   const navigate = useNavigate();
   const [commentCount, setCommentCount] = useState(0); // 전체 댓글 수를 관리
   const [liked, setLiked] = useState(false);
+  
 
-  const [click, setClick] = useState(false);// 관리 수정 상태
-  const userInform = useRecoilValue(userState) || {}; 
+  const [click, setClick] = useState(false); // 관리 수정 상태
+  const userInform = useRecoilValue(userState) || {};
   // 기본값 설정, null이어도 빈 값 가지도록, 이렇게 안하니까 수정삭제 보여주는 부분에서 로그인 안한다면 null로서 값을 안가져서 에러 나게 되었음
   const handleAddClick = () => {
     setClick(!click);
@@ -250,10 +251,14 @@ const FreeboardDetail = () => {
     // 좋아요 누르면 그 상태를 db에 저장(true,false)
     try {
       if (!liked) {
-        await axios.post(`${import.meta.env.VITE_API_URL}/api/freeboard/like/${id}`); //좋아요 눌린상태+1
+        await axios.post(
+          `${import.meta.env.VITE_API_URL}/api/freeboard/like/${id}`
+        ); //좋아요 눌린상태+1
         setLiked(true);
       } else {
-        await axios.delete(`${import.meta.env.VITE_API_URL}/api/freeboard/unlike/${id}`); // 좋아요 취소한 상태 -1
+        await axios.delete(
+          `${import.meta.env.VITE_API_URL}/api/freeboard/unlike/${id}`
+        ); // 좋아요 취소한 상태 -1
         setLiked(false);
       }
       const response = await axios.get(
@@ -268,9 +273,13 @@ const FreeboardDetail = () => {
   console.log(post, "aa");
   const countComments = (comments) => {
     if (!comments) return 0; // comments가 undefined인 경우 0을 반환
-    return comments.reduce((acc, comment) => acc + 1 + (comment.replies ? comment.replies.length : 0), 0);
+    return comments.reduce(
+      (acc, comment) =>
+        acc + 1 + (comment.replies ? comment.replies.length : 0),
+      0
+    );
   };
-  
+
   return (
     <Alldiv>
       <Bodydiv>
@@ -287,7 +296,8 @@ const FreeboardDetail = () => {
                       {new Date(post.createdAt).toLocaleTimeString()}
                     </Dates>
                   </NameandTime>
-                  {userInform.memberId != null && post.member.id === userInform.memberId ? (
+                  {userInform.memberId != null &&
+                  post.member.id === userInform.memberId ? (
                     <DeleteandModity>
                       <Modifydiv onClick={handleAddClick}>
                         {click ? "" : "수정"}
@@ -303,7 +313,7 @@ const FreeboardDetail = () => {
                   <>
                     <Titledetaildiv>{post.title}</Titledetaildiv>
                     <Contentdetaildiv>{post.content}</Contentdetaildiv>
-                
+
                     {post.image && post.image.imageUrl ? (
                       <img src={post.image.imageUrl} alt="image" />
                     ) : null}
@@ -413,33 +423,28 @@ const FreeboardDetail = () => {
                                 </Singoomment>
                               </Namepicturecomment>
 
-                              <Replycontent>
-                                {reply.content}
-                              </Replycontent>
+                              <Replycontent>{reply.content}</Replycontent>
                               <Replydate>
-                              {new Date(post.createdAt).toLocaleTimeString()}
+                                {new Date(post.createdAt).toLocaleTimeString()}
                               </Replydate>
                             </ReplyDiv>
-
-                            
                           ))}
 
-
-                        {replyTo === comment.id && (
-                          <Replysavedetail>
-                            <Inputreplydetail
-                              value={newReply}
-                              onChange={(e) => setNewReply(e.target.value)}
-                              placeholder="대댓글을 입력하세요."
-                            />
-                            <Savewritedetail
-                              type="button"
-                              onClick={() => handleAddReply(comment.id)}
-                            >
-                              <Buttonimgsave src={savebutton} />
-                            </Savewritedetail>
-                          </Replysavedetail>
-                        )}
+                          {replyTo === comment.id && (
+                            <Replysavedetail>
+                              <Inputreplydetail
+                                value={newReply}
+                                onChange={(e) => setNewReply(e.target.value)}
+                                placeholder="대댓글을 입력하세요."
+                              />
+                              <Savewritedetail
+                                type="button"
+                                onClick={() => handleAddReply(comment.id)}
+                              >
+                                <Buttonimgsave src={savebutton} />
+                              </Savewritedetail>
+                            </Replysavedetail>
+                          )}
                         </>
                       </Commentbox>
                     ))
@@ -462,7 +467,7 @@ const FreeboardDetail = () => {
               </SecondIndetailBody>
             </>
           ) : (
-            <p>해당 게시물을 찾을 수 없습니다.</p>
+            <p></p>
           )}
         </BoardInBody>
       </Bodydiv>

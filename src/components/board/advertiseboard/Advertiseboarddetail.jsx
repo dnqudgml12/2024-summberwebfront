@@ -49,9 +49,10 @@ import Likeimg from "../../../assets/img/Likediv.png";
 import likedetail from "../../../assets/img/Likedetail.png";
 import savebutton from "../../../assets/img/Savebutton.png";
 import { BiLike } from "react-icons/bi";
-
+import useApiClient from "../../../api/apiClient";
 import Advertiseboardedit from "./Advertiseboardedit";
-
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../context/useStates";
 const Advertiseboarddetail = () => {
   const { id } = useParams();
   const [post, setPost] = useState(); // 초기 상태를 null로 설정
@@ -61,11 +62,13 @@ const Advertiseboarddetail = () => {
   const navigate = useNavigate();
   const [commentCount, setCommentCount] = useState(0); // 전체 댓글 수를 관리
   const [liked, setLiked] = useState(false);
-
+  const userInform = useRecoilValue(userState);
   const [click, setClick] = useState(false);
   const handleAddClick = () => {
     setClick(!click);
   };
+
+  const apiClient = useApiClient();
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -94,7 +97,7 @@ const Advertiseboarddetail = () => {
 
   const handleDeletePost = async () => {
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/api/advertiseboard/delete/${id}`);
+      await apiClient.delete(`/api/advertiseboard/delete/${id}`);
       navigate("/advertiseboard");
     } catch (error) {
       console.error("Error deleting post", error);
@@ -225,10 +228,14 @@ const Advertiseboarddetail = () => {
     // 좋아요 누르면 그 상태를 db에 저장(true,false)
     try {
       if (!liked) {
-        await axios.post(`${import.meta.env.VITE_API_URL}/api/advertiseboard/like/${id}`); //좋아요 눌린상태+1
+        await axios.post(
+          `${import.meta.env.VITE_API_URL}/api/advertiseboard/like/${id}`
+        ); //좋아요 눌린상태+1
         setLiked(true);
       } else {
-        await axios.delete(`${import.meta.env.VITE_API_URL}/api/advertiseboard/unlike/${id}`); // 좋아요 취소한 상태 -1
+        await axios.delete(
+          `${import.meta.env.VITE_API_URL}/api/advertiseboard/unlike/${id}`
+        ); // 좋아요 취소한 상태 -1
         setLiked(false);
       }
       const response = await axios.get(
@@ -265,13 +272,16 @@ const Advertiseboarddetail = () => {
                     </Dates>
                   </NameandTime>
 
-                  <DeleteandModity>
-                  <Modifydiv onClick={handleAddClick}>
-                      {click ? "" : "수정"}
-                    </Modifydiv>
-
-                    <Deletediv onClick={handleDeletePost}>삭제</Deletediv>
-                  </DeleteandModity>
+                  {userInform.memberId != null &&
+                  post.member.id === userInform.memberId ? (
+                    // 세션 스토리지에 저장된 로그인 한 사람의 이름과 글쓴 저자가 id가 같고 id가 존재한다면
+                    <DeleteandModity>
+                      <Modifydiv onClick={handleAddClick}>
+                        {click ? "" : "수정"}
+                      </Modifydiv>
+                      <Deletediv onClick={handleDeletePost}>삭제</Deletediv>
+                    </DeleteandModity>
+                  ) : null}
                 </Imgandnameinfrom>
 
                 {click ? (
@@ -287,7 +297,9 @@ const Advertiseboarddetail = () => {
                   <LikeIcon src={Likeimg} />
                   <LikeCount>{post.likes}</LikeCount>
                   <CommentIcon src={Comment} />
-                  <CommentCount>{countComments(post.advertiseComment)}</CommentCount>
+                  <CommentCount>
+                    {countComments(post.advertiseComment)}
+                  </CommentCount>
                 </Likecommentdiv>
                 <Likedetaildiv>
                   {!liked ? (
@@ -363,7 +375,7 @@ const Advertiseboarddetail = () => {
                                 <Namecomment>{reply.author}</Namecomment>
 
                                 <Likecomment
-                               marginleft={"73%;"}
+                                  marginleft={"73%;"}
                                   onClick={() => {
                                     alert("좋아요 기능 구현 예정");
                                   }}

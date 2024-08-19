@@ -116,7 +116,9 @@ const Graduateboarddetail = () => {
 
   const handleDeletePost = async () => {
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/api/graduateboard/delete/${id}`);
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}/api/graduateboard/delete/${id}`
+      );
       navigate("/graduateboard");
     } catch (error) {
       console.error("Error deleting post", error);
@@ -247,10 +249,14 @@ const Graduateboarddetail = () => {
     // 좋아요 누르면 그 상태를 db에 저장(true,false)
     try {
       if (!liked) {
-        await axios.post(`${import.meta.env.VITE_API_URL}/api/graduateboard/like/${id}`); //좋아요 눌린상태+1
+        await axios.post(
+          `${import.meta.env.VITE_API_URL}/api/graduateboard/like/${id}`
+        ); //좋아요 눌린상태+1
         setLiked(true);
       } else {
-        await axios.delete(`${import.meta.env.VITE_API_URL}/api/graduateboard/unlike/${id}`); // 좋아요 취소한 상태 -1
+        await axios.delete(
+          `${import.meta.env.VITE_API_URL}/api/graduateboard/unlike/${id}`
+        ); // 좋아요 취소한 상태 -1
         setLiked(false);
       }
       const response = await axios.get(
@@ -288,7 +294,7 @@ const Graduateboarddetail = () => {
                   </NameandTime>
 
                   <DeleteandModity>
-                  <Modifydiv onClick={handleAddClick}>
+                    <Modifydiv onClick={handleAddClick}>
                       {click ? "" : "수정"}
                     </Modifydiv>
 
@@ -309,7 +315,9 @@ const Graduateboarddetail = () => {
                   <LikeIcon src={Likeimg} />
                   <LikeCount>{post.likes}</LikeCount>
                   <CommentIcon src={Comment} />
-                  <CommentCount>{countComments(post.graduateComment)}</CommentCount>
+                  <CommentCount>
+                    {countComments(post.graduateComment)}
+                  </CommentCount>
                 </Likecommentdiv>
                 <Likedetaildiv>
                   {!liked ? (
@@ -408,33 +416,28 @@ const Graduateboarddetail = () => {
                                 </Singoomment>
                               </Namepicturecomment>
 
-                              <Replycontent>
-                                {reply.content}
-                              </Replycontent>
+                              <Replycontent>{reply.content}</Replycontent>
                               <Replydate>
-                              {new Date(post.createdAt).toLocaleTimeString()}
+                                {new Date(post.createdAt).toLocaleTimeString()}
                               </Replydate>
                             </ReplyDiv>
-
-                            
                           ))}
 
-
-                        {replyTo === comment.id && (
-                          <Replysavedetail>
-                            <Inputreplydetail
-                              value={newReply}
-                              onChange={(e) => setNewReply(e.target.value)}
-                              placeholder="대댓글을 입력하세요."
-                            />
-                            <Savewritedetail
-                              type="button"
-                              onClick={() => handleAddReply(comment.id)}
-                            >
-                              <Buttonimgsave src={savebutton} />
-                            </Savewritedetail>
-                          </Replysavedetail>
-                        )}
+                          {replyTo === comment.id && (
+                            <Replysavedetail>
+                              <Inputreplydetail
+                                value={newReply}
+                                onChange={(e) => setNewReply(e.target.value)}
+                                placeholder="대댓글을 입력하세요."
+                              />
+                              <Savewritedetail
+                                type="button"
+                                onClick={() => handleAddReply(comment.id)}
+                              >
+                                <Buttonimgsave src={savebutton} />
+                              </Savewritedetail>
+                            </Replysavedetail>
+                          )}
                         </>
                       </Commentbox>
                     ))
@@ -496,6 +499,3 @@ const CommentCount = styled.span`
   font-size: 12px;
   font-weight: 400;
 `;
-
-
-
