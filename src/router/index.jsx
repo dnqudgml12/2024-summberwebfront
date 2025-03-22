@@ -25,6 +25,7 @@ import Socialboard from "../components/board/socialboard/Socialboard";
 import Socialboarddetail from "../components/board/socialboard/Socialboarddetail";
 import RedirectionAfterLoginPage from "../page/RedirectionAftertLoginPage";
 import Mypage from "../page/Mypage";
+import ChatRoom from "../components/chat/ChatRoom";
 function Routing() {
   return (
     <Router>
@@ -67,7 +68,9 @@ function Routing() {
         </Route>
       </Routes>
 
+  
       <Routes>
+      <Route path="/chat/:roomId" element={<ChatRoom />} /> 
         <Route path="/schedule" element={<Schedule />} />
       </Routes>
     </Router>
