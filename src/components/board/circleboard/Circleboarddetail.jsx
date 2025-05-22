@@ -5,43 +5,43 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Alldiv, Bodydiv } from "../../../styles/HomeStyled";
 import axios from "axios";
 import {
-  BoardInBody,
-  Imgandnameinfrom,
-  Imgpicture,
-  NameandTime,
-  SecondIndetailBody,
-  Titlediv,
-  Names,
-  Dates,
-  Likecommentdiv,
-  Titledetaildiv,
-  Contentdetaildiv,
-  Likedetailbutton,
-  Likedetaildiv,
-  Likedetailimg,
-  DeleteandModity,
-  Modifydiv,
-  Deletediv,
-  Commentsavedetail,
-  Inputdivdetail,
-  Savewrite,
-  Buttonimgsave,
-  Savewritedetail,
-  Commentbox,
-  Namepicturecomment,
-  Picturecomment,
-  Namecomment,
-  Contentcomment,
-  Datecommet,
-  Replycomment,
-  Likecomment,
-  Singoomment,
-  Messagecomment,
-  Replysavedetail,
-  Inputreplydetail,
-  ReplyDiv,
-  Replycontent,
-  Replydate,
+	BoardInBody,
+	Imgandnameinfrom,
+	Imgpicture,
+	NameandTime,
+	SecondIndetailBody,
+	Titlediv,
+	Names,
+	Dates,
+	Likecommentdiv,
+	Titledetaildiv,
+	Contentdetaildiv,
+	Likedetailbutton,
+	Likedetaildiv,
+	Likedetailimg,
+	DeleteandModity,
+	Modifydiv,
+	Deletediv,
+	Commentsavedetail,
+	Inputdivdetail,
+	Savewrite,
+	Buttonimgsave,
+	Savewritedetail,
+	Commentbox,
+	Namepicturecomment,
+	Picturecomment,
+	Namecomment,
+	Contentcomment,
+	Datecommet,
+	Replycomment,
+	Likecomment,
+	Singoomment,
+	Messagecomment,
+	Replysavedetail,
+	Inputreplydetail,
+	ReplyDiv,
+	Replycontent,
+	Replydate,
 } from "../../../styles/BoardStyled";
 import anony from "../../../assets/img/anonypicture.png";
 import Comment from "../../../assets/img/Commentpicture.png";
@@ -53,85 +53,88 @@ import { BiLike } from "react-icons/bi";
 import Circleboardedit from "./Circleboardedit";
 
 const Circleboarddetail = () => {
-  const { id } = useParams();
-  const [post, setPost] = useState(); // 초기 상태를 null로 설정
-  const [newComment, setNewComment] = useState("");
-  const [newReply, setNewReply] = useState("");
-  const [replyTo, setReplyTo] = useState(null);
-  const navigate = useNavigate();
-  const [commentCount, setCommentCount] = useState(0); // 전체 댓글 수를 관리
-  const [liked, setLiked] = useState(false);
+	const { id } = useParams();
+	const [post, setPost] = useState(); // 초기 상태를 null로 설정
+	const [newComment, setNewComment] = useState("");
+	const [newReply, setNewReply] = useState("");
+	const [replyTo, setReplyTo] = useState(null);
+	const navigate = useNavigate();
+	const [commentCount, setCommentCount] = useState(0); // 전체 댓글 수를 관리
+	const [liked, setLiked] = useState(false);
 
-  const [click, setClick] = useState(false);
-  const handleAddClick = () => {
-    setClick(!click);
-  };
+	const [click, setClick] = useState(false);
+	const handleAddClick = () => {
+		setClick(!click);
+	};
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/circleboard/read/${id}`
-        ); // Replace with your API endpoint
-        setPost(response.data);
-        setCommentCount(
-          response.data.circleComment.reduce(
-            (count, comment) => count + 1 + comment.replies.length,
-            0
-            //reduce 배열의 각 요소에 대해 주어진 함수를 실행하여 하나의 결과값을 생성
-            //post.comments 배열의 모든 댓글과 대댓글의 수를 합산
-            //초기 숫자는 0, count=> 누적된 값, comment 현재 처리 중인 배열 요소
-          )
-        );
-        setLiked(response.data.likeStatus);
-      } catch (error) {
-        console.error("Error fetching post", error);
-      }
-    };
+	useEffect(() => {
+		const fetchPost = async () => {
+			try {
+				const response = await axios.get(
+					`${import.meta.env.VITE_API_URL}/api/circleboard/read/${id}`,
+				); // Replace with your API endpoint
+				setPost(response.data);
+				setCommentCount(
+					response.data.circleComment.reduce(
+						(count, comment) => count + 1 + comment.replies.length,
+						0,
+						//reduce 배열의 각 요소에 대해 주어진 함수를 실행하여 하나의 결과값을 생성
+						//post.comments 배열의 모든 댓글과 대댓글의 수를 합산
+						//초기 숫자는 0, count=> 누적된 값, comment 현재 처리 중인 배열 요소
+					),
+				);
+				setLiked(response.data.likeStatus);
+			} catch (error) {
+				console.error("Error fetching post", error);
+			}
+		};
 
-    fetchPost();
-  }, [id]);
+		fetchPost();
+	}, [id]);
 
-  const handleDeletePost = async () => {
-    try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/api/circleboard/delete/${id}`);
-      navigate("/circleboard");
-    } catch (error) {
-      console.error("Error deleting post", error);
-    }
+	const handleDeletePost = async () => {
+		try {
+			await axios.delete(
+				`${import.meta.env.VITE_API_URL}/api/circleboard/delete/${id}`,
+			);
+			navigate("/circleboard");
+		} catch (error) {
+			console.error("Error deleting post", error);
+		}
 
-    /*
+		/*
     const index = Data.findIndex((p) => p.id === parseInt(id));
     if (index !== -1) {
       Data.splice(index, 1); // array로부터 삭제
       navigate("/freeboard");
     }*/
-  };
+	};
 
-  const handleAddComment = async () => {
-    const newCommentObj = {
-      content: newComment,
-      author: `익명${commentCount + 1}`,
-    };
+	const handleAddComment = async () => {
+		const newCommentObj = {
+			content: newComment,
+			author: `익명${commentCount + 1}`,
+		};
 
-    try {
-      await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/circleboard/${id}/comments`,
-        newCommentObj
-      );
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/circleboard/read/${id}`
-      );
-      setPost(response.data);
-      setCommentCount(commentCount + 1);
-      setNewComment("");
-      setReplyTo(null);
-      navigate(`/circleboard/${id}`);
-    } catch (error) {
-      console.error("Error adding comment", error);
-    }
+		try {
+			await axios.post(
+				`${import.meta.env.VITE_API_URL}/api/circleboard/${id}/comments`,
+				newCommentObj,
+			);
+			const response = await axios.get(
+				`${import.meta.env.VITE_API_URL}/api/circleboard/read/${id}`,
+			);
+			setPost(response.data);
+			setCommentCount(commentCount + 1);
+			setNewComment("");
+			setReplyTo(null);
+			navigate(`/circleboard/${id}`);
+		} catch (error) {
+			console.error("Error adding comment", error);
+		}
 
-    /*
+		console.log("댓글 추가", newCommentObj);
+		/*
     const updatedPost = { ...post };
     const idnum = updatedPost.comments.length + 1;
     const newCommentObj = {
@@ -159,33 +162,33 @@ const Circleboarddetail = () => {
     setNewComment("");
     setReplyTo(null);
 */
-  };
+	};
 
-  const handleAddReply = async (commentId) => {
-    const newReplyObj = {
-      content: newReply,
-      author: `익명${commentCount + 1}`,
-    };
-    navigate(`/circleboard/${id}`);
-    try {
-      await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/circleboard/${id}/comments/${commentId}/replies`,
-        newReplyObj
-      );
+	const handleAddReply = async (commentId) => {
+		const newReplyObj = {
+			content: newReply,
+			author: `익명${commentCount + 1}`,
+		};
+		navigate(`/circleboard/${id}`);
+		try {
+			await axios.post(
+				`${import.meta.env.VITE_API_URL}/api/circleboard/${id}/comments/${commentId}/replies`,
+				newReplyObj,
+			);
 
-      //post 하는 동안, get을 가져옴
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/circleboard/read/${id}`
-      );
-      setPost(response.data);
-      setCommentCount(commentCount + 1);
-      setNewReply("");
-      setReplyTo(null);
-    } catch (error) {
-      console.error("Error adding reply", error);
-    }
+			//post 하는 동안, get을 가져옴
+			const response = await axios.get(
+				`${import.meta.env.VITE_API_URL}/api/circleboard/read/${id}`,
+			);
+			setPost(response.data);
+			setCommentCount(commentCount + 1);
+			setNewReply("");
+			setReplyTo(null);
+		} catch (error) {
+			console.error("Error adding reply", error);
+		}
 
-    /*
+		/*
     const updatedPost = { ...post };
     const idnum =
       updatedPost.comments.find((comment) => comment.id === commentId).replies
@@ -210,9 +213,9 @@ const Circleboarddetail = () => {
     setNewReply("");
     setReplyTo(null);
     */
-  };
+	};
 
-  /*
+	/*
   const handleLikePost = () => {
     const updatedPost = { ...post, likes: post.likes + 1 };
     const postIndex = Data.findIndex((p) => p.id === parseInt(id));
@@ -221,232 +224,238 @@ const Circleboarddetail = () => {
   };
   */
 
-  const handleLikePost = async () => {
-    // 좋아요 누르면 그 상태를 db에 저장(true,false)
-    try {
-      if (!liked) {
-        await axios.post(`${import.meta.env.VITE_API_URL}/api/circleboard/like/${id}`); //좋아요 눌린상태+1
-        setLiked(true);
-      } else {
-        await axios.delete(`${import.meta.env.VITE_API_URL}/api/circleboard/unlike/${id}`); // 좋아요 취소한 상태 -1
-        setLiked(false);
-      }
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/circleboard/read/${id}`
-      );
-      setPost(response.data); // Update the post with the new like count
-      setLiked(response.data.likeStatus);
-    } catch (error) {
-      console.error("Error liking/unliking post", error);
-    }
-  };
-  console.log(post, "aa");
-  const countComments = (comments) => {
-    return comments.reduce(
-      (acc, comment) => acc + 1 + comment.replies.length,
-      0
-    );
-  };
-  const getImageUrl = (imagePath) => {
-    if (!imagePath) return null;
-    return `${import.meta.env.VITE_API_URL}${imagePath}`;
-  };
-  
-  return (
-    <Alldiv>
-      <Bodydiv>
-        <BoardInBody>
-          <Titlediv>비밀게시판</Titlediv>
-          {post ? (
-            <>
-              <SecondIndetailBody>
-                <Imgandnameinfrom>
-                  <Imgpicture src={anony} />
-                  <NameandTime>
-                    <Names>익명</Names>
-                    <Dates>
-                      {new Date(post.createdAt).toLocaleTimeString()}
-                    </Dates>
-                  </NameandTime>
+	const handleLikePost = async () => {
+		// 좋아요 누르면 그 상태를 db에 저장(true,false)
+		try {
+			if (!liked) {
+				await axios.post(
+					`${import.meta.env.VITE_API_URL}/api/circleboard/like/${id}`,
+				); //좋아요 눌린상태+1
+				setLiked(true);
+			} else {
+				await axios.delete(
+					`${import.meta.env.VITE_API_URL}/api/circleboard/unlike/${id}`,
+				); // 좋아요 취소한 상태 -1
+				setLiked(false);
+			}
+			const response = await axios.get(
+				`${import.meta.env.VITE_API_URL}/api/circleboard/read/${id}`,
+			);
+			setPost(response.data); // Update the post with the new like count
+			setLiked(response.data.likeStatus);
+		} catch (error) {
+			console.error("Error liking/unliking post", error);
+		}
+	};
+	console.log(post, "aa");
+	const countComments = (comments) => {
+		return comments.reduce(
+			(acc, comment) => acc + 1 + comment.replies.length,
+			0,
+		);
+	};
+	const getImageUrl = (imagePath) => {
+		if (!imagePath) return null;
+		return `${import.meta.env.VITE_API_URL}${imagePath}`;
+	};
 
-                  <DeleteandModity>
-                  <Modifydiv onClick={handleAddClick}>
-                      {click ? "" : "수정"}
-                    </Modifydiv>
+	return (
+		<Alldiv>
+			<Bodydiv>
+				<BoardInBody>
+					<Titlediv>비밀게시판</Titlediv>
+					{post ? (
+						<>
+							<SecondIndetailBody>
+								<Imgandnameinfrom>
+									<Imgpicture src={anony} />
+									<NameandTime>
+										<Names>익명</Names>
+										<Dates>
+											{new Date(post.createdAt).toLocaleTimeString()}
+										</Dates>
+									</NameandTime>
 
-                    <Deletediv onClick={handleDeletePost}>삭제</Deletediv>
-                  </DeleteandModity>
-                </Imgandnameinfrom>
+									<DeleteandModity>
+										<Modifydiv onClick={handleAddClick}>
+											{click ? "" : "수정"}
+										</Modifydiv>
 
-                {click ? (
-                  <Circleboardedit id={post.id} onCancel={handleAddClick} />
-                ) : (
-                  <>
-                    <Titledetaildiv>{post.title}</Titledetaildiv>
-                    <Contentdetaildiv>{post.content}</Contentdetaildiv>
-                    {post.imagePath && (
-  <img
-    style={{ width: "300px", height: "100px" }}
-    src={getImageUrl(post.imagePath)}
-    alt="Post"
-  />
-)}
-                  </>
-                )}
+										<Deletediv onClick={handleDeletePost}>삭제</Deletediv>
+									</DeleteandModity>
+								</Imgandnameinfrom>
 
-                <Likecommentdiv>
-                  <LikeIcon src={Likeimg} />
-                  <LikeCount>{post.likes}</LikeCount>
-                  <CommentIcon src={Comment} />
-                  <CommentCount>{countComments(post.circleComment)}</CommentCount>
-                </Likecommentdiv>
-                <Likedetaildiv>
-                  {!liked ? (
-                    <Likedetailbutton
-                      backgroundcolor={"#f9f9f9"}
-                      color={"#737373"}
-                      onClick={handleLikePost}
-                    >
-                      <Likedetailimg src={likedetail} />
-                      공감
-                    </Likedetailbutton>
-                  ) : (
-                    <Likedetailbutton
-                      backgroundcolor={"#f91f15"}
-                      color={"#fff"}
-                      onClick={handleLikePost}
-                    >
-                      <BiLike
-                        style={{
-                          marginTop: "3px",
-                          marginRight: "5px",
-                          width: "15px",
-                          height: "15px",
-                        }}
-                      />
-                      공감
-                    </Likedetailbutton>
-                  )}
-                </Likedetaildiv>
+								{click ? (
+									<Circleboardedit id={post.id} onCancel={handleAddClick} />
+								) : (
+									<>
+										<Titledetaildiv>{post.title}</Titledetaildiv>
+										<Contentdetaildiv>{post.content}</Contentdetaildiv>
+										{post.imagePath && (
+											<img
+												style={{ width: "300px", height: "100px" }}
+												src={getImageUrl(post.imagePath)}
+												alt="Post"
+											/>
+										)}
+									</>
+								)}
 
-                <>
-                  {post.circleComment.length > 0 ? (
-                    post.circleComment.map((comment) => (
-                      <Commentbox key={comment.id}>
-                        <Namepicturecomment>
-                          <Picturecomment src={anony} />
-                          <Namecomment>{comment.author}</Namecomment>
-                          <Replycomment onClick={() => setReplyTo(comment.id)}>
-                            대댓글
-                          </Replycomment>
-                          <Likecomment
-                            onClick={() => {
-                              alert("좋아요 기능 구현 예정");
-                            }}
-                          >
-                            공감
-                          </Likecomment>
-                          <Messagecomment
-                            onClick={() => {
-                              alert("쪽지 기능 구현 예정");
-                            }}
-                          >
-                            쪽지
-                          </Messagecomment>
-                          <Singoomment
-                            onClick={() => {
-                              alert("신고 기능 구현 예정");
-                            }}
-                          >
-                            신고
-                          </Singoomment>
-                        </Namepicturecomment>
-                        <Contentcomment>{comment.content}</Contentcomment>
-                        <Datecommet>
-                          {new Date(post.createdAt).toLocaleTimeString()}
-                        </Datecommet>
+								<Likecommentdiv>
+									<LikeIcon src={Likeimg} />
+									<LikeCount>{post.likes}</LikeCount>
+									<CommentIcon src={Comment} />
+									<CommentCount>
+										{countComments(post.circleComment)}
+									</CommentCount>
+								</Likecommentdiv>
+								<Likedetaildiv>
+									{!liked ? (
+										<Likedetailbutton
+											backgroundcolor={"#f9f9f9"}
+											color={"#737373"}
+											onClick={handleLikePost}
+										>
+											<Likedetailimg src={likedetail} />
+											공감
+										</Likedetailbutton>
+									) : (
+										<Likedetailbutton
+											backgroundcolor={"#f91f15"}
+											color={"#fff"}
+											onClick={handleLikePost}
+										>
+											<BiLike
+												style={{
+													marginTop: "3px",
+													marginRight: "5px",
+													width: "15px",
+													height: "15px",
+												}}
+											/>
+											공감
+										</Likedetailbutton>
+									)}
+								</Likedetaildiv>
 
-                        <>
-                          {comment.replies.map((reply) => (
-                            <ReplyDiv key={reply.sequenceNumber}>
-                              <Namepicturecomment>
-                                <Picturecomment src={anony} />
-                                <Namecomment>{reply.author}</Namecomment>
+								<>
+									{post.circleComment.length > 0 ? (
+										post.circleComment.map((comment) => (
+											<Commentbox key={comment.id}>
+												<Namepicturecomment>
+													<Picturecomment src={anony} />
+													<Namecomment>{comment.author}</Namecomment>
+													<Replycomment onClick={() => setReplyTo(comment.id)}>
+														대댓글
+													</Replycomment>
+													<Likecomment
+														onClick={() => {
+															alert("좋아요 기능 구현 예정");
+														}}
+													>
+														공감
+													</Likecomment>
+													<Messagecomment
+														onClick={() => {
+															alert("쪽지 기능 구현 예정");
+														}}
+													>
+														쪽지
+													</Messagecomment>
+													<Singoomment
+														onClick={() => {
+															alert("신고 기능 구현 예정");
+														}}
+													>
+														신고
+													</Singoomment>
+												</Namepicturecomment>
+												<Contentcomment>{comment.content}</Contentcomment>
+												<Datecommet>
+													{new Date(post.createdAt).toLocaleTimeString()}
+												</Datecommet>
 
-                                <Likecomment
-                               marginleft={"73%;"}
-                                  onClick={() => {
-                                    alert("좋아요 기능 구현 예정");
-                                  }}
-                                >
-                                  공감
-                                </Likecomment>
-                                <Messagecomment
-                                  onClick={() => {
-                                    alert("쪽지 기능 구현 예정");
-                                  }}
-                                >
-                                  쪽지
-                                </Messagecomment>
-                                <Singoomment
-                                  onClick={() => {
-                                    alert("신고 기능 구현 예정");
-                                  }}
-                                >
-                                  신고
-                                </Singoomment>
-                              </Namepicturecomment>
+												<>
+													{comment.replies.map((reply) => (
+														<ReplyDiv key={reply.sequenceNumber}>
+															<Namepicturecomment>
+																<Picturecomment src={anony} />
+																<Namecomment>{reply.author}</Namecomment>
 
-                              <Replycontent>{reply.content}</Replycontent>
-                              <Replydate>
-                                {new Date(post.createdAt).toLocaleTimeString()}
-                              </Replydate>
-                            </ReplyDiv>
-                          ))}
+																<Likecomment
+																	marginleft={"73%;"}
+																	onClick={() => {
+																		alert("좋아요 기능 구현 예정");
+																	}}
+																>
+																	공감
+																</Likecomment>
+																<Messagecomment
+																	onClick={() => {
+																		alert("쪽지 기능 구현 예정");
+																	}}
+																>
+																	쪽지
+																</Messagecomment>
+																<Singoomment
+																	onClick={() => {
+																		alert("신고 기능 구현 예정");
+																	}}
+																>
+																	신고
+																</Singoomment>
+															</Namepicturecomment>
 
-                          {replyTo === comment.id && (
-                            <Replysavedetail>
-                              <Inputreplydetail
-                                value={newReply}
-                                onChange={(e) => setNewReply(e.target.value)}
-                                placeholder="대댓글을 입력하세요."
-                              />
-                              <Savewritedetail
-                                type="button"
-                                onClick={() => handleAddReply(comment.id)}
-                              >
-                                <Buttonimgsave src={savebutton} />
-                              </Savewritedetail>
-                            </Replysavedetail>
-                          )}
-                        </>
-                      </Commentbox>
-                    ))
-                  ) : (
-                    <></>
-                  )}
-                </>
+															<Replycontent>{reply.content}</Replycontent>
+															<Replydate>
+																{new Date(post.createdAt).toLocaleTimeString()}
+															</Replydate>
+														</ReplyDiv>
+													))}
 
-                <Commentsavedetail>
-                  <Inputdivdetail
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    type="text"
-                    placeholder="댓글을 입력하세요."
-                  />
-                  <Savewritedetail type="button" onClick={handleAddComment}>
-                    <Buttonimgsave src={savebutton} />
-                  </Savewritedetail>
-                </Commentsavedetail>
-              </SecondIndetailBody>
-            </>
-          ) : (
-            <p>해당 게시물을 찾을 수 없습니다.</p>
-          )}
-        </BoardInBody>
-      </Bodydiv>
-    </Alldiv>
-  );
+													{replyTo === comment.id && (
+														<Replysavedetail>
+															<Inputreplydetail
+																value={newReply}
+																onChange={(e) => setNewReply(e.target.value)}
+																placeholder="대댓글을 입력하세요."
+															/>
+															<Savewritedetail
+																type="button"
+																onClick={() => handleAddReply(comment.id)}
+															>
+																<Buttonimgsave src={savebutton} />
+															</Savewritedetail>
+														</Replysavedetail>
+													)}
+												</>
+											</Commentbox>
+										))
+									) : (
+										<></>
+									)}
+								</>
+
+								<Commentsavedetail>
+									<Inputdivdetail
+										value={newComment}
+										onChange={(e) => setNewComment(e.target.value)}
+										type="text"
+										placeholder="댓글을 입력하세요."
+									/>
+									<Savewritedetail type="button" onClick={handleAddComment}>
+										<Buttonimgsave src={savebutton} />
+									</Savewritedetail>
+								</Commentsavedetail>
+							</SecondIndetailBody>
+						</>
+					) : (
+						<p>해당 게시물을 찾을 수 없습니다.</p>
+					)}
+				</BoardInBody>
+			</Bodydiv>
+		</Alldiv>
+	);
 };
 
 export default Circleboarddetail;
